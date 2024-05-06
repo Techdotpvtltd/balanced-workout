@@ -11,8 +11,10 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
+import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
 
@@ -177,7 +179,9 @@ class HomeScreen extends StatelessWidget {
                     child: NavigationButton(
                       title: "Challenges",
                       icon: AppAssets.challengeIcon,
-                      onPressed: () {},
+                      onPressed: () {
+                        NavigationService.go(const ChallengeScreen());
+                      },
                     ),
                   ),
                 ],

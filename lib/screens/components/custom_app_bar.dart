@@ -23,8 +23,9 @@ PreferredSizeWidget customAppBar({
           top: topPadding, right: rightPadding, left: leftPadding),
       child: AppBar(
         backgroundColor: background ?? Colors.transparent,
-        automaticallyImplyLeading: false,
-        leadingWidth: showBack ? 120 : 0,
+        leadingWidth: showBack ? 90 : 0,
+        surfaceTintColor: Colors.transparent,
+        titleSpacing: 0,
         leading: showBack ? const Center(child: CustomBackButton()) : null,
         centerTitle: false,
         title: Text(

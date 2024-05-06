@@ -21,6 +21,8 @@ class CustomBackButton extends StatelessWidget {
               NavigationService.back();
             },
       style: ButtonStyle(
+        padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+        visualDensity: VisualDensity.compact,
         backgroundColor:
             MaterialStatePropertyAll(const Color(0xFF8B8B8B).withOpacity(0.2)),
         fixedSize: const MaterialStatePropertyAll(
