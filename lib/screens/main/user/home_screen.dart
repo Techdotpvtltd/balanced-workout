@@ -28,6 +28,7 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 60),
           child: AppBar(
             backgroundColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
             leadingWidth: SCREEN_WIDTH * 0.28,
             toolbarHeight: SCREEN_HEIGHT,
             leading: Container(
@@ -191,11 +192,18 @@ class HomeScreen extends StatelessWidget {
               ),
               gapH14,
               ListView.builder(
-                itemCount: 100,
+                itemCount: 3,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 7),
                 itemBuilder: (context, index) {
-                  return const ProductCard();
+                  return ProductCard(
+                    title: "Simply Chest Work",
+                    subTitle: "7x4 Challenge",
+                    onClickStartButton: () {},
+                    coverUrl:
+                        'https://sunnyhealthfitness.com/cdn/shop/articles/15-Minute-Full-Body-Workout-No-Equipment-01.jpg?v=1593542919',
+                  );
                 },
               ),
             ],
