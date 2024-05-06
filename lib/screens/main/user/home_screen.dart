@@ -18,6 +18,7 @@ import 'active_challenge_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
+import 'startup_challenge_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -210,7 +211,12 @@ class HomeScreen extends StatelessWidget {
                   return ProductCard(
                     title: "Simply Chest Work",
                     subTitle: "7x4 Challenge",
-                    onClickStartButton: () {},
+                    onClickCard: () {
+                      NavigationService.go(const StartupChallengeScreen());
+                    },
+                    onClickStartButton: () {
+                      NavigationService.go(const StartupChallengeScreen());
+                    },
                     coverUrl:
                         'https://sunnyhealthfitness.com/cdn/shop/articles/15-Minute-Full-Body-Workout-No-Equipment-01.jpg?v=1593542919',
                   );

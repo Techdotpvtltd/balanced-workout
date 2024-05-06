@@ -37,12 +37,12 @@ class CustomButton extends StatelessWidget {
             ? Colors.transparent
             : !isEnabled
                 ? Colors.grey[400]
-                : AppTheme.primaryColor1,
+                : backgroundColor ?? AppTheme.primaryColor1,
         borderRadius: const BorderRadius.all(Radius.circular(24)),
         border: Border.all(
           color: onlyBorder && isEnabled
               ? AppTheme.primaryColor1
-              : Colors.grey[400]!,
+              : backgroundColor ?? Colors.grey[400]!,
         ),
       ),
       child: ElevatedButton(
@@ -67,7 +67,7 @@ class CustomButton extends StatelessWidget {
                       ? Colors.grey[400]
                       : onlyBorder
                           ? AppTheme.primaryColor1
-                          : AppTheme.titleDarkColor1,
+                          : textColor ?? AppTheme.titleDarkColor1,
                   fontSize: isSmallText ? 14 : 16,
                   fontWeight: isSmallText ? FontWeight.w500 : FontWeight.w700,
                 ),

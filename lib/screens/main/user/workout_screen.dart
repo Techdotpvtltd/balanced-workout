@@ -9,10 +9,13 @@ import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants/app_assets.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
+import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
+import 'course_screen.dart';
 
 class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
@@ -43,7 +46,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.exerciseIcon,
                     title: "Courses / Library",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(CourseScreen());
+                    },
                   ),
                 ),
               ],
@@ -83,7 +88,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.challengeIcon,
                     title: "Challenges",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(const ChallengeScreen());
+                    },
                   ),
                 ),
               ],

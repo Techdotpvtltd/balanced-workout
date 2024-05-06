@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
             Positioned.fill(
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(
-                    const Color(0xff000000).withOpacity(0.3),
+                    const Color(0xff000000).withOpacity(0.35),
                     BlendMode.srcOver),
                 child: CustomNetworkImage(
                   imageUrl: coverUrl,
@@ -93,7 +93,9 @@ class ProductCard extends StatelessWidget {
                     if (onClickStartButton != null) gapH20,
                     if (onClickStartButton != null)
                       CustomButton(
-                        onPressed: () {},
+                        onPressed: onClickStartButton != null
+                            ? onClickStartButton!
+                            : () {},
                         title: "Start Now",
                         width: 120,
                         height: 35,

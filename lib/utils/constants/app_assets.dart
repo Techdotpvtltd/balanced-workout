@@ -47,6 +47,8 @@ class AppAssets {
   static const String heartIcon = "${AppAssets._iconPath}/heart-ic.png";
   static const String exerciseIcon = "${AppAssets._iconPath}/excersize-ic.png";
   static const String stretchesIcon = "${AppAssets._iconPath}/stretches-ic.png";
+  static const String runnerBlackBackground =
+      "${AppAssets._iconPath}/runner-black-background-ic.svg";
   static const String dumbbellIcon2 =
       "${AppAssets._iconPath}/dumbbell-ic-2.png";
   static const String menGenderIcon =

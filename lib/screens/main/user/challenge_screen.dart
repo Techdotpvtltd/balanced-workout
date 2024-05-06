@@ -8,10 +8,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import 'components/horizontal_product_card.dart';
 import 'components/product_card.dart';
+import 'startup_challenge_screen.dart';
 
 class ChallengeScreen extends StatelessWidget {
   const ChallengeScreen({super.key});
@@ -85,7 +87,12 @@ class ChallengeScreen extends StatelessWidget {
                       return ProductCard(
                         title: "Simply Chest Work",
                         subTitle: "7x4 Challenge",
-                        onClickStartButton: () {},
+                        onClickCard: () {
+                          NavigationService.go(const StartupChallengeScreen());
+                        },
+                        onClickStartButton: () {
+                          NavigationService.go(const StartupChallengeScreen());
+                        },
                         coverUrl:
                             'https://allmaxnutrition.com/cdn/shop/articles/13576-1200x600-1.jpg?v=1678816564',
                       );
