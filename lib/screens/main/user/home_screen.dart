@@ -14,6 +14,7 @@ import '../../../utils/constants/constants.dart';
 import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
+import 'active_challenge_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
@@ -171,7 +172,9 @@ class HomeScreen extends StatelessWidget {
                     child: NavigationButton(
                       title: "Active Workout",
                       icon: AppAssets.workoutIcon,
-                      onPressed: () {},
+                      onPressed: () {
+                        NavigationService.go(const ActiveChallengeScreen());
+                      },
                     ),
                   ),
                   gapW10,
