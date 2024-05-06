@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // Author:       Ali Akbar
 // Date:        03-05-24 13:16:18 -- Saturday
 // Description:
-import '../main/user/main_user_screen.dart';
+import '../onboarding/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'SfProDisplay',
         scaffoldBackgroundColor: const Color(0xFF161616),
       ),
-      home: const MainUserScreen(),
+      home: const SplashScreen(),
     );
   }
 }
