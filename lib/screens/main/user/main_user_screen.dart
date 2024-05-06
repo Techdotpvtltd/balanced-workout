@@ -13,6 +13,7 @@ import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../components/custom_ink_well.dart';
+import 'home_screen.dart';
 
 final List<String> icons = [
   AppAssets.homeIcon,
@@ -28,6 +29,14 @@ final List<String> selectedIcons = [
   AppAssets.profileIcon,
   AppAssets.selectedCompassIcon,
   AppAssets.selectedGearIcon,
+];
+
+final List<Widget> screens = [
+  const HomeScreen(),
+  const Placeholder(),
+  const Placeholder(),
+  const Placeholder(),
+  const Placeholder(),
 ];
 
 class MainUserScreen extends StatefulWidget {
@@ -132,7 +141,7 @@ class _MainUserScreenState extends State<MainUserScreen>
             )
           ],
         ),
-        body: (context, controller) => const Scaffold(),
+        body: (context, controller) => screens[selectedIndex],
       ),
     );
   }
