@@ -90,9 +90,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+
+      /// Contents
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 29, vertical: 35),
+          padding:
+              const EdgeInsets.only(left: 29, right: 29, top: 35, bottom: 60),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

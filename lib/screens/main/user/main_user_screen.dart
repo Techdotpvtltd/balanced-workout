@@ -64,8 +64,8 @@ class _MainUserScreenState extends State<MainUserScreen>
       bottomNavigationBar: BottomBar(
         barColor: const Color(0xFF3A3A3C),
         borderRadius: const BorderRadius.all(Radius.circular(40)),
-        width: SCREEN_WIDTH * 0.9,
-        fit: StackFit.expand,
+        width: SCREEN_WIDTH * 0.8,
+        fit: StackFit.loose,
         barDecoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(40)),
         ),
@@ -78,7 +78,7 @@ class _MainUserScreenState extends State<MainUserScreen>
               controller: tabController,
               padding: const EdgeInsets.symmetric(vertical: 5),
               indicatorColor: Colors.transparent,
-              tabAlignment: TabAlignment.center,
+              tabAlignment: TabAlignment.fill,
               dividerColor: Colors.transparent,
               tabs: [
                 for (int index = 0; index < icons.length; index++)
