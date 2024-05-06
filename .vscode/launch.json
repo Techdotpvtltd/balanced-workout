@@ -8,7 +8,6 @@
             "name": "balanced_workout",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}/lib/screens/app/app.dart"
 
         },
         {
@@ -16,14 +15,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "${workspaceFolder}/lib/screens/app/app.dart"
         },
         {
             "name": "balanced_workout (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "${workspaceFolder}/lib/screens/app/app.dart"
         }
     ]
 }

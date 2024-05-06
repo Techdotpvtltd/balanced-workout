@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'screens/onboarding/splash_screen.dart';
 // Project: 	   balanced_workout
 // File:    	   app
 // Path:    	   lib/screens/app/app.dart
 // Author:       Ali Akbar
 // Date:        03-05-24 13:16:18 -- Saturday
 // Description:
-import '../onboarding/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
