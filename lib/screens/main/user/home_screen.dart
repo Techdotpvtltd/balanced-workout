@@ -6,12 +6,15 @@
 // Description:
 
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
+import 'components/navigation_button.dart';
+import 'components/product_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -86,8 +89,118 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const SafeArea(
-        child: Placeholder(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 29, vertical: 35),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// Progress Status Container
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+                decoration: const BoxDecoration(
+                  color: AppTheme.darkWidgetColor,
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Today Activity",
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: AppTheme.primaryColor1,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          "2024 October 25",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF94A3B8),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// Circle Widget
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: PieChart(
+                        dataMap: {"App": 34},
+                        chartType: ChartType.ring,
+                        baseChartColor: AppTheme.darkButtonColor,
+                        initialAngleInDegree: 270,
+                        colorList: [AppTheme.primaryColor1],
+                        totalValue: 100,
+                        chartLegendSpacing: 0,
+                        chartValuesOptions: ChartValuesOptions(
+                          showChartValueBackground: false,
+                          showChartValues: false,
+                          showChartValuesInPercentage: false,
+                          showChartValuesOutside: false,
+                        ),
+                        legendOptions: LegendOptions(
+                          showLegends: false,
+                          showLegendsInRow: false,
+                        ),
+                        ringStrokeWidth: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              gapH32,
+
+              /// NavigationButton
+              Row(
+                children: [
+                  Expanded(
+                    child: NavigationButton(
+                      title: "Active Workout",
+                      icon: AppAssets.workoutIcon,
+                      onPressed: () {},
+                    ),
+                  ),
+                  gapW10,
+                  Expanded(
+                    child: NavigationButton(
+                      title: "Challenges",
+                      icon: AppAssets.challengeIcon,
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+              gapH26,
+
+              /// Recent Challenges
+              const Text(
+                "Recent Challenges",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              gapH14,
+              ListView.builder(
+                itemCount: 100,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return const ProductCard();
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

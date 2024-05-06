@@ -13,4 +13,7 @@ class AppTheme {
 
   /// Button Colors
   static const Color darkButtonColor = Color(0xFF2E2E2E);
+
+  /// Widget colors
+  static const Color darkWidgetColor = Color(0xFF1E1E1E);
 }

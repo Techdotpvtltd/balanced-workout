@@ -24,7 +24,7 @@ class AppAssets {
   static const String emailIcon = "${AppAssets._iconPath}/email-ic.svg";
   static const String uploadIcon = "${AppAssets._iconPath}/upload-ic.svg";
   static const String bellIcon = "${AppAssets._iconPath}/bell-ic.svg";
-  static const String challengeIcon = "${AppAssets._iconPath}/challenge-ic.svg";
+  static const String challengeIcon = "${AppAssets._iconPath}/challenge-ic.png";
   static const String compassIcon = "${AppAssets._iconPath}/compass-ic.svg";
   static const String selectedCompassIcon =
       "${AppAssets._iconPath}/selected-compass-ic.svg";
@@ -40,7 +40,13 @@ class AppAssets {
   static const String magnifierIcon = "${AppAssets._iconPath}/magnifier-ic.svg";
   static const String profileIcon = "${AppAssets._iconPath}/profile-ic.svg";
   static const String upwardIcon = "${AppAssets._iconPath}/upward-ic.svg";
-  static const String workoutIcon = "${AppAssets._iconPath}/workout-ic.svg";
+  static const String workoutIcon = "${AppAssets._iconPath}/workout-ic.png";
+  static const String cardioIcon = "${AppAssets._iconPath}/cardio-ic.png";
+  static const String heartIcon = "${AppAssets._iconPath}/heart-ic.png";
+  static const String exerciseIcon = "${AppAssets._iconPath}/excersize-ic.png";
+  static const String stretchesIcon = "${AppAssets._iconPath}/stretches-ic.png";
+  static const String dumbbellIcon2 =
+      "${AppAssets._iconPath}/dumbbell-ic-2.png";
   static const String menGenderIcon =
       "${AppAssets._iconPath}/men_gender_ic.svg";
   static const String femaleGenderIcon =

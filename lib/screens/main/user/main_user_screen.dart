@@ -14,6 +14,7 @@ import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../components/custom_ink_well.dart';
 import 'home_screen.dart';
+import 'workout_screen.dart';
 
 final List<String> icons = [
   AppAssets.homeIcon,
@@ -33,7 +34,7 @@ final List<String> selectedIcons = [
 
 final List<Widget> screens = [
   const HomeScreen(),
-  const Placeholder(),
+  const WorkoutScreen(),
   const Placeholder(),
   const Placeholder(),
   const Placeholder(),
