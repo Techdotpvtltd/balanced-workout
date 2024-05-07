@@ -13,9 +13,12 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
+import 'cardio_exercise_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'course_screen.dart';
+import 'stretches_exercise_screen.dart';
+import 'weekly_plan_screen.dart';
 
 class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
@@ -60,7 +63,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.dumbbellIcon2,
                     title: "Weekly Plans",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(const WeeklyPlanScreen());
+                    },
                   ),
                 ),
                 gapW10,
@@ -68,7 +73,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.cardioIcon,
                     title: "Cardio Exercise",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(const CardioExerciseScreen());
+                    },
                   ),
                 ),
               ],
@@ -80,7 +87,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.stretchesIcon,
                     title: "Stretches",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(const StretchesExerciseScreen());
+                    },
                   ),
                 ),
                 gapW10,

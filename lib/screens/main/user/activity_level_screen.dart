@@ -7,9 +7,11 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
+import 'progress_challenge_screen.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
   ActivityLevelScreen({super.key});
@@ -39,7 +41,9 @@ class ActivityLevelScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return ProductCard(
             title: items[index],
-            onClickCard: () {},
+            onClickCard: () {
+              NavigationService.go(const ProgressChallengeScreen());
+            },
             coverUrl: images[index],
           );
         },
