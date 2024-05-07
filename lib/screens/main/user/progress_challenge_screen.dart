@@ -13,10 +13,12 @@ import 'package:timelines_plus/timelines_plus.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_ink_well.dart';
 import '../../components/custom_network_image.dart';
 import '../../components/custom_paddings.dart';
+import 'playlist_screen.dart';
 
 class ProgressChallengeScreen extends StatefulWidget {
   const ProgressChallengeScreen({super.key});
@@ -78,7 +80,7 @@ class _ProgressChallengeScreenState extends State<ProgressChallengeScreen>
 
                     /// Custom App Bar
                     Positioned(
-                      child: customAppBar(),
+                      child: customAppBar(title: "7x4 Challenge"),
                     ),
 
                     /// Progress Show Widget
@@ -165,7 +167,9 @@ class _ProgressChallengeScreenState extends State<ProgressChallengeScreen>
                                 ? [0, 1, 2, 6]
                                 : [],
                         weekNumber: index,
-                        onPressedDay: (week, day) {},
+                        onPressedDay: (week, day) {
+                          NavigationService.go(const PlaylistScreen());
+                        },
                       ),
                     );
                   },
