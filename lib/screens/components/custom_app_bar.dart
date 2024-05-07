@@ -15,9 +15,10 @@ PreferredSizeWidget customAppBar({
   double topPadding = 1,
   double rightPadding = 1,
   double leftPadding = 1,
+  double appBarSize = 60,
 }) {
   return PreferredSize(
-    preferredSize: Size.fromHeight(topPadding + 60),
+    preferredSize: Size.fromHeight(topPadding + appBarSize),
     child: Padding(
       padding: EdgeInsets.only(
           top: topPadding, right: rightPadding, left: leftPadding),
@@ -26,7 +27,13 @@ PreferredSizeWidget customAppBar({
         leadingWidth: showBack ? 90 : 0,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
-        leading: showBack ? const Center(child: CustomBackButton()) : null,
+        leading: showBack
+            ? const Center(
+                child: CustomBackButton(
+                  backgroundColor: Color(0xFF2E2E2E),
+                ),
+              )
+            : null,
         centerTitle: false,
         title: Text(
           title ?? "",

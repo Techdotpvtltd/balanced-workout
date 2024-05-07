@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import '../../utils/extensions/navigation_service.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key, this.onPressed});
+  const CustomBackButton({super.key, this.onPressed, this.backgroundColor});
   final VoidCallback? onPressed;
+  final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -23,8 +24,8 @@ class CustomBackButton extends StatelessWidget {
       style: ButtonStyle(
         padding: const MaterialStatePropertyAll(EdgeInsets.zero),
         visualDensity: VisualDensity.compact,
-        backgroundColor:
-            MaterialStatePropertyAll(const Color(0xFF8B8B8B).withOpacity(0.2)),
+        backgroundColor: MaterialStatePropertyAll(
+            backgroundColor ?? const Color(0xFF8B8B8B).withOpacity(0.2)),
         fixedSize: const MaterialStatePropertyAll(
           Size(54, 54),
         ),

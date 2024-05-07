@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../screens/main.dart';
+import '../../main.dart';
 
 // Project: 	   listi_shop
 // File:    	   navigation_service
