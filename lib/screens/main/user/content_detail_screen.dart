@@ -11,11 +11,13 @@ import 'package:flutter_svg/svg.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_container.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
+import 'complete_video_alert_screen.dart';
 import 'components/video_cover_widget.dart';
 
 class ContentDetailScreen extends StatefulWidget {
@@ -44,7 +46,9 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
       floatingActionButton: HorizontalPadding(
         child: CustomButton(
           title: "Mark as completed",
-          onPressed: () {},
+          onPressed: () {
+            NavigationService.go(const CompleteVideoAlertScreen());
+          },
         ),
       ),
       body: SingleChildScrollView(
