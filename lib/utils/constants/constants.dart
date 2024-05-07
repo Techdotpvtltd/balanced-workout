@@ -9,7 +9,7 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../screens/app/app.dart';
+import '../../main.dart';
 
 const gapH2 = SizedBox(height: 2);
 const gapH4 = SizedBox(height: 4);
