@@ -18,6 +18,7 @@ import 'active_challenge_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
+import 'notification_screen.dart';
 import 'startup_challenge_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -81,15 +82,14 @@ class HomeScreen extends StatelessWidget {
 
             /// Action Widget
             actions: [
-              CircleButton(
-                icon: AppAssets.magnifierIcon,
-                onPressed: () {},
-              ),
               gapW10,
               CircleButton(
                 icon: AppAssets.bellIcon,
-                onPressed: () {},
+                onPressed: () {
+                  NavigationService.go(const NotificationScreen());
+                },
               ),
+              gapW30,
             ],
           ),
         ),

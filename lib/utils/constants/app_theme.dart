@@ -16,4 +16,5 @@ class AppTheme {
 
   /// Widget colors
   static const Color darkWidgetColor = Color(0xFF1E1E1E);
+  static const Color darkWidgetColor2 = Color(0xFF303030);
 }

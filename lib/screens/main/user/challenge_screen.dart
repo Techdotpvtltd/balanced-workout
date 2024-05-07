@@ -13,6 +13,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import 'components/horizontal_product_card.dart';
 import 'components/product_card.dart';
+import 'progress_challenge_screen.dart';
 import 'startup_challenge_screen.dart';
 
 class ChallengeScreen extends StatelessWidget {
@@ -50,12 +51,15 @@ class ChallengeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 29, right: 29),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return const HorizontalProductCard(
+                  return HorizontalProductCard(
                     coverUrl:
                         'https://www.bodybuilding.com/images/2016/july/build-your-best-chest-5-must-do-pec-exercises-header-v2-960x540.jpg',
                     timePeriod: '4 Weeks',
                     title: 'Full Body stretching',
                     celeries: '130 Kcal',
+                    onClick: () {
+                      NavigationService.go(const ProgressChallengeScreen());
+                    },
                   );
                 },
               ),
