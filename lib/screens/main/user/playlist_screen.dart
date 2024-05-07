@@ -11,8 +11,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
+import '../../components/custom_ink_well.dart';
 import '../../components/custom_network_image.dart';
+import 'content_detail_screen.dart';
 
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({super.key});
@@ -91,60 +94,69 @@ class PlaylistScreen extends StatelessWidget {
                     itemCount: 6,
                     padding: const EdgeInsets.only(top: 17, bottom: 40),
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 12),
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF303030),
-                          borderRadius: BorderRadius.all(Radius.circular(36)),
-                        ),
-                        child: Row(
-                          children: [
-                            /// Play Button
-                            Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: const BoxDecoration(
-                                color: AppTheme.primaryColor1,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.play_arrow,
-                                color: Colors.black,
-                                size: 26,
-                              ),
-                            ),
-                            gapW16,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Full Body stretching",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                      return CustomInkWell(
+                        onTap: () {
+                          NavigationService.go(const ContentDetailScreen());
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF303030),
+                            borderRadius: BorderRadius.all(Radius.circular(36)),
+                          ),
+                          child: Row(
+                            children: [
+                              /// Play Button
+                              Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: const BoxDecoration(
+                                  color: AppTheme.primaryColor1,
+                                  shape: BoxShape.circle,
                                 ),
-
-                                /// Time Zone View
-                                Row(
+                                child: const Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.black,
+                                  size: 26,
+                                ),
+                              ),
+                              gapW16,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SvgPicture.asset(AppAssets.clockIcon),
-                                    gapW8,
                                     const Text(
-                                      "10:30",
+                                      "Full Body stretching",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        color: Color(0xFF8C8C8C),
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
                                       ),
+                                    ),
+
+                                    /// Time Zone View
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppAssets.clockIcon),
+                                        gapW8,
+                                        const Text(
+                                          "10:30",
+                                          style: TextStyle(
+                                            color: Color(0xFF8C8C8C),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

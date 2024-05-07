@@ -41,6 +41,7 @@ class AppAssets {
   static const String profileIcon = "${AppAssets._iconPath}/profile-ic.svg";
   static const String upwardIcon = "${AppAssets._iconPath}/upward-ic.svg";
   static const String clockIcon = "${AppAssets._iconPath}/clock-ic.svg";
+  static const String runnerIcon = "${AppAssets._iconPath}/runner-ic.svg";
   static const String fireIcon = "${AppAssets._iconPath}/fire-ic.svg";
   static const String winMedalIcon =
       "${AppAssets._iconPath}/medal_winner-ic.svg";

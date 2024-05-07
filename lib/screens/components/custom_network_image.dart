@@ -63,7 +63,7 @@ class _CustomNetworkImageState extends State<CustomNetworkImage> {
                       child: widget.placeholderWidget ??
                           Icon(
                             Icons.image,
-                            size: (widget.height ?? constraints.maxHeight) / 2,
+                            size: (constraints.maxHeight) / 2,
                           ),
                     ),
                   );
