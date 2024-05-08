@@ -30,26 +30,29 @@ class ExploreScreen extends StatelessWidget {
         rightPadding: 29,
       ),
       body: CustomPadding(
-        child: Row(
-          children: [
-            Expanded(
-              child: NavigationButton(
-                icon: AppAssets.backgroundMindedsIcon,
-                title: 'Science and Facts',
-                onPressed: () {
-                  NavigationService.go(const ArticleScreen());
-                },
+        child: SizedBox(
+          height: 160,
+          child: Row(
+            children: [
+              Expanded(
+                child: NavigationButton(
+                  icon: AppAssets.backgroundMindedsIcon,
+                  title: 'Science and Facts',
+                  onPressed: () {
+                    NavigationService.go(const ArticleScreen());
+                  },
+                ),
               ),
-            ),
-            gapW10,
-            Expanded(
-              child: NavigationButton(
-                icon: AppAssets.backgroundCommunityIcon,
-                title: 'Q&A/Community',
-                onPressed: () {},
+              gapW10,
+              Expanded(
+                child: NavigationButton(
+                  icon: AppAssets.backgroundCommunityIcon,
+                  title: 'Q&A/Community',
+                  onPressed: () {},
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

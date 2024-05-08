@@ -75,7 +75,7 @@ class _CustomWeeklyDateState extends State<CustomWeeklyDate> {
   Widget build(BuildContext context) {
     return CustomContainer(
       color: const Color(0xFF2C2C2E).withOpacity(0.62),
-      size: Size(SCREEN_WIDTH, SCREEN_HEIGHT * 0.20),
+      size: Size(SCREEN_WIDTH, SCREEN_HEIGHT * 0.215),
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(30),
         bottomRight: Radius.circular(30),
