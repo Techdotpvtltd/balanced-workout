@@ -49,6 +49,14 @@ class AppAssets {
   static const String winMedalIcon =
       "${AppAssets._iconPath}/medal_winner-ic.svg";
   static const String medalIcon = "${AppAssets._iconPath}/medal-ic.svg";
+  static const String backgroundProfileIcon =
+      "${AppAssets._iconPath}/bacground-profile-ic.png";
+  static const String backgroundDatabaseIcon =
+      "${AppAssets._iconPath}/background-database-ic.png";
+  static const String backgroundDumbbellIcon =
+      "${AppAssets._iconPath}/background-dumbbell-ic.png";
+  static const String backgroundMusclesIcon =
+      "${AppAssets._iconPath}/background-muscles-ic.png";
   static const String workoutIcon = "${AppAssets._iconPath}/workout-ic.png";
   static const String cardioIcon = "${AppAssets._iconPath}/cardio-ic.png";
   static const String heartIcon = "${AppAssets._iconPath}/heart-ic.png";

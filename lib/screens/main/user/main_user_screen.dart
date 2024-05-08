@@ -5,6 +5,7 @@
 // Date:        06-05-24 11:29:16 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/my_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +36,7 @@ final List<String> selectedIcons = [
 final List<Widget> screens = [
   const HomeScreen(),
   const WorkoutScreen(),
-  const Placeholder(),
+  const MyScreen(),
   const Placeholder(),
   const Placeholder(),
 ];
