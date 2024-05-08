@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_container.dart';
 import '../../components/custom_network_image.dart';
 import '../../components/custom_scaffold.dart';
+import 'article_detail_screen.dart';
 
 class ArticleScreen extends StatelessWidget {
   const ArticleScreen({super.key});
@@ -26,13 +28,17 @@ class ArticleScreen extends StatelessWidget {
         padding:
             const EdgeInsets.only(left: 29, right: 29, top: 18, bottom: 14),
         itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 6),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: CustomContainer(
-              padding: EdgeInsets.only(left: 12, right: 13, top: 7, bottom: 7),
+              onPressed: () {
+                NavigationService.go(const ArticleDetailScreen());
+              },
+              padding:
+                  const EdgeInsets.only(left: 12, right: 13, top: 7, bottom: 7),
               color: AppTheme.darkWidgetColor,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              child: Row(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              child: const Row(
                 children: [
                   /// Cover Widget
                   SizedBox(
