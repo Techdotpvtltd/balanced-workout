@@ -13,6 +13,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'completed_screen.dart';
 import 'components/navigation_button.dart';
+import 'recent_muscle_workout.dart';
 
 class MyScreen extends StatefulWidget {
   const MyScreen({super.key});
@@ -66,6 +67,10 @@ class _MyScreenState extends State<MyScreen> {
               onPressed: () {
                 if (index == 0) {
                   NavigationService.go(const CompletedScreen());
+                }
+
+                if (index == 1) {
+                  NavigationService.go(const RecentMuscleWorkout());
                 }
               },
             ),

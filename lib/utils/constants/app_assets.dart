@@ -12,6 +12,7 @@ class AppAssets {
   static const String wti1 = "${AppAssets._imagePath}/wti1.png";
   static const String wti2 = "${AppAssets._imagePath}/wti2.png";
   static const String wti3 = "${AppAssets._imagePath}/wti3.png";
+  static const String anatomy = "${AppAssets._imagePath}/anatomy.png";
 
 //  Icons ====================================
   static const String logo = "${AppAssets._iconPath}/logo.png";
