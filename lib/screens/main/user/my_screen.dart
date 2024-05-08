@@ -13,6 +13,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'completed_screen.dart';
 import 'components/navigation_button.dart';
+import 'my_data_screen.dart';
 import 'recent_muscle_workout.dart';
 
 class MyScreen extends StatefulWidget {
@@ -71,6 +72,10 @@ class _MyScreenState extends State<MyScreen> {
 
                 if (index == 1) {
                   NavigationService.go(const RecentMuscleWorkout());
+                }
+
+                if (index == 2) {
+                  NavigationService.go(const MyDataScreen());
                 }
               },
             ),

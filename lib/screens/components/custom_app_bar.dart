@@ -16,6 +16,7 @@ PreferredSizeWidget customAppBar({
   double rightPadding = 0,
   double leftPadding = 0,
   double appBarSize = 60,
+  List<Widget>? actions,
 }) {
   return PreferredSize(
     preferredSize: Size.fromHeight(topPadding + appBarSize),
@@ -42,6 +43,7 @@ PreferredSizeWidget customAppBar({
             fontWeight: FontWeight.w500,
           ),
         ),
+        actions: actions,
       ),
     ),
   );

@@ -10,18 +10,31 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/constants/app_theme.dart';
 
 class CircleButton extends StatelessWidget {
-  const CircleButton({super.key, required this.onPressed, required this.icon});
+  const CircleButton(
+      {super.key,
+      required this.onPressed,
+      required this.icon,
+      this.backgroundColor,
+      this.colorFilter,
+      this.iconSize});
   final VoidCallback onPressed;
   final String icon;
-
+  final Color? backgroundColor;
+  final ColorFilter? colorFilter;
+  final Size? iconSize;
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onPressed,
-      icon: SvgPicture.asset(icon),
-      style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(AppTheme.darkButtonColor),
-        padding: MaterialStatePropertyAll(EdgeInsets.all(15)),
+      icon: SvgPicture.asset(
+        icon,
+        colorFilter: colorFilter,
+        width: iconSize?.width,
+        height: iconSize?.height,
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(
+            backgroundColor ?? AppTheme.darkButtonColor),
       ),
     );
   }
