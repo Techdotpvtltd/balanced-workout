@@ -13,6 +13,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'completed_screen.dart';
 import 'components/navigation_button.dart';
+import 'max_stats_screen.dart';
 import 'my_data_screen.dart';
 import 'recent_muscle_workout.dart';
 
@@ -76,6 +77,10 @@ class _MyScreenState extends State<MyScreen> {
 
                 if (index == 2) {
                   NavigationService.go(const MyDataScreen());
+                }
+
+                if (index == 3) {
+                  NavigationService.go(const MaxStatsScreen());
                 }
               },
             ),
