@@ -58,11 +58,11 @@ class _MyScreenState extends State<MyScreen> {
         physics: const ScrollPhysics(),
         padding:
             const EdgeInsets.only(left: 22, right: 22, bottom: 10, top: 17),
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 12),
         childrenDelegate: SliverChildBuilderDelegate(
           (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 7),
             child: NavigationButton(
               icon: data[index]['icon'] as String,
               title: data[index]['title'] as String,

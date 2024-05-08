@@ -29,7 +29,6 @@ class NavigationButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.all(2),
-        height: 177,
         decoration: const BoxDecoration(
           color: AppTheme.darkWidgetColor,
           borderRadius: BorderRadius.all(Radius.circular(24)),
