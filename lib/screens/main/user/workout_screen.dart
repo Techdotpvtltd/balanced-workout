@@ -17,6 +17,7 @@ import 'cardio_exercise_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'course_screen.dart';
+import 'progression_screen.dart';
 import 'stretches_exercise_screen.dart';
 import 'weekly_plan_screen.dart';
 
@@ -41,7 +42,9 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.heartIcon,
                     title: "Progression",
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigationService.go(const ProgressionScreen());
+                    },
                   ),
                 ),
                 gapW10,

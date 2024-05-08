@@ -12,9 +12,9 @@ PreferredSizeWidget customAppBar({
   Color? background,
   String? title,
   bool showBack = true,
-  double topPadding = 1,
-  double rightPadding = 1,
-  double leftPadding = 1,
+  double topPadding = 0,
+  double rightPadding = 0,
+  double leftPadding = 0,
   double appBarSize = 60,
 }) {
   return PreferredSize(
