@@ -14,6 +14,7 @@ import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../components/custom_ink_well.dart';
+import 'explore_screen.dart';
 import 'home_screen.dart';
 import 'workout_screen.dart';
 
@@ -37,7 +38,7 @@ final List<Widget> screens = [
   const HomeScreen(),
   const WorkoutScreen(),
   const MyScreen(),
-  const Placeholder(),
+  const ExploreScreen(),
   const Placeholder(),
 ];
 

@@ -59,6 +59,10 @@ class AppAssets {
       "${AppAssets._iconPath}/background-dumbbell-ic.png";
   static const String backgroundMusclesIcon =
       "${AppAssets._iconPath}/background-muscles-ic.png";
+  static const String backgroundCommunityIcon =
+      "${AppAssets._iconPath}/background-community-ic.png";
+  static const String backgroundMindedsIcon =
+      "${AppAssets._iconPath}/background-minded-ic.png";
   static const String workoutIcon = "${AppAssets._iconPath}/workout-ic.png";
   static const String cardioIcon = "${AppAssets._iconPath}/cardio-ic.png";
   static const String heartIcon = "${AppAssets._iconPath}/heart-ic.png";
