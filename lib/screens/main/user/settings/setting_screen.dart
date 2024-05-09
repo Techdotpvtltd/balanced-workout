@@ -22,6 +22,7 @@ import '../../../components/custom_container.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../onboarding/forgot_screen.dart';
+import '../../../onboarding/splash_screen.dart';
 import 'contact_us_screen.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -34,7 +35,9 @@ class SettingScreen extends StatelessWidget {
       floatingActionButton: CustomPadding(
         bottom: 70,
         child: CustomButton(
-          onPressed: () {},
+          onPressed: () {
+            NavigationService.offAll(const SplashScreen());
+          },
           title: "Logout",
         ),
       ),
@@ -187,12 +190,72 @@ class SettingScreen extends StatelessWidget {
           CustomChildButton(
             onPressed: () {},
             child: Text(
-              "Invite Friend",
+              "Invite Friends",
               style: GoogleFonts.poppins(
                 color: AppTheme.primaryColor1,
                 fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w700,
               ),
+            ),
+          ),
+
+          /// Subscription Widget
+          gapH32,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 38),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              border: Border.all(
+                color: AppTheme.primaryColor1,
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                /// Title Row
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Gold",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    gapH4,
+                    Text(
+                      "26 March, 2024",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.27,
+                      ),
+                    ),
+                  ],
+                ),
+
+                /// Price Widget
+                Text.rich(
+                  TextSpan(
+                    text: "\$18",
+                    children: [
+                      TextSpan(
+                        text: '/mo',
+                        style: TextStyle(
+                          fontSize: 14.27,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
