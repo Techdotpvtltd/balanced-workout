@@ -11,6 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/constants/app_assets.dart';
 import '../../utils/constants/app_theme.dart';
+import '../../utils/extensions/navigation_service.dart';
+import '../main/user/main_user_screen.dart';
 import 'components/information_widget.dart';
 
 class ProfilePickerScreen extends StatelessWidget {
@@ -30,7 +32,9 @@ class ProfilePickerScreen extends StatelessWidget {
         borderShape: Shape.circle,
         child: SvgPicture.asset(AppAssets.uploadIcon),
       ),
-      onPressedNext: () {},
+      onPressedNext: () {
+        NavigationService.offAll(const MainUserScreen());
+      },
       rightButtonTitle: "Start",
     );
   }

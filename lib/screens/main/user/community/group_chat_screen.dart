@@ -10,12 +10,15 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_container.dart';
+import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
+import 'community_info_screen.dart';
 
 class GroupChatScreen extends StatelessWidget {
   const GroupChatScreen({super.key});
@@ -27,36 +30,41 @@ class GroupChatScreen extends StatelessWidget {
         background: const Color(0xFF2C2C2E).withOpacity(0.62),
 
         /// Title Widget
-        titleWidget: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Pets United",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
+        titleWidget: CustomInkWell(
+          onTap: () {
+            NavigationService.go(const CommunityInfoScreen());
+          },
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Pets United",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            gapH6,
-            Text.rich(
-              TextSpan(
-                text: "1023",
-                children: [
-                  TextSpan(
-                    text: ' members',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ],
+              gapH6,
+              Text.rich(
+                TextSpan(
+                  text: "1023",
+                  children: [
+                    TextSpan(
+                      text: ' members',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+                  ],
+                ),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
 
         /// Menu Button

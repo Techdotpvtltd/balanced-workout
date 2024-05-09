@@ -35,7 +35,7 @@ class SettingScreen extends StatelessWidget {
     return CustomScaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomPadding(
-        bottom: 70,
+        bottom: 80,
         child: CustomButton(
           onPressed: () {
             NavigationService.offAll(const SplashScreen());
