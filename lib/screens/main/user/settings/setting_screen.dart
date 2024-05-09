@@ -24,6 +24,7 @@ import '../../../components/custom_scaffold.dart';
 import '../../../onboarding/forgot_screen.dart';
 import '../../../onboarding/splash_screen.dart';
 import 'contact_us_screen.dart';
+import 'edit_profile_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -98,7 +99,9 @@ class SettingScreen extends StatelessWidget {
 
                 /// Edit Button
                 CircleButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    NavigationService.go(const EditProfileScreen());
+                  },
                   icon: AppAssets.editIcon,
                   backgroundColor: Colors.transparent,
                 ),
