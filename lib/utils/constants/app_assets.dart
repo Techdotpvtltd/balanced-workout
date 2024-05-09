@@ -84,4 +84,5 @@ class AppAssets {
   static const String subscriptionIcon =
       "${AppAssets._iconPath}/subscription-ic.svg";
   static const String plusIcon = "${AppAssets._iconPath}/plus-ic.svg";
+  static const String menuIcon = "${AppAssets._iconPath}/menu-ic.svg";
 }

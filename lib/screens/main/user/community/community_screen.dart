@@ -23,6 +23,7 @@ import '../../../components/custom_title_textfiled.dart';
 import '../components/custom_tab_bar.dart';
 import 'community_info_screen.dart';
 import 'create_community_screen.dart';
+import 'group_chat_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -200,6 +201,9 @@ class _GroupList extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: CustomContainer(
+            onPressed: () {
+              NavigationService.go(const GroupChatScreen());
+            },
             padding:
                 const EdgeInsets.only(left: 17, top: 16, bottom: 16, right: 20),
             color: const Color(0xFFF2F2F2).withOpacity(0.12),
