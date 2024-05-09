@@ -76,4 +76,10 @@ class AppAssets {
       "${AppAssets._iconPath}/men_gender_ic.svg";
   static const String femaleGenderIcon =
       "${AppAssets._iconPath}/female_gender_ic.svg";
+  static const String contactIcon = "${AppAssets._iconPath}/contact-ic.svg";
+  static const String editIcon = "${AppAssets._iconPath}/edit-ic.svg";
+  static const String infoIcon = "${AppAssets._iconPath}/info-ic.svg";
+  static const String privacyIcon = "${AppAssets._iconPath}/privacy-ic.svg";
+  static const String subscriptionIcon =
+      "${AppAssets._iconPath}/subscription-ic.svg";
 }

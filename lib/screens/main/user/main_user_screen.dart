@@ -16,6 +16,7 @@ import '../../../utils/constants/constants.dart';
 import '../../components/custom_ink_well.dart';
 import 'explore_screen.dart';
 import 'home_screen.dart';
+import 'setting_screen.dart';
 import 'workout_screen.dart';
 
 final List<String> icons = [
@@ -39,7 +40,7 @@ final List<Widget> screens = [
   const WorkoutScreen(),
   const MyScreen(),
   const ExploreScreen(),
-  const Placeholder(),
+  const SettingScreen(),
 ];
 
 class MainUserScreen extends StatefulWidget {
