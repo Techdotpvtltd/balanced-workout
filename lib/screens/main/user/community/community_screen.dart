@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
@@ -19,6 +20,7 @@ import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
 import '../components/custom_tab_bar.dart';
+import 'create_community_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -36,7 +38,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
       floatingActionButton: Visibility(
         visible: isMyCommunityView,
         child: CircleButton(
-          onPressed: () {},
+          onPressed: () {
+            NavigationService.go(const CreateCommunityScreen());
+          },
           icon: AppAssets.plusIcon,
           backgroundColor: AppTheme.primaryColor1,
         ),
