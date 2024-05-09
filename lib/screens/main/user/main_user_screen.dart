@@ -16,7 +16,7 @@ import '../../../utils/constants/constants.dart';
 import '../../components/custom_ink_well.dart';
 import 'explore_screen.dart';
 import 'home_screen.dart';
-import 'setting_screen.dart';
+import 'settings/setting_screen.dart';
 import 'workout_screen.dart';
 
 final List<String> icons = [

@@ -9,19 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../utils/constants/app_assets.dart';
-import '../../../utils/constants/app_theme.dart';
-import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
-import '../../components/avatar_widget.dart';
-import '../../components/circle_button.dart';
-import '../../components/custom_app_bar.dart';
-import '../../components/custom_button.dart';
-import '../../components/custom_child_button.dart';
-import '../../components/custom_container.dart';
-import '../../components/custom_paddings.dart';
-import '../../components/custom_scaffold.dart';
-import '../../onboarding/forgot_screen.dart';
+import '../../../../utils/constants/app_assets.dart';
+import '../../../../utils/constants/app_theme.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
+import '../../../components/avatar_widget.dart';
+import '../../../components/circle_button.dart';
+import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_button.dart';
+import '../../../components/custom_child_button.dart';
+import '../../../components/custom_container.dart';
+import '../../../components/custom_paddings.dart';
+import '../../../components/custom_scaffold.dart';
+import '../../../onboarding/forgot_screen.dart';
+import 'contact_us_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -132,7 +133,9 @@ class SettingScreen extends StatelessWidget {
           /// Contact Us Button
           gapH10,
           CustomChildButton(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.go(const ContactUsScreen());
+            },
             child: Row(
               children: [
                 SvgPicture.asset(
