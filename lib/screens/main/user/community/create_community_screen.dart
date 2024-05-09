@@ -35,6 +35,7 @@ class CreateCommunityScreen extends StatelessWidget {
       body: ListView(
         padding:
             const EdgeInsets.only(left: 30, right: 30, top: 46, bottom: 100),
+        physics: const ScrollPhysics(),
         children: [
           /// Upload Image Button
           CustomContainer(

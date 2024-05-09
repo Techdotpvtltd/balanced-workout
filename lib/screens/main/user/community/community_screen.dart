@@ -16,10 +16,12 @@ import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_button.dart';
 import '../../../components/custom_container.dart';
+import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
 import '../components/custom_tab_bar.dart';
+import 'community_info_screen.dart';
 import 'create_community_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -108,12 +110,17 @@ class _CommunityItemWidget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const AvatarWidget(
-                      avatarUrl: "",
-                      backgroundColor: Colors.green,
-                      placeholderChar: 'C',
-                      width: 32,
-                      height: 32,
+                    CustomInkWell(
+                      onTap: () {
+                        NavigationService.go(const CommunityInfoScreen());
+                      },
+                      child: const AvatarWidget(
+                        avatarUrl: "",
+                        backgroundColor: Colors.green,
+                        placeholderChar: 'C',
+                        width: 32,
+                        height: 32,
+                      ),
                     ),
                     gapW10,
 
