@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
@@ -17,6 +18,7 @@ import '../../../components/custom_button.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
+import 'add_member_screens.dart';
 
 class CommunityInfoScreen extends StatelessWidget {
   const CommunityInfoScreen({super.key});
@@ -97,7 +99,9 @@ class CommunityInfoScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    NavigationService.go(const AddMemberScreen());
+                  },
                   title: "Add Member",
                   onlyBorder: true,
                   isSmallText: true,
