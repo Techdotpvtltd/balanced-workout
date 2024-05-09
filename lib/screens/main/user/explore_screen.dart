@@ -14,6 +14,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
 import 'article_screen.dart';
+import 'community/community_screen.dart';
 import 'components/navigation_button.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -48,7 +49,9 @@ class ExploreScreen extends StatelessWidget {
                 child: NavigationButton(
                   icon: AppAssets.backgroundCommunityIcon,
                   title: 'Q&A/Community',
-                  onPressed: () {},
+                  onPressed: () {
+                    NavigationService.go(const CommunityScreen());
+                  },
                 ),
               ),
             ],

@@ -33,9 +33,10 @@ class _AvatarWidgetState extends State<AvatarWidget> {
           child: CircleNetworkImage(
             height: widget.height ?? 115,
             width: widget.width ?? 115,
-            backgroundColor: widget.placeholderChar != null
-                ? AppTheme.primaryColor1
-                : widget.backgroundColor,
+            backgroundColor: widget.backgroundColor ??
+                (widget.placeholderChar != null
+                    ? AppTheme.primaryColor1
+                    : widget.backgroundColor),
             url: widget.avatarUrl ?? "",
             placeholderWidget: LayoutBuilder(
               builder: (context, constraints) {

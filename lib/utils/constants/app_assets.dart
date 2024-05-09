@@ -83,4 +83,5 @@ class AppAssets {
   static const String privacyIcon = "${AppAssets._iconPath}/privacy-ic.svg";
   static const String subscriptionIcon =
       "${AppAssets._iconPath}/subscription-ic.svg";
+  static const String plusIcon = "${AppAssets._iconPath}/plus-ic.svg";
 }
