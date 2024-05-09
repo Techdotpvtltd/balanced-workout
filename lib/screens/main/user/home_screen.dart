@@ -14,11 +14,13 @@ import '../../../utils/constants/constants.dart';
 import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
+import '../../components/custom_ink_well.dart';
 import 'active_challenge_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
 import 'notification_screen.dart';
+import 'settings/edit_profile_screen.dart';
 import 'startup_challenge_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -46,13 +48,18 @@ class HomeScreen extends StatelessWidget {
               ),
 
               /// Avatar Widget
-              child: const Align(
+              child: Align(
                 alignment: Alignment.centerRight,
-                child: AvatarWidget(
-                  avatarUrl: "",
-                  width: 52,
-                  height: 52,
-                  backgroundColor: Colors.black,
+                child: CustomInkWell(
+                  onTap: () {
+                    NavigationService.go(const EditProfileScreen());
+                  },
+                  child: const AvatarWidget(
+                    avatarUrl: "",
+                    width: 52,
+                    height: 52,
+                    backgroundColor: Colors.black,
+                  ),
                 ),
               ),
             ),

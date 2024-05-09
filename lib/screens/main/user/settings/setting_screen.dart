@@ -25,6 +25,7 @@ import '../../../onboarding/forgot_screen.dart';
 import '../../../onboarding/splash_screen.dart';
 import 'contact_us_screen.dart';
 import 'edit_profile_screen.dart';
+import 'subscription_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -166,7 +167,9 @@ class SettingScreen extends StatelessWidget {
           /// Subscription Button
           gapH10,
           CustomChildButton(
-            onPressed: () {},
+            onPressed: () {
+              NavigationService.go(const SubscriptionScreen());
+            },
             child: Row(
               children: [
                 SvgPicture.asset(

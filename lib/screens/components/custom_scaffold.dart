@@ -38,6 +38,7 @@ class CustomScaffold extends StatelessWidget {
       children: [
         SizedBox(
           width: SCREEN_WIDTH,
+          height: SCREEN_HEIGHT,
           child: Image.asset(
             backgroundImagePath ?? AppAssets.background,
             fit: BoxFit.cover,
