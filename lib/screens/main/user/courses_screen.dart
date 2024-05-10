@@ -16,13 +16,13 @@ import 'components/product_card.dart';
 import 'progress_challenge_screen.dart';
 import 'startup_challenge_screen.dart';
 
-class WeeklyPlanScreen extends StatelessWidget {
-  const WeeklyPlanScreen({super.key});
+class CoursesScreen extends StatelessWidget {
+  const CoursesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: "Weekly Plans"),
+      appBar: customAppBar(title: "Courses"),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 10),
         child: Column(

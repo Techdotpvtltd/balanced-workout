@@ -17,9 +17,9 @@ import '../components/custom_paddings.dart';
 import '../components/custom_scaffold.dart';
 import '../components/custom_title_textfiled.dart';
 import '../components/social_icon_button.dart';
-import '../main/user/main_user_screen.dart';
 import 'forgot_screen.dart';
 import 'sign_up_screen.dart';
+import 'user_type_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -101,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                 /// Login Button
                 CustomButton(
                   onPressed: () {
-                    NavigationService.offAll(const MainUserScreen());
+                    NavigationService.offAll(const UserTypeScreen());
                   },
                   title: "Login",
                 ),

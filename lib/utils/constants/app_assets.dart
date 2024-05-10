@@ -47,8 +47,11 @@ class AppAssets {
   static const String forwardIcon = "${AppAssets._iconPath}/forward-ic.svg";
   static const String backwardIcon = "${AppAssets._iconPath}/backward-ic.svg";
   static const String congratsIcon = "${AppAssets._iconPath}/congrats-ic.png";
+  static const String trainerIcon = "${AppAssets._iconPath}/trainer-ic.svg";
+  static const String traineeIcon = "${AppAssets._iconPath}/trainee-ic.svg";
   static const String fireIcon = "${AppAssets._iconPath}/fire-ic.svg";
   static const String cameraIcon = "${AppAssets._iconPath}/camera-ic.svg";
+  static const String logoutIcon = "${AppAssets._iconPath}/logout-ic.svg";
   static const String winMedalIcon =
       "${AppAssets._iconPath}/medal_winner-ic.svg";
   static const String medalIcon = "${AppAssets._iconPath}/medal-ic.svg";

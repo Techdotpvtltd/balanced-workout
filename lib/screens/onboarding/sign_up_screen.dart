@@ -17,8 +17,8 @@ import '../components/custom_paddings.dart';
 import '../components/custom_scaffold.dart';
 import '../components/custom_title_textfiled.dart';
 import '../components/social_icon_button.dart';
-import 'gender_screen.dart';
 import 'login_screen.dart';
+import 'user_type_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -92,7 +92,9 @@ class SignUpScreen extends StatelessWidget {
                 /// Login Button
                 CustomButton(
                   onPressed: () {
-                    NavigationService.go(const GenderScreen());
+                    NavigationService.go(const UserTypeScreen(
+                      isComingFromSignup: true,
+                    ));
                   },
                   title: "Sign up",
                 ),

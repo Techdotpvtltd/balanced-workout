@@ -11,7 +11,7 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
-import 'progress_challenge_screen.dart';
+import 'playlist_screen.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
   ActivityLevelScreen({super.key});
@@ -42,7 +42,7 @@ class ActivityLevelScreen extends StatelessWidget {
           return ProductCard(
             title: items[index],
             onClickCard: () {
-              NavigationService.go(const ProgressChallengeScreen());
+              NavigationService.go(const PlaylistScreen());
             },
             coverUrl: images[index],
           );

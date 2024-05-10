@@ -8,9 +8,9 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/extensions/navigation_service.dart';
-import 'activity_level.dart';
 import 'components/information_widget.dart';
 import 'components/wheel_value_picker.dart';
+import 'profile_activity_level.dart';
 
 class GoalScreen extends StatelessWidget {
   const GoalScreen({super.key});
@@ -34,7 +34,7 @@ class GoalScreen extends StatelessWidget {
         isSmallText: true,
       ),
       onPressedNext: () {
-        NavigationService.go(const ActivityLevelScreen());
+        NavigationService.go(const ProfileActivityLevelScreen());
       },
     );
   }

@@ -16,10 +16,10 @@ import '../../components/custom_scaffold.dart';
 import 'cardio_exercise_screen.dart';
 import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
-import 'course_screen.dart';
+import 'courses_screen.dart';
 import 'progression_screen.dart';
 import 'stretches_exercise_screen.dart';
-import 'weekly_plan_screen.dart';
+import 'workout_courses_screen.dart';
 
 class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
@@ -51,9 +51,9 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.exerciseIcon,
-                    title: "Courses / Library",
+                    title: "Workout",
                     onPressed: () {
-                      NavigationService.go(CourseScreen());
+                      NavigationService.go(WorkoutCoursesScreen());
                     },
                   ),
                 ),
@@ -65,9 +65,9 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.dumbbellIcon2,
-                    title: "Weekly Plans",
+                    title: "Courses",
                     onPressed: () {
-                      NavigationService.go(const WeeklyPlanScreen());
+                      NavigationService.go(const CoursesScreen());
                     },
                   ),
                 ),

@@ -9,9 +9,11 @@ import 'package:dotted_box/dotted_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../app/app_manager.dart';
 import '../../utils/constants/app_assets.dart';
 import '../../utils/constants/app_theme.dart';
 import '../../utils/extensions/navigation_service.dart';
+import '../main/coach/coach_home_screen.dart';
 import '../main/user/main_user_screen.dart';
 import 'components/information_widget.dart';
 
@@ -33,7 +35,11 @@ class ProfilePickerScreen extends StatelessWidget {
         child: SvgPicture.asset(AppAssets.uploadIcon),
       ),
       onPressedNext: () {
-        NavigationService.offAll(const MainUserScreen());
+        NavigationService.offAll(
+          AppManager().isUserLogin
+              ? const MainUserScreen()
+              : const CoachHomeScreen(),
+        );
       },
       rightButtonTitle: "Start",
     );

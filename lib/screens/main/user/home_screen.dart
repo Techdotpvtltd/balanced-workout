@@ -16,7 +16,9 @@ import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
 import '../../components/custom_ink_well.dart';
 import 'active_challenge_screen.dart';
+import 'article_screen.dart';
 import 'challenge_screen.dart';
+import 'components/article_items.dart';
 import 'components/navigation_button.dart';
 import 'components/product_card.dart';
 import 'notification_screen.dart';
@@ -227,6 +229,48 @@ class HomeScreen extends StatelessWidget {
                     coverUrl:
                         'https://sunnyhealthfitness.com/cdn/shop/articles/15-Minute-Full-Body-Workout-No-Equipment-01.jpg?v=1593542919',
                   );
+                },
+              ),
+
+              gapH24,
+
+              // ===========================Science and Facts Section================================
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Science and Facts",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      NavigationService.go(const ArticleScreen());
+                    },
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    child: const Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              gapH14,
+              ListView.builder(
+                itemCount: 3,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 7),
+                itemBuilder: (context, index) {
+                  return const ArticleItem();
                 },
               ),
             ],

@@ -12,8 +12,8 @@ import 'components/information_widget.dart';
 import 'components/wheel_value_picker.dart';
 import 'profile_picker_screen.dart';
 
-class ActivityLevelScreen extends StatelessWidget {
-  const ActivityLevelScreen({super.key});
+class ProfileActivityLevelScreen extends StatelessWidget {
+  const ProfileActivityLevelScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
