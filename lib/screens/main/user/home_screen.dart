@@ -13,17 +13,19 @@ import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
+import '../../components/chat_widget.dart';
 import '../../components/circle_button.dart';
 import '../../components/custom_ink_well.dart';
 import 'active_challenge_screen.dart';
 import 'article_screen.dart';
 import 'challenge_screen.dart';
+import 'community/community_screen.dart';
 import 'components/article_items.dart';
+import 'components/horizontal_product_card.dart';
 import 'components/navigation_button.dart';
-import 'components/product_card.dart';
 import 'notification_screen.dart';
+import 'progress_challenge_screen.dart';
 import 'settings/edit_profile_screen.dart';
-import 'startup_challenge_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -202,39 +204,108 @@ class HomeScreen extends StatelessWidget {
               gapH26,
 
               /// Recent Challenges
-              const Text(
-                "Recent Challenges",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Recent Challenges",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      NavigationService.go(const ChallengeScreen());
+                    },
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    child: const Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              gapH14,
+              SizedBox(
+                height: 160,
+                child: ListView.builder(
+                  itemCount: 4,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.only(bottom: 7),
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: HorizontalProductCard(
+                          coverUrl:
+                              'https://www.bodybuilding.com/images/2016/july/build-your-best-chest-5-must-do-pec-exercises-header-v2-960x540.jpg',
+                          timePeriod: '4 Weeks',
+                          title: 'Full Body stretching',
+                          celeries: '130 Kcal',
+                          onClick: () {
+                            NavigationService.go(
+                                const ProgressChallengeScreen());
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
+              ),
+
+              gapH24,
+              // ===========================Communities================================
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Communites",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      NavigationService.go(const CommunityScreen());
+                    },
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    child: const Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               gapH14,
               ListView.builder(
-                itemCount: 3,
+                itemCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.only(bottom: 7),
                 itemBuilder: (context, index) {
-                  return ProductCard(
-                    title: "Simply Chest Work",
-                    subTitle: "7x4 Challenge",
-                    onClickCard: () {
-                      NavigationService.go(const StartupChallengeScreen());
-                    },
-                    onClickStartButton: () {
-                      NavigationService.go(const StartupChallengeScreen());
-                    },
-                    coverUrl:
-                        'https://sunnyhealthfitness.com/cdn/shop/articles/15-Minute-Full-Body-Workout-No-Equipment-01.jpg?v=1593542919',
+                  return const Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: ChatWidget(),
                   );
                 },
               ),
 
-              gapH24,
-
               // ===========================Science and Facts Section================================
+              gapH24,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -264,14 +335,22 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               gapH14,
-              ListView.builder(
-                itemCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 7),
-                itemBuilder: (context, index) {
-                  return const ArticleItem();
-                },
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: 3,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.only(bottom: 7),
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      width: SCREEN_WIDTH * 0.8,
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 15),
+                        child: ArticleItem(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
