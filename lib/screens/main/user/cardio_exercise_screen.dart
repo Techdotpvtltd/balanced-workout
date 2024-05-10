@@ -14,7 +14,7 @@ import '../../components/custom_paddings.dart';
 import 'activity_level_screen.dart';
 import 'components/custom_tab_bar.dart';
 import 'components/product_card.dart';
-import 'progress_challenge_screen.dart';
+import 'playlist_screen.dart';
 
 class CardioExerciseScreen extends StatelessWidget {
   const CardioExerciseScreen({super.key});
@@ -61,7 +61,7 @@ class CardioExerciseScreen extends StatelessWidget {
                         coverUrl:
                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQOrqAgZ6xitFSpc6Kpx-JtHC5QA6tIYyrgFhMIvPhgg&s",
                         onClickCard: () {
-                          NavigationService.go(const ProgressChallengeScreen());
+                          NavigationService.go(const PlaylistScreen());
                         },
                       ),
                     ),

@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../app/app_manager.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
@@ -17,8 +18,15 @@ import '../../components/custom_ink_well.dart';
 import '../../components/custom_network_image.dart';
 import 'content_detail_screen.dart';
 
-class PlaylistScreen extends StatelessWidget {
+class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({super.key});
+
+  @override
+  State<PlaylistScreen> createState() => _PlaylistScreenState();
+}
+
+class _PlaylistScreenState extends State<PlaylistScreen> {
+  final List<Map<String, List<String>>> data = AppManager().records;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,9 @@ class PlaylistScreen extends StatelessWidget {
 
           /// Custom App Bar
           Positioned(
-            child: customAppBar(title: "One Time Workout"),
+            child: customAppBar(
+              title: AppManager().screenTitle,
+            ),
           ),
 
           Positioned(
@@ -88,75 +98,109 @@ class PlaylistScreen extends StatelessWidget {
                 ),
 
                 /// Play List Widget
+
+                ////////////////////////////////////////////////////////////////
                 Expanded(
                   child: ListView.builder(
                     physics: const ScrollPhysics(),
-                    itemCount: 6,
+                    itemCount: data.length,
                     padding: const EdgeInsets.only(top: 17, bottom: 40),
                     itemBuilder: (context, index) {
-                      return CustomInkWell(
-                        onTap: () {
-                          NavigationService.go(const ContentDetailScreen());
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF303030),
-                            borderRadius: BorderRadius.all(Radius.circular(36)),
-                          ),
-                          child: Row(
-                            children: [
-                              /// Play Button
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: const BoxDecoration(
-                                  color: AppTheme.primaryColor1,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.black,
-                                  size: 26,
-                                ),
+                      final Map<String, List<String>> map = data[index];
+                      final String key = map.keys.first;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              map.keys.first,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
                               ),
-                              gapW16,
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Full Body stretching",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                            ),
+                            gapH10,
+                            for (int index = 0;
+                                index < (map[key]?.length ?? 0);
+                                index++)
+                              Builder(builder: (context) {
+                                final String name = map[key]?[index] ?? "";
 
-                                    /// Time Zone View
-                                    Row(
+                                return CustomInkWell(
+                                  onTap: () {
+                                    NavigationService.go(
+                                        const ContentDetailScreen());
+                                  },
+                                  child: Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 6),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF303030),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(36)),
+                                    ),
+                                    child: Row(
                                       children: [
-                                        SvgPicture.asset(AppAssets.clockIcon),
-                                        gapW8,
-                                        const Text(
-                                          "10:30",
-                                          style: TextStyle(
-                                            color: Color(0xFF8C8C8C),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
+                                        /// Play Button
+                                        Container(
+                                          padding: const EdgeInsets.all(6),
+                                          decoration: const BoxDecoration(
+                                            color: AppTheme.primaryColor1,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(
+                                            Icons.play_arrow,
+                                            color: Colors.black,
+                                            size: 26,
+                                          ),
+                                        ),
+                                        gapW16,
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                name,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+
+                                              /// Time Zone View
+                                              Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      AppAssets.clockIcon),
+                                                  gapW8,
+                                                  const Text(
+                                                    "10:30",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF8C8C8C),
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                                  ),
+                                );
+                              }),
+                          ],
                         ),
                       );
                     },

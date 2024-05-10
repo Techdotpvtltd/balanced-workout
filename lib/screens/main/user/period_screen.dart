@@ -1,6 +1,6 @@
 // Project: 	   balanced_workout
-// File:    	   workout_courses_screen
-// Path:    	   lib/screens/main/user/workout_courses_screen.dart
+// File:    	   period_screen
+// Path:    	   lib/screens/main/user/period_screen.dart
 // Author:       Ali Akbar
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
@@ -13,14 +13,14 @@ import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
 import 'components/ranks_screen.dart';
 
-class WorkoutCoursesScreen extends StatelessWidget {
-  WorkoutCoursesScreen({super.key});
+class PeriodScreen extends StatelessWidget {
+  PeriodScreen({super.key});
   final List<String> items = ["Weekly", "Monthly", 'Quarterly', 'Yearly'];
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: customAppBar(
-        title: "Workout",
+        title: "Period",
       ),
       body: ListView.builder(
         itemCount: items.length,

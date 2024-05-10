@@ -11,4 +11,21 @@ class AppManager {
   factory AppManager() => _instance;
 
   bool isUserLogin = true;
+
+  String screenTitle = "";
+  List<Map<String, List<String>>> records = [
+    {
+      "Strength Training": [
+        "Weights",
+        "Resistance Bands",
+        "Bodyweight Exercises"
+      ]
+    },
+    {
+      "Cardio Workout": ["Running", "Cycling", "Jump Rope"]
+    },
+    {
+      "Yoga Classes": ["Hatha Yoga", "Vinyasa Yoga", "Power Yoga"]
+    }
+  ];
 }
