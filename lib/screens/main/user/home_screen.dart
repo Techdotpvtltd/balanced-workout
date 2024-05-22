@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
+import '../../../app/app_manager.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
@@ -58,11 +59,13 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     NavigationService.go(const EditProfileScreen());
                   },
-                  child: const AvatarWidget(
-                    avatarUrl: "",
+                  child: AvatarWidget(
+                    avatarUrl: AppManager().user.avatar,
                     width: 52,
                     height: 52,
                     backgroundColor: Colors.black,
+                    placeholderChar:
+                        AppManager().user.name.characters.firstOrNull,
                   ),
                 ),
               ),
@@ -70,20 +73,20 @@ class HomeScreen extends StatelessWidget {
             titleSpacing: 8,
 
             /// Tite Widget
-            title: const Text.rich(
+            title: Text.rich(
               TextSpan(
                 text: "Hi, ",
                 children: [
                   TextSpan(
-                    text: "Akbar",
-                    style: TextStyle(
+                    text: AppManager().user.name,
+                    style: const TextStyle(
                       color: AppTheme.primaryColor1,
                       fontWeight: FontWeight.w700,
                     ),
                   )
                 ],
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.w400,

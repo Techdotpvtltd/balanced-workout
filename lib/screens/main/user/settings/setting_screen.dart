@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../app/app_manager.dart';
 import '../../../../blocs/auth/auth_bloc.dart';
 import '../../../../blocs/auth/auth_event.dart';
 import '../../../../blocs/auth/auth_state.dart';
@@ -95,10 +96,12 @@ class _SettingScreenState extends State<SettingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   /// AvatarWidget
-                  const Row(
+                  Row(
                     children: [
                       AvatarWidget(
-                        avatarUrl: "",
+                        avatarUrl: AppManager().user.avatar,
+                        placeholderChar:
+                            AppManager().user.name.characters.firstOrNull,
                         backgroundColor: Colors.black,
                         width: 79,
                         height: 79,
@@ -110,16 +113,16 @@ class _SettingScreenState extends State<SettingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Ali Akbar",
-                            style: TextStyle(
+                            AppManager().user.name,
+                            style: const TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
                               color: AppTheme.titleDarkColor1,
                             ),
                           ),
                           Text(
-                            "abc@gmai.com",
-                            style: TextStyle(
+                            AppManager().user.email,
+                            style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
                               color: AppTheme.titleDarkColor1,
