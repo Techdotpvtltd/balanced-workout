@@ -62,7 +62,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await AuthRepo()
             .loginUser(withEmail: event.email, withPassword: event.password);
         emit(AuthStateLoggedIn());
-        // NavigationService.offAll(navKey.currentContext!, SplashScreen());
       } on AppException catch (e) {
         if (e is AuthExceptionEmailVerificationRequired) {
           emit(AuthStateEmailVerificationRequired(exception: e));

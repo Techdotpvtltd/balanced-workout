@@ -10,6 +10,7 @@ import '../models/user_model.dart';
 import '../utils/constants/firebase_collections.dart';
 import '../web_services/query_model.dart';
 import '../web_services/storage_services.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class UserRepo {
   /// This class is used to get data/ request from user business layer and send
@@ -23,7 +24,7 @@ class UserRepo {
     try {
       final User? currentUser = FirebaseAuth.instance.currentUser;
 
-      if (currentUser?.emailVerified == false) {
+      if (currentUser?.emailVerified == false && kReleaseMode) {
         throw AuthExceptionEmailVerificationRequired();
       }
       final data = await FirestoreService().fetchSingleRecord(

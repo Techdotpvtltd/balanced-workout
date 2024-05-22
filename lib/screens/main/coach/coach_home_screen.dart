@@ -6,10 +6,14 @@
 // Description:
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../blocs/auth/auth_bloc.dart';
+import '../../../blocs/auth/auth_event.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/dialogs/dialogs.dart';
 import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
 import '../../components/chat_widget.dart';
@@ -17,12 +21,28 @@ import '../../components/circle_button.dart';
 import '../../components/custom_ink_well.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_title_textfiled.dart';
-import '../../onboarding/splash_screen.dart';
 import '../user/notification_screen.dart';
 import '../user/settings/edit_profile_screen.dart';
 
-class CoachHomeScreen extends StatelessWidget {
+class CoachHomeScreen extends StatefulWidget {
   const CoachHomeScreen({super.key});
+
+  @override
+  State<CoachHomeScreen> createState() => _CoachHomeScreenState();
+}
+
+class _CoachHomeScreenState extends State<CoachHomeScreen> {
+  void trigegrLogoutEvent(AuthBloc bloc) {
+    CustomDialogs().alertBox(
+      title: "Logout Action",
+      message: "Are you sure to logout this account?",
+      negativeTitle: "No",
+      positiveTitle: "Yes",
+      onPositivePressed: () {
+        bloc.add(AuthEventPerformLogout());
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +117,7 @@ class CoachHomeScreen extends StatelessWidget {
               iconSize: const Size(18, 18),
               colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
               onPressed: () {
-                NavigationService.go(const SplashScreen());
+                trigegrLogoutEvent(context.read<AuthBloc>());
               },
             ),
             gapW30,

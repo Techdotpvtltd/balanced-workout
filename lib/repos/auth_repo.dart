@@ -8,6 +8,7 @@ import '../exceptions/exception_parsing.dart';
 import '../web_services/firebase_auth_serivces.dart';
 import 'user_repo.dart';
 import 'validations/check_validation.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class AuthRepo {
   int userFetchFailureCount = 0;
@@ -57,7 +58,9 @@ class AuthRepo {
         name: name,
         email: email,
       );
-      sendEmailVerifcationLink();
+      if (kReleaseMode) {
+        sendEmailVerifcationLink();
+      }
     } catch (e) {
       throw throwAppException(e: e);
     }
