@@ -76,11 +76,11 @@ class AuthRepo {
   /// Perform Logout
   Future<void> sendForgotPasswordEmail({required String atMail}) async {
     if (atMail == "") {
-      throw AuthExceptionEmailRequired();
+      throw AuthExceptionEmailRequired(errorCode: 01);
     }
 
     if (!atMail.isValidEmail()) {
-      throw AuthExceptionInvalidEmail();
+      throw AuthExceptionInvalidEmail(errorCode: 01);
     }
     await FirebaseAuthService().resetPassword(email: atMail);
   }
