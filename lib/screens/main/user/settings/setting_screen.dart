@@ -6,12 +6,17 @@
 // Description:
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../blocs/auth/auth_bloc.dart';
+import '../../../../blocs/auth/auth_event.dart';
+import '../../../../blocs/auth/auth_state.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/dialogs/dialogs.dart';
 import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
@@ -27,244 +32,272 @@ import 'contact_us_screen.dart';
 import 'edit_profile_screen.dart';
 import 'subscription_screen.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
   @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
+  void trigegrLogoutEvent(AuthBloc bloc) {
+    CustomDialogs().alertBox(
+      title: "Logout Action",
+      message: "Are you sure to logout this account?",
+      negativeTitle: "No",
+      positiveTitle: "Yes",
+      onPositivePressed: () {
+        bloc.add(AuthEventPerformLogout());
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CustomPadding(
-        bottom: 80,
-        child: CustomButton(
-          onPressed: () {
-            NavigationService.offAll(const SplashScreen());
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthStateLogout) {
+              NavigationService.offAll(const SplashScreen());
+            }
           },
-          title: "Logout",
         ),
-      ),
-      appBar: customAppBar(
-        topPadding: 60,
-        title: "Settings",
-        showBack: false,
-        leftPadding: 29,
-        rightPadding: 29,
-      ),
-      body: ListView(
-        padding:
-            const EdgeInsets.only(top: 35, left: 29, right: 29, bottom: 180),
-        physics: const ScrollPhysics(),
-        children: [
-          CustomContainer(
-            color: AppTheme.primaryColor1,
-            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 13),
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// AvatarWidget
-                const Row(
-                  children: [
-                    AvatarWidget(
-                      avatarUrl: "",
-                      backgroundColor: Colors.black,
-                      width: 79,
-                      height: 79,
-                    ),
-                    gapW12,
-
-                    /// Text Widgets
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Ali Akbar",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            color: AppTheme.titleDarkColor1,
-                          ),
-                        ),
-                        Text(
-                          "abc@gmai.com",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: AppTheme.titleDarkColor1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                /// Edit Button
-                CircleButton(
-                  onPressed: () {
-                    NavigationService.go(const EditProfileScreen());
-                  },
-                  icon: AppAssets.editIcon,
-                  backgroundColor: Colors.transparent,
-                ),
-              ],
-            ),
-          ),
-
-          /// Change Password Button
-          gapH20,
-          CustomChildButton(
+      ],
+      child: CustomScaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: CustomPadding(
+          bottom: 80,
+          child: CustomButton(
             onPressed: () {
-              NavigationService.go(const ForgotPasswordScreen());
+              trigegrLogoutEvent(context.read<AuthBloc>());
             },
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  AppAssets.lockIcon,
-                  height: 24,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                gapW30,
-                Text(
-                  "Change Password",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+            title: "Logout",
           ),
-
-          /// Contact Us Button
-          gapH10,
-          CustomChildButton(
-            onPressed: () {
-              NavigationService.go(const ContactUsScreen());
-            },
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  AppAssets.infoIcon,
-                  height: 24,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                gapW30,
-                Text(
-                  "Contact Us",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          /// Subscription Button
-          gapH10,
-          CustomChildButton(
-            onPressed: () {
-              NavigationService.go(const SubscriptionScreen());
-            },
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  AppAssets.subscriptionIcon,
-                  height: 24,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                gapW30,
-                Text(
-                  "Subscription",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          /// Invite Button
-          gapH10,
-          CustomChildButton(
-            onPressed: () {},
-            child: Text(
-              "Invite Friends",
-              style: GoogleFonts.poppins(
-                color: AppTheme.primaryColor1,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-
-          /// Subscription Widget
-          gapH32,
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 38),
-            decoration: BoxDecoration(
+        ),
+        appBar: customAppBar(
+          topPadding: 60,
+          title: "Settings",
+          showBack: false,
+          leftPadding: 29,
+          rightPadding: 29,
+        ),
+        body: ListView(
+          padding:
+              const EdgeInsets.only(top: 35, left: 29, right: 29, bottom: 180),
+          physics: const ScrollPhysics(),
+          children: [
+            CustomContainer(
+              color: AppTheme.primaryColor1,
+              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 13),
               borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(
-                color: AppTheme.primaryColor1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  /// AvatarWidget
+                  const Row(
+                    children: [
+                      AvatarWidget(
+                        avatarUrl: "",
+                        backgroundColor: Colors.black,
+                        width: 79,
+                        height: 79,
+                      ),
+                      gapW12,
+
+                      /// Text Widgets
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Ali Akbar",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                              color: AppTheme.titleDarkColor1,
+                            ),
+                          ),
+                          Text(
+                            "abc@gmai.com",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: AppTheme.titleDarkColor1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  /// Edit Button
+                  CircleButton(
+                    onPressed: () {
+                      NavigationService.go(const EditProfileScreen());
+                    },
+                    icon: AppAssets.editIcon,
+                    backgroundColor: Colors.transparent,
+                  ),
+                ],
               ),
             ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// Title Row
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Gold",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    gapH4,
-                    Text(
-                      "26 March, 2024",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.27,
-                      ),
-                    ),
-                  ],
-                ),
 
-                /// Price Widget
-                Text.rich(
-                  TextSpan(
-                    text: "\$18",
+            /// Change Password Button
+            gapH20,
+            CustomChildButton(
+              onPressed: () {
+                NavigationService.go(const ForgotPasswordScreen());
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    AppAssets.lockIcon,
+                    height: 24,
+                    colorFilter:
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  ),
+                  gapW30,
+                  Text(
+                    "Change Password",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            /// Contact Us Button
+            gapH10,
+            CustomChildButton(
+              onPressed: () {
+                NavigationService.go(const ContactUsScreen());
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    AppAssets.infoIcon,
+                    height: 24,
+                    colorFilter:
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  ),
+                  gapW30,
+                  Text(
+                    "Contact Us",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            /// Subscription Button
+            gapH10,
+            CustomChildButton(
+              onPressed: () {
+                NavigationService.go(const SubscriptionScreen());
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    AppAssets.subscriptionIcon,
+                    height: 24,
+                    colorFilter:
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  ),
+                  gapW30,
+                  Text(
+                    "Subscription",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            /// Invite Button
+            gapH10,
+            CustomChildButton(
+              onPressed: () {},
+              child: Text(
+                "Invite Friends",
+                style: GoogleFonts.poppins(
+                  color: AppTheme.primaryColor1,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+
+            /// Subscription Widget
+            gapH32,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 38),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: AppTheme.primaryColor1,
+                ),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  /// Title Row
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSpan(
-                        text: '/mo',
+                      Text(
+                        "Gold",
                         style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      gapH4,
+                      Text(
+                        "26 March, 2024",
+                        style: TextStyle(
+                          color: Colors.white,
                           fontSize: 14.27,
-                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
                   ),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+
+                  /// Price Widget
+                  Text.rich(
+                    TextSpan(
+                      text: "\$18",
+                      children: [
+                        TextSpan(
+                          text: '/mo',
+                          style: TextStyle(
+                            fontSize: 14.27,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

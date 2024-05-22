@@ -6,10 +6,17 @@
 // Description:
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../app/app_manager.dart';
+import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_event.dart';
+import '../../blocs/auth/auth_state.dart';
 import '../../utils/constants/app_assets.dart';
 import '../../utils/extensions/navigation_service.dart';
 import '../components/custom_scaffold.dart';
+import '../main/coach/coach_home_screen.dart';
+import '../main/user/main_user_screen.dart';
 import 'walkthrough_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,23 +27,37 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void triggerSplashEvent() async {
-    await Future.delayed(const Duration(seconds: 2));
-    NavigationService.offAll(const WalkthroughScreen());
+  void triggerSplashEvent(AuthBloc bloc) {
+    bloc.add(AuthEventSplashAction());
   }
 
   @override
   void initState() {
-    triggerSplashEvent();
+    triggerSplashEvent(context.read<AuthBloc>());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      backgroundImagePath: AppAssets.splashBackground,
-      body: Center(
-        child: Image.asset(AppAssets.logo),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthStateSplashActionDone) {
+          NavigationService.offAll(AppManager().user.role == "trainee"
+              ? const MainUserScreen()
+              : const CoachHomeScreen());
+        }
+
+        if (state is AuthStateLoginRequired) {
+          Future.delayed(const Duration(seconds: 1), () {
+            NavigationService.off(const WalkthroughScreen());
+          });
+        }
+      },
+      child: CustomScaffold(
+        backgroundImagePath: AppAssets.splashBackground,
+        body: Center(
+          child: Image.asset(AppAssets.logo),
+        ),
       ),
     );
   }
