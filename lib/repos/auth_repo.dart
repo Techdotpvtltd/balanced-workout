@@ -71,7 +71,6 @@ class AuthRepo {
   /// Perform Logout
   Future<void> performLogout() async {
     FirebaseAuthService().logoutUser();
-    UserRepo().clearAll();
   }
 
   /// Perform Logout
@@ -112,7 +111,7 @@ class AuthRepo {
       await UserRepo().fetch();
       userFetchFailureCount = 0;
     } on AppException catch (e) {
-      if (UserRepo().isUserNull || e is AuthExceptionUserNotFound) {
+      if (e is AuthExceptionUserNotFound) {
         final User? user = FirebaseAuth.instance.currentUser;
 
         if (user != null) {

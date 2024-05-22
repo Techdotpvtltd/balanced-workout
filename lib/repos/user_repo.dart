@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../exceptions/exception_parsing.dart';
 import '../../web_services/firestore_services.dart';
 import '../../exceptions/data_exceptions.dart';
+import '../app/app_manager.dart';
 import '../exceptions/auth_exceptions.dart';
 import '../models/user_model.dart';
 import '../utils/constants/firebase_collections.dart';
@@ -16,22 +17,6 @@ class UserRepo {
   /// This class is used to parse user data from network layer and return back to
   /// business layer.
   ///
-
-  static UserRepo _instance = UserRepo._internal();
-  UserModel? _userModel;
-  UserModel get currentUser =>
-      _userModel == null ? throw AuthExceptionUserNotFound() : _userModel!;
-  bool get isUserNull => _userModel == null;
-
-  UserRepo._internal();
-
-  /// Promise to return instance
-  factory UserRepo() => _instance;
-
-  /// Clear all
-  void clearAll() {
-    _instance = UserRepo._internal();
-  }
 
   /// Fetch user
   Future<void> fetch() async {
@@ -49,8 +34,8 @@ class UserRepo {
       }
 
       final UserModel userModel = UserModel.fromMap(data);
-      _userModel = userModel;
-      debugPrint("User = $_userModel");
+      AppManager().user = userModel;
+      debugPrint("User = ${AppManager().user}");
     } catch (e) {
       throw throwAppException(e: e);
     }
@@ -82,7 +67,7 @@ class UserRepo {
         docId: user.uid,
         data: user.toMap(),
       );
-      _userModel = UserModel.fromMap(data);
+      AppManager().user = UserModel.fromMap(data);
     } catch (e) {
       debugPrint(e.toString());
       throw throwAppException(e: e);
@@ -114,8 +99,8 @@ class UserRepo {
 
       await FirestoreService().updateWithDocId(
           path: FIREBASE_COLLECTION_USER, docId: user.uid, data: user.toMap());
-      _userModel = user;
-      return _userModel!;
+      AppManager().user = user;
+      return AppManager().user;
     } catch (e) {
       debugPrint(e.toString());
       throw throwAppException(e: e);
@@ -126,7 +111,7 @@ class UserRepo {
   Future<String> uploadProfile({required String path}) async {
     try {
       final String collectionPath =
-          "$FIREBASE_COLLECTION_USER_PROFILES/${UserRepo().currentUser.uid}";
+          "$FIREBASE_COLLECTION_USER_PROFILES/${AppManager().user.uid}";
       return await StorageService()
           .uploadImage(withFile: File(path), collectionPath: collectionPath);
     } on FirebaseException catch (e) {
@@ -206,8 +191,8 @@ class UserRepo {
   // Fetch Profile
   Future<UserModel?> fetchUser({required String profileId}) async {
     try {
-      if (profileId == currentUser.uid) {
-        return currentUser;
+      if (profileId == AppManager().user.uid) {
+        return AppManager().user;
       }
 
       if (profileId == "admin") {
@@ -244,7 +229,7 @@ class UserRepo {
         );
         // ignore: sdk_version_since
         final UserModel user = UserModel.fromMap(data.first);
-        if (user.uid != currentUser.uid) {
+        if (user.uid != AppManager().user.uid) {
           users.add(user);
         }
       }

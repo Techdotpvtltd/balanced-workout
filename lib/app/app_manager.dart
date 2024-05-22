@@ -6,7 +6,6 @@
 // Description:
 
 import '../models/user_model.dart';
-import '../repos/user_repo.dart';
 
 class AppManager {
   static final AppManager _instance = AppManager._internal();
@@ -16,7 +15,11 @@ class AppManager {
   bool isUserLogin = true;
 
   String screenTitle = "";
-  UserModel user = UserRepo().currentUser;
+  UserModel user = UserModel.empty();
+
+  void clearAll() {
+    user = UserModel.empty();
+  }
 
   List<Map<String, List<String>>> records = [
     {

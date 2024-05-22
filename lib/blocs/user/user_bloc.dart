@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../app/app_manager.dart';
 import '../../exceptions/app_exceptions.dart';
 import '../../models/user_model.dart';
 import '../../repos/user_repo.dart';
@@ -19,7 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserEventUpdateProfile>(
       (event, emit) async {
         try {
-          UserModel user = UserRepo().currentUser;
+          UserModel user = AppManager().user;
           String avatarUrl = user.avatar;
 
           if (event.avatar != null) {

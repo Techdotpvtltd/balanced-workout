@@ -115,6 +115,15 @@ class UserModel {
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
+  factory UserModel.empty() {
+    return UserModel(
+      uid: "",
+      name: "",
+      email: "",
+      avatar: "",
+      createdAt: DateTime.now(),
+    );
+  }
   @override
   String toString() {
     return 'UserModel(uid: $uid, name: $name, email: $email, avatar: $avatar, createdAt: $createdAt, role: $role, isActived: $isActived, gender: $gender, age: $age, weight: $weight, height: $height, goal: $goal, activityLevel: $activityLevel)';
