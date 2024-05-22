@@ -36,7 +36,7 @@ class ProfilePickerScreen extends StatefulWidget {
 }
 
 class _ProfilePickerScreenState extends State<ProfilePickerScreen> {
-  String? selectedImage;
+  String? selectedImage = AppManager().user.avatar;
   bool isLoading = false;
 
   void triggerUpdateUserProfileEvent(UserBloc bloc) {

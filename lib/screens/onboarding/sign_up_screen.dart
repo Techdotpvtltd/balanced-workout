@@ -25,6 +25,7 @@ import '../components/social_icon_button.dart';
 import '../main/user/main_user_screen.dart';
 import 'login_screen.dart';
 import 'user_type_screen.dart';
+import 'dart:io' show Platform;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -241,17 +242,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SocialIconButton(
-                        icon: AppAssets.appleIcon,
-                        onPressed: () {
-                          triggerAppleLogin(context.read<AuthBloc>());
-                        },
-                        backgroundColor: const Color(0xFF3A3A3C),
-                      ),
-                      gapW28,
+                      if (Platform.isIOS)
+                        SocialIconButton(
+                          icon: AppAssets.appleIcon,
+                          onPressed: () {
+                            triggerAppleLogin(context.read<AuthBloc>());
+                          },
+                          backgroundColor: const Color(0xFF3A3A3C),
+                        ),
+                      if (Platform.isIOS) gapW28,
                       SocialIconButton(
                         icon: AppAssets.googleIcon,
-                        onPressed: () {},
+                        onPressed: () {
+                          triggerGoogleLogin(context.read<AuthBloc>());
+                        },
                       ),
                     ],
                   ),

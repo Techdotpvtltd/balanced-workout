@@ -23,7 +23,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           UserModel user = AppManager().user;
           String avatarUrl = user.avatar;
 
-          if (event.avatar != null) {
+          if (event.avatar != null &&
+              !Uri.parse(event.avatar ?? "").isAbsolute) {
             emit(UserStateAvatarUploading());
             avatarUrl =
                 await UserRepo().uploadProfile(path: event.avatar ?? "");

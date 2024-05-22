@@ -5,6 +5,8 @@
 // Date:        03-05-24 20:23:58 -- Friday
 // Description:
 
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -284,17 +286,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SocialIconButton(
-                        icon: AppAssets.appleIcon,
-                        onPressed: () {
-                          triggerAppleLogin(context.read<AuthBloc>());
-                        },
-                        backgroundColor: const Color(0xFF3A3A3C),
-                      ),
-                      gapW28,
+                      if (Platform.isIOS)
+                        SocialIconButton(
+                          icon: AppAssets.appleIcon,
+                          onPressed: () {
+                            triggerAppleLogin(context.read<AuthBloc>());
+                          },
+                          backgroundColor: const Color(0xFF3A3A3C),
+                        ),
+                      if (Platform.isIOS) gapW28,
                       SocialIconButton(
                         icon: AppAssets.googleIcon,
-                        onPressed: () {},
+                        onPressed: () {
+                          triggerGoogleLogin(context.read<AuthBloc>());
+                        },
                       ),
                     ],
                   ),
