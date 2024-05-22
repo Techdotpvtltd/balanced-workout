@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../app/app_manager.dart';
 import '../../utils/extensions/navigation_service.dart';
 import 'components/information_widget.dart';
 import 'components/wheel_value_picker.dart';
@@ -17,22 +18,31 @@ class ProfileActivityLevelScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> activities = [
+      "Rookie",
+      "Beginner",
+      "Intermediate",
+      "Advance",
+      "True Beast",
+      "Pro",
+      "Mastery",
+    ];
+    int index = 0;
+
     return InformationWidget(
       title: "Your regular physical\nactivity level?",
       subTitle: "This helps us create your personalized plan",
-      middleWidget: const WheelValuePicker(
-        data: [
-          "Rookie",
-          "Beginner",
-          "Intermediate",
-          "Advance",
-          "True Beast",
-          "Pro",
-          "Mastery",
-        ],
+      middleWidget: WheelValuePicker(
+        data: activities,
         isSmallText: true,
+        onIndexChanged: (i) {
+          index = i;
+        },
       ),
       onPressedNext: () {
+        AppManager().user = AppManager()
+            .user
+            .copyWith(activityLevel: activities[index].toLowerCase());
         NavigationService.go(const ProfilePickerScreen());
       },
     );

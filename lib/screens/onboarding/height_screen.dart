@@ -6,7 +6,7 @@
 // Description:
 
 import 'package:flutter/material.dart';
-
+import '../../app/app_manager.dart';
 import '../../utils/extensions/navigation_service.dart';
 import 'components/information_widget.dart';
 import 'components/wheel_value_picker.dart';
@@ -17,14 +17,21 @@ class HeightScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> data =
+        List.generate(81, (index) => (index + 130).toString());
+    int height = 130;
     return InformationWidget(
       title: "What’s your height?",
       subTitle: "This helps us create your personalized plan",
       middleWidget: WheelValuePicker(
-        data: List.generate(81, (index) => (index + 130).toString()),
+        data: data,
         unit: "cm",
+        onIndexChanged: (index) {
+          height = int.tryParse(data[index]) ?? 0;
+        },
       ),
       onPressedNext: () {
+        AppManager().user = AppManager().user.copyWith(height: height);
         NavigationService.go(const GoalScreen());
       },
     );

@@ -30,6 +30,7 @@ class UserTypeScreen extends StatefulWidget {
 
 class _UserTypeScreenState extends State<UserTypeScreen> {
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return InformationWidget(
@@ -90,6 +91,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
         ],
       ),
       onPressedNext: () {
+        AppManager().user = AppManager()
+            .user
+            .copyWith(role: selectedIndex == 0 ? "trainee" : "trainer");
         NavigationService.go(
           widget.isComingFromSignup
               ? selectedIndex == 0

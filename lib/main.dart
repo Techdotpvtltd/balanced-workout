@@ -1,5 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'app/app_bloc_observer.dart';
+import 'blocs/auth/auth_bloc.dart';
+import 'blocs/user/user_bloc.dart';
+import 'firebase_options.dart';
 import 'screens/onboarding/splash_screen.dart';
 // Project: 	   balanced_workout
 // File:    	   app
@@ -8,7 +15,19 @@ import 'screens/onboarding/splash_screen.dart';
 // Date:        03-05-24 13:16:18 -- Saturday
 // Description:
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  Bloc.observer = AppBlocObserver();
+  //  1 - Ensure firebase app is initialized if starting from background/terminated state
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainApp());
 }
 
@@ -17,14 +36,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navKey,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'SfProDisplay',
-        scaffoldBackgroundColor: const Color(0xFF161616),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => UserBloc()),
+      ],
+      child: MaterialApp(
+        navigatorKey: navKey,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'SfProDisplay',
+          scaffoldBackgroundColor: const Color(0xFF161616),
+        ),
+        home: const SplashScreen(),
       ),
-      home: const SplashScreen(),
     );
   }
 }
