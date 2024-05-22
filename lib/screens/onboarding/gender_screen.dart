@@ -90,7 +90,7 @@ class _GenderScreenState extends State<GenderScreen>
         AppManager().user = AppManager()
             .user
             .copyWith(gender: selectedIndex == 0 ? "male" : "female");
-        NavigationService.off(const AgeScreen());
+        NavigationService.go(const AgeScreen());
       },
     );
   }

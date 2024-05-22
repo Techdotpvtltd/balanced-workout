@@ -3,7 +3,7 @@ import '../../exceptions/app_exceptions.dart';
 abstract class AuthState {
   final bool isLoading;
   final String loadingText;
-  
+
   AuthState({this.isLoading = false, this.loadingText = ""});
 }
 
@@ -54,9 +54,9 @@ class AuthStateAppleLogging extends AuthState {
   AuthStateAppleLogging({super.isLoading, super.loadingText, this.exception});
 }
 
-class AuthStateAppleLoggedIn extends AuthState {
-  AuthStateAppleLoggedIn();
-}
+class AuthStateAppleLoggedIn extends AuthState {}
+
+class AuthStateNeedToGetUserInfo extends AuthState {}
 
 // Auth State Loging with google
 class AuthStateGoogleLogging extends AuthState {
@@ -64,14 +64,10 @@ class AuthStateGoogleLogging extends AuthState {
   AuthStateGoogleLogging({super.isLoading, super.loadingText, this.exception});
 }
 
-class AuthStateGoogleLoggedIn extends AuthState {
-  AuthStateGoogleLoggedIn();
-}
+class AuthStateGoogleLoggedIn extends AuthState {}
 
 // AuthStateLoggedIn  ========================================
-class AuthStateLoggedIn extends AuthState {
-  AuthStateLoggedIn();
-}
+class AuthStateLoggedIn extends AuthState {}
 
 /// AuthStateSplashActionDone
 class AuthStateSplashActionDone extends AuthState {}

@@ -2,6 +2,7 @@ import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import '../app/app_manager.dart';
 import '../exceptions/app_exceptions.dart';
 import '../exceptions/auth_exceptions.dart';
 import '../exceptions/exception_parsing.dart';
@@ -125,6 +126,7 @@ class AuthRepo {
               avatarUrl: user.photoURL,
               email: user.email ?? "",
             );
+            AppManager().isNewUserWithCred = true;
             _fetchOrCreateUser();
           } else {
             throw throwAppException(e: e);

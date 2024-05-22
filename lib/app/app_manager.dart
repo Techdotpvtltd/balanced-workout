@@ -16,9 +16,10 @@ class AppManager {
 
   String screenTitle = "";
   UserModel user = UserModel.empty();
-
+  bool isNewUserWithCred = false;
   void clearAll() {
     user = UserModel.empty();
+    isNewUserWithCred = false;
   }
 
   List<Map<String, List<String>>> records = [

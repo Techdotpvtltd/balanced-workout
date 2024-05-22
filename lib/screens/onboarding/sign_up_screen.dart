@@ -54,6 +54,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  void triggerAppleLogin(AuthBloc bloc) {
+    bloc.add(AuthEventAppleLogin());
+  }
+
+  void triggerGoogleLogin(AuthBloc bloc) {
+    bloc.add(AuthEventGoogleLogin());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
@@ -66,7 +74,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             state is AuthStateLogging ||
             state is AuthStateLoggedIn ||
             state is AuthStateLoginFailure ||
-            state is AuthStateGoogleLogging) {
+            state is AuthStateGoogleLogging ||
+            state is AuthStateNeedToGetUserInfo) {
           setState(() {
             isLoading = state.isLoading;
             errorCode = null;
@@ -84,10 +93,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             CustomDialogs().errorBox(message: state.exception.message);
           }
 
-          if (state is AuthStateRegistered) {
-            NavigationService.off(const UserTypeScreen(
-              isComingFromSignup: true,
-            ));
+          if (state is AuthStateRegistered ||
+              state is AuthStateNeedToGetUserInfo) {
+            NavigationService.off(
+                const UserTypeScreen(isComingFromSignup: true));
           }
 
           if (state is AuthStateLoginFailure) {
@@ -234,7 +243,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       SocialIconButton(
                         icon: AppAssets.appleIcon,
-                        onPressed: () {},
+                        onPressed: () {
+                          triggerAppleLogin(context.read<AuthBloc>());
+                        },
                         backgroundColor: const Color(0xFF3A3A3C),
                       ),
                       gapW28,

@@ -38,7 +38,7 @@ class _AgeScreenState extends State<AgeScreen> {
       ),
       onPressedNext: () {
         AppManager().user = AppManager().user.copyWith(age: age);
-        NavigationService.off(const WeightScreen());
+        NavigationService.go(const WeightScreen());
       },
     );
   }

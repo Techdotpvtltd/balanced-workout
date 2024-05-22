@@ -107,6 +107,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthStateLogging(loadingText: "Signing with Apple."));
         await AuthRepo().loginWithApple();
+        if (AppManager().isNewUserWithCred) {
+          emit(AuthStateNeedToGetUserInfo());
+          return;
+        }
         emit(AuthStateAppleLoggedIn());
       } on AppException catch (e) {
         emit(AuthStateLoginFailure(exception: e));
@@ -119,6 +123,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: true, loadingText: "Signing with Google."));
       try {
         await AuthRepo().loginWithGoogle();
+        if (AppManager().isNewUserWithCred) {
+          emit(AuthStateNeedToGetUserInfo());
+          return;
+        }
         emit(AuthStateGoogleLoggedIn());
       } on AppException catch (e) {
         emit(AuthStateLoginFailure(exception: e));

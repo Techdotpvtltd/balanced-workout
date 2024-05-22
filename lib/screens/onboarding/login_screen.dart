@@ -28,6 +28,7 @@ import '../main/coach/coach_home_screen.dart';
 import '../main/user/main_user_screen.dart';
 import 'forgot_screen.dart';
 import 'sign_up_screen.dart';
+import 'user_type_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -76,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
             state is AuthStateGoogleLogging ||
             state is AuthStateSendingMailVerification ||
             state is AuthStateSendingMailVerificationFailure ||
-            state is AuthStateSentMailVerification) {
+            state is AuthStateSentMailVerification ||
+            state is AuthStateNeedToGetUserInfo) {
           setState(() {
             errorCode = null;
           });
@@ -88,7 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
               state is AuthStateEmailVerificationRequired ||
               state is AuthStateAppleLoggedIn ||
               state is AuthStateGoogleLoggedIn ||
-              state is AuthStateGoogleLogging) {
+              state is AuthStateGoogleLogging ||
+              state is AuthStateNeedToGetUserInfo) {
             setState(() {
               isLoading = state.isLoading;
             });
@@ -104,6 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomDialogs().errorBox(message: state.exception.message);
             }
 
+            if (state is AuthStateNeedToGetUserInfo) {
+              NavigationService.off(
+                  const UserTypeScreen(isComingFromSignup: true));
+            }
             if (state is AuthStateLoggedIn ||
                 state is AuthStateAppleLoggedIn ||
                 state is AuthStateGoogleLoggedIn) {
@@ -279,7 +286,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       SocialIconButton(
                         icon: AppAssets.appleIcon,
-                        onPressed: () {},
+                        onPressed: () {
+                          triggerAppleLogin(context.read<AuthBloc>());
+                        },
                         backgroundColor: const Color(0xFF3A3A3C),
                       ),
                       gapW28,
