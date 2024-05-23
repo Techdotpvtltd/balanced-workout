@@ -120,7 +120,7 @@ class AuthRepo {
       switch (result.status) {
         case LoginStatus.success:
           final AuthCredential facebookAuthCred =
-              FacebookAuthProvider.credential(result.accessToken!.token);
+              FacebookAuthProvider.credential(result.accessToken!.tokenString);
           await FirebaseAuthService()
               .loginWithCredentials(credential: facebookAuthCred);
           await _fetchOrCreateUser();
