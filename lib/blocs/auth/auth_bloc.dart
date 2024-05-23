@@ -117,6 +117,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // Facebook Login Event
+    on<AuthEventFacebookLogin>((event, emit) async {
+      try {
+        emit(AuthStateLogging(loadingText: "Signing with Facebook.."));
+        await AuthRepo().loginWithFB();
+        if (AppManager().isNewUserWithCred) {
+          emit(AuthStateNeedToGetUserInfo());
+          return;
+        }
+        emit(AuthStateFacebookLoggedIn());
+      } on AppException catch (e) {
+        emit(AuthStateLoginFailure(exception: e));
+      }
+    });
     //Google Login Event
     on<AuthEventGoogleLogin>((event, emit) async {
       emit(AuthStateLogging(

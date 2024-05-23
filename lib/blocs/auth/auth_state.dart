@@ -66,6 +66,15 @@ class AuthStateGoogleLogging extends AuthState {
 
 class AuthStateGoogleLoggedIn extends AuthState {}
 
+// Auth State Loging with Facebook
+class AuthStateFacebookLogging extends AuthState {
+  final AppException? exception;
+  AuthStateFacebookLogging(
+      {super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateFacebookLoggedIn extends AuthState {}
+
 // AuthStateLoggedIn  ========================================
 class AuthStateLoggedIn extends AuthState {}
 

@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../app/app_manager.dart';
 import '../exceptions/app_exceptions.dart';
 import '../exceptions/auth_exceptions.dart';
+import '../exceptions/data_exceptions.dart';
 import '../exceptions/exception_parsing.dart';
 import '../web_services/firebase_auth_serivces.dart';
 import 'user_repo.dart';
@@ -105,6 +109,33 @@ class AuthRepo {
           .loginWithCredentials(credential: authCredential);
       await _fetchOrCreateUser();
     } catch (e) {
+      throw throwAppException(e: e);
+    }
+  }
+
+  /// Login With Fb
+  Future<void> loginWithFB() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      switch (result.status) {
+        case LoginStatus.success:
+          final AuthCredential facebookAuthCred =
+              FacebookAuthProvider.credential(result.accessToken!.token);
+          await FirebaseAuthService()
+              .loginWithCredentials(credential: facebookAuthCred);
+          await _fetchOrCreateUser();
+          break;
+        case LoginStatus.cancelled:
+          throw DataExceptionCancelled();
+        case LoginStatus.failed:
+          log("[debug FacebookLogin] ${result.message}");
+          throw throwAppException(e: result.message ?? "");
+        default:
+          log("[debug FacebookLogin] ${result.message}");
+          throw throwAppException(e: result.message ?? "");
+      }
+    } catch (e) {
+      log("[debug FacebookLogin] $e");
       throw throwAppException(e: e);
     }
   }

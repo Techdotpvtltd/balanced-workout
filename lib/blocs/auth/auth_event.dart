@@ -47,5 +47,8 @@ class AuthEventPerformLogout extends AuthEvent {}
 // Apple Login Event
 class AuthEventAppleLogin extends AuthEvent {}
 
+// Apple Login Event
+class AuthEventFacebookLogin extends AuthEvent {}
+
 // Google Login Event
 class AuthEventGoogleLogin extends AuthEvent {}

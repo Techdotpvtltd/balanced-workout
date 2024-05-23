@@ -64,6 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
     bloc.add(AuthEventGoogleLogin());
   }
 
+  void triggerFacebookLogin(AuthBloc bloc) {
+    bloc.add(AuthEventFacebookLogin());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
@@ -75,6 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
             state is AuthStateAppleLoggedIn ||
             state is AuthStateGoogleLoggedIn ||
             state is AuthStateGoogleLogging ||
+            state is AuthStateFacebookLoggedIn ||
+            state is AuthStateFacebookLogging ||
             state is AuthStateSendingMailVerification ||
             state is AuthStateSendingMailVerificationFailure ||
             state is AuthStateSentMailVerification ||
@@ -91,6 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
               state is AuthStateAppleLoggedIn ||
               state is AuthStateGoogleLoggedIn ||
               state is AuthStateGoogleLogging ||
+              state is AuthStateFacebookLoggedIn ||
+              state is AuthStateFacebookLogging ||
               state is AuthStateNeedToGetUserInfo) {
             setState(() {
               isLoading = state.isLoading;
@@ -112,10 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
             }
             if (state is AuthStateLoggedIn ||
                 state is AuthStateAppleLoggedIn ||
-                state is AuthStateGoogleLoggedIn) {
-              NavigationService.off(
-                const MainUserScreen(),
-              );
+                state is AuthStateGoogleLoggedIn ||
+                state is AuthStateFacebookLoggedIn) {
+              NavigationService.off(const MainUserScreen());
             }
           }
 
@@ -281,6 +288,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      /// FB Login
+                      SocialIconButton(
+                        icon: AppAssets.facebookIcon,
+                        onPressed: () {
+                          triggerFacebookLogin(context.read<AuthBloc>());
+                        },
+                      ),
+                      gapW28,
+                      /// Apple Login
                       if (Platform.isIOS)
                         SocialIconButton(
                           icon: AppAssets.appleIcon,
@@ -290,6 +306,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: const Color(0xFF3A3A3C),
                         ),
                       if (Platform.isIOS) gapW28,
+
+                      /// Google Login
                       SocialIconButton(
                         icon: AppAssets.googleIcon,
                         onPressed: () {

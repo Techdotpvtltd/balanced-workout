@@ -23,6 +23,7 @@ class AppAssets {
       "${AppAssets._iconPath}/lock-backgound-ic.svg";
   static const String appleIcon = "${AppAssets._iconPath}/apple-ic.svg";
   static const String googleIcon = "${AppAssets._iconPath}/google-ic.svg";
+  static const String facebookIcon = "${AppAssets._iconPath}/fb-ic.svg";
   static const String emailIcon = "${AppAssets._iconPath}/email-ic.svg";
   static const String uploadIcon = "${AppAssets._iconPath}/upload-ic.svg";
   static const String bellIcon = "${AppAssets._iconPath}/bell-ic.svg";
