@@ -11,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../app/app_manager.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../blocs/auth/auth_state.dart';
@@ -26,11 +25,10 @@ import '../components/custom_paddings.dart';
 import '../components/custom_scaffold.dart';
 import '../components/custom_title_textfiled.dart';
 import '../components/social_icon_button.dart';
-import '../main/coach/coach_home_screen.dart';
 import '../main/user/main_user_screen.dart';
 import 'forgot_screen.dart';
+import 'gender_screen.dart';
 import 'sign_up_screen.dart';
-import 'user_type_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -110,16 +108,13 @@ class _LoginScreenState extends State<LoginScreen> {
             }
 
             if (state is AuthStateNeedToGetUserInfo) {
-              NavigationService.off(
-                  const UserTypeScreen(isComingFromSignup: true));
+              NavigationService.off(const GenderScreen());
             }
             if (state is AuthStateLoggedIn ||
                 state is AuthStateAppleLoggedIn ||
                 state is AuthStateGoogleLoggedIn) {
-              NavigationService.go(
-                AppManager().user.role == "trainee"
-                    ? const MainUserScreen()
-                    : const CoachHomeScreen(),
+              NavigationService.off(
+                const MainUserScreen(),
               );
             }
           }

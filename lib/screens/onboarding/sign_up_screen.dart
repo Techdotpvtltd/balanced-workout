@@ -23,8 +23,8 @@ import '../components/custom_scaffold.dart';
 import '../components/custom_title_textfiled.dart';
 import '../components/social_icon_button.dart';
 import '../main/user/main_user_screen.dart';
+import 'gender_screen.dart';
 import 'login_screen.dart';
-import 'user_type_screen.dart';
 import 'dart:io' show Platform;
 
 class SignUpScreen extends StatefulWidget {
@@ -96,8 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
           if (state is AuthStateRegistered ||
               state is AuthStateNeedToGetUserInfo) {
-            NavigationService.off(
-                const UserTypeScreen(isComingFromSignup: true));
+            NavigationService.off(const GenderScreen());
           }
 
           if (state is AuthStateLoginFailure) {

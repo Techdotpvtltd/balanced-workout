@@ -23,7 +23,6 @@ import '../../utils/extensions/navigation_service.dart';
 import '../components/avatar_widget.dart';
 import '../components/custom_ink_well.dart';
 import '../components/my_image_picker.dart';
-import '../main/coach/coach_home_screen.dart';
 import '../main/user/main_user_screen.dart';
 import 'components/information_widget.dart';
 import 'login_screen.dart';
@@ -90,11 +89,7 @@ class _ProfilePickerScreenState extends State<ProfilePickerScreen> {
 
           if (state is UserStateProfileUpdated) {
             if (AppManager().isNewUserWithCred) {
-              NavigationService.offAll(
-                AppManager().user.role == "trainee"
-                    ? const MainUserScreen()
-                    : const CoachHomeScreen(),
-              );
+              NavigationService.offAll(const MainUserScreen());
               AppManager().isNewUserWithCred = false;
               return;
             }
@@ -124,7 +119,7 @@ class _ProfilePickerScreenState extends State<ProfilePickerScreen> {
             borderThickness: 2,
             dashCounts: 30,
             borderShape: Shape.circle,
-            child: selectedImage != null
+            child: selectedImage != null && selectedImage != ""
                 ? AvatarWidget(
                     backgroundColor: Colors.transparent,
                     placeholderChar: "",

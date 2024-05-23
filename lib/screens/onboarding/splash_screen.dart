@@ -8,14 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../app/app_manager.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../blocs/auth/auth_state.dart';
 import '../../utils/constants/app_assets.dart';
 import '../../utils/extensions/navigation_service.dart';
 import '../components/custom_scaffold.dart';
-import '../main/coach/coach_home_screen.dart';
 import '../main/user/main_user_screen.dart';
 import 'walkthrough_screen.dart';
 
@@ -42,9 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateSplashActionDone) {
-          NavigationService.offAll(AppManager().user.role == "trainee"
-              ? const MainUserScreen()
-              : const CoachHomeScreen());
+          NavigationService.offAll(const MainUserScreen());
         }
 
         if (state is AuthStateLoginRequired) {
