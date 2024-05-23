@@ -73,3 +73,51 @@ class NavigationButton extends StatelessWidget {
     );
   }
 }
+
+class SmallNavigationButton extends StatelessWidget {
+  const SmallNavigationButton({
+    super.key,
+    required this.title,
+    required this.onPressed,
+    required this.icon,
+  });
+  final String title;
+  final VoidCallback onPressed;
+  final String icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomInkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        decoration: const BoxDecoration(
+          color: AppTheme.darkWidgetColor,
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Center(
+                child: Text(
+                  title,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(0xFFD4D4D4),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+            CircleButton(
+              onPressed: () {},
+              icon: AppAssets.forwardIcon,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
