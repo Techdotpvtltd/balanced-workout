@@ -5,6 +5,7 @@
 // Date:        08-05-24 17:44:17 -- Wednesday
 // Description:
 
+import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,9 +23,9 @@ import '../../components/avatar_widget.dart';
 import '../../components/circle_button.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dropdown.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
-import '../../components/custom_title_textfiled.dart';
 import '../../components/my_image_picker.dart';
 
 class MyDataScreen extends StatefulWidget {
@@ -41,10 +42,20 @@ class _MyDataScreenState extends State<MyDataScreen> {
   int? errorCode;
   String? errorMessage;
   bool isLoading = false;
+  int? selectedWeight;
+  int? selectedHeight;
+  String? selectedGoal;
+  String? selectedActivity;
 
   void triggerUpdateUserProfileEvent(UserBloc bloc) {
     bloc.add(
-      UserEventUpdateProfile(avatar: selectedImage),
+      UserEventUpdateProfile(
+        avatar: selectedImage,
+        weight: selectedWeight,
+        height: selectedHeight,
+        goal: selectedGoal,
+        activityLevel: selectedActivity,
+      ),
     );
   }
 
@@ -60,11 +71,6 @@ class _MyDataScreenState extends State<MyDataScreen> {
         }
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -212,39 +218,70 @@ class _MyDataScreenState extends State<MyDataScreen> {
 
             /// Weight TF
             gapH50,
-            CustomTextField(
-              isReadyOnly: !isEditable,
-              hintText: '${user.weight} KG',
+            CustomTextFieldDropdown(
               titleText: 'Weight',
-              keyboardType: TextInputType.number,
+              isEnabled: isEditable,
+              hintText: '${user.weight} KG',
+              items: List.generate(121, (index) => "${(index + 30)} KG"),
+              onSelectedItem: (value) {
+                selectedWeight = int.tryParse(value.split(" ").first);
+              },
             ),
             gapH24,
 
             /// Height TF
-            CustomTextField(
-              isReadyOnly: !isEditable,
-              hintText: '${user.height} CM',
+            CustomTextFieldDropdown(
               titleText: 'Height',
-              keyboardType: TextInputType.number,
+              hintText: '${user.height} CM',
+              isEnabled: isEditable,
+              selectedValue: null,
+              items: List.generate(81, (index) => "${(index + 130)} CM"),
+              onSelectedItem: (value) {
+                selectedHeight = int.tryParse(value.split(" ").first);
+              },
             ),
-
             gapH24,
 
             /// Height TF
-            CustomTextField(
-              isReadyOnly: !isEditable,
-              hintText: user.goal ?? "",
+            CustomTextFieldDropdown(
               titleText: 'Goal',
-              keyboardType: TextInputType.text,
+              hintText: (user.goal ?? "").firstCapitalize(),
+              selectedValue: null,
+              isEnabled: isEditable,
+              items: const [
+                "Gain Weight",
+                "Lose weight",
+                "Get fitter",
+                "Gain more flexible",
+                "Build Muscle",
+                "Increase Endurance",
+                "Learn the basic",
+                "Improve Sleep"
+              ],
+              onSelectedItem: (value) {
+                selectedGoal = value.toLowerCase();
+              },
             ),
             gapH24,
 
             /// Height TF
-            CustomTextField(
-              isReadyOnly: !isEditable,
-              hintText: user.goal ?? "",
+            CustomTextFieldDropdown(
               titleText: 'Physical Activity',
-              keyboardType: TextInputType.text,
+              hintText: (user.activityLevel ?? "").firstCapitalize(),
+              selectedValue: null,
+              isEnabled: isEditable,
+              items: const [
+                "Rookie",
+                "Beginner",
+                "Intermediate",
+                "Advance",
+                "True Beast",
+                "Pro",
+                "Mastery",
+              ],
+              onSelectedItem: (value) {
+                selectedActivity = value.toLowerCase();
+              },
             ),
           ],
         ),

@@ -20,7 +20,7 @@ extension CustomStr on String {
     return true;
   }
 
-  String capitalizeFirstCharacter() {
+  String firstCapitalize() {
     List<String> words = split(" "); // Split the string into words
     List<String> capitalizedWords = [];
 
