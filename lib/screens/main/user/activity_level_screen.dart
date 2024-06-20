@@ -30,7 +30,7 @@ class ActivityLevelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: customAppBar(
-        title: "Activity Level",
+        title: "Difficulty Level",
       ),
       body: ListView.builder(
         itemCount: items.length,

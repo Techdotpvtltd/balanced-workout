@@ -16,6 +16,7 @@ import 'components/product_card.dart';
 import 'progress_challenge_screen.dart';
 import 'startup_challenge_screen.dart';
 
+// FIXME: Later
 class ChallengeScreen extends StatelessWidget {
   const ChallengeScreen({super.key});
 

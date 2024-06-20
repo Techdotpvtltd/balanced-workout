@@ -5,6 +5,7 @@
 // Date:        06-05-24 15:00:27 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,10 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
-import 'cardio_exercise_screen.dart';
-import 'challenge_screen.dart';
 import 'components/navigation_button.dart';
-import 'components/ranks_screen.dart';
 import 'period_screen.dart';
+import 'playlist_screen.dart';
 import 'progression_screen.dart';
-import 'stretches_exercise_screen.dart';
 
 class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
@@ -42,7 +40,7 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.heartIcon,
-                    title: "Progression",
+                    title: "Basic Movement Patterns",
                     onPressed: () {
                       NavigationService.go(const ProgressionScreen());
                     },
@@ -52,9 +50,9 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.exerciseIcon,
-                    title: "Workout",
+                    title: "Daily Workouts",
                     onPressed: () {
-                      NavigationService.go(RankScreen());
+                      NavigationService.go(ActivityLevelScreen());
                       AppManager().screenTitle = "Workout";
                       AppManager().records = [
                         {
@@ -125,7 +123,7 @@ class WorkoutScreen extends StatelessWidget {
                     icon: AppAssets.cardioIcon,
                     title: "Cardio Exercise",
                     onPressed: () {
-                      NavigationService.go(const CardioExerciseScreen());
+                      NavigationService.go(const PlaylistScreen());
                       AppManager().screenTitle = "Cardio Exercise";
                       AppManager().records = [
                         {
@@ -145,7 +143,7 @@ class WorkoutScreen extends StatelessWidget {
                     icon: AppAssets.stretchesIcon,
                     title: "Stretches",
                     onPressed: () {
-                      NavigationService.go(const StretchesExerciseScreen());
+                      NavigationService.go(const PlaylistScreen());
                       AppManager().screenTitle = "Stretches";
                       AppManager().records = [
                         {
@@ -179,7 +177,7 @@ class WorkoutScreen extends StatelessWidget {
                     icon: AppAssets.challengeIcon,
                     title: "Challenges",
                     onPressed: () {
-                      NavigationService.go(const ChallengeScreen());
+                      NavigationService.go(const PlaylistScreen());
                       AppManager().screenTitle = "Challenges";
                     },
                   ),

@@ -16,6 +16,7 @@ import 'components/custom_tab_bar.dart';
 import 'components/product_card.dart';
 import 'playlist_screen.dart';
 
+// FIXME: Will remove
 class StretchesExerciseScreen extends StatelessWidget {
   const StretchesExerciseScreen({super.key});
 

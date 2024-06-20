@@ -5,6 +5,7 @@
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/extensions/navigation_service.dart';
@@ -32,7 +33,7 @@ class PeriodScreen extends StatelessWidget {
           return ProductCard(
             title: items[index],
             onClickCard: () {
-              NavigationService.go(RankScreen());
+              NavigationService.go(ActivityLevelScreen());
             },
             coverUrl:
                 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?cs=srgb&dl=pexels-victorfreitas-841130.jpg&fm=jpg',
