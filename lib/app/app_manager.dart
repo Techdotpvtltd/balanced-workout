@@ -5,6 +5,8 @@
 // Date:        10-05-24 12:21:41 -- Friday
 // Description:
 
+import 'package:balanced_workout/app/cache_manager.dart';
+
 import '../models/user_model.dart';
 
 class AppManager {
@@ -17,9 +19,11 @@ class AppManager {
   String screenTitle = "";
   UserModel user = UserModel.empty();
   bool isNewUserWithCred = false;
+
   void clearAll() {
     user = UserModel.empty();
     isNewUserWithCred = false;
+    CacheManager().clear();
   }
 
   List<Map<String, List<String>>> records = [

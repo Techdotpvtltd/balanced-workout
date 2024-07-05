@@ -7,16 +7,15 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
-import '../../components/custom_app_bar.dart';
-import '../../components/custom_paddings.dart';
-import 'activity_level_screen.dart';
-import 'components/custom_tab_bar.dart';
-import 'components/product_card.dart';
-import 'playlist_screen.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
+import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_paddings.dart';
+import '../activity_level_screen.dart';
+import '../components/custom_tab_bar.dart';
+import '../components/product_card.dart';
+import '../playlist_screen.dart';
 
-// FIXME: Will remove
 class CardioExerciseScreen extends StatelessWidget {
   const CardioExerciseScreen({super.key});
 

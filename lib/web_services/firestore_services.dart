@@ -10,6 +10,9 @@ class FirestoreService {
 
   FirestoreService() {
     _firestore = FirebaseFirestore.instance;
+
+    ///To Get Most recent update from the cloud, disabled it
+    _firestore.settings = const Settings(persistenceEnabled: false);
   }
 
 //  Save & Update Services ====================================
@@ -81,22 +84,30 @@ class FirestoreService {
 
   /// Mutliple records fetching query method
   Future<List<Map<String, dynamic>>> _getWithQuery(
-      {required Query<Map<String, dynamic>> query}) async {
-    final snapshot = await query.get();
+      {required Query<Map<String, dynamic>> query,
+      required Function(DocumentSnapshot?) lastDocSnapshot}) async {
+    final snapshot =
+        await query.get(const GetOptions(source: Source.serverAndCache));
+
+    lastDocSnapshot(snapshot.docs.lastOrNull);
+
     return snapshot.docs.map((e) => e.data()).toList();
   }
 
   /// With Equal Condition
-  @Deprecated("Use fetchWithMultipleConditions instead")
-  Future<List<Map<String, dynamic>>> fetchWithEqual({
-    required String collection,
-    required String filedId,
-    required dynamic isEqualTo,
-  }) async {
-    final Query<Map<String, dynamic>> query =
-        _firestore.collection(collection).where(filedId, isEqualTo: isEqualTo);
-    return _getWithQuery(query: query);
-  }
+  // @Deprecated("Use fetchWithMultipleConditions instead")
+  // Future<List<Map<String, dynamic>>> fetchWithEqual({
+  //   required String collection,
+  //   required String filedId,
+  //   required dynamic isEqualTo,
+  // }) async {
+  //   final Query<Map<String, dynamic>> query =
+  //       _firestore.collection(collection).where(filedId, isEqualTo: isEqualTo);
+  //   return _getWithQuery(
+  //     query: query,
+  //     lastDocSnapshot: (snapshot) {},
+  //   );
+  // }
 
   Query<Map<String, dynamic>> _generateQuery(
       {required List<QueryModel> queries,
@@ -157,6 +168,16 @@ class FirestoreService {
           break;
         case QueryType.limitToLast: // Add OrderBy query first
           query = query.limitToLast(condition.value);
+          break;
+        case QueryType.startAfterDocument:
+          // Take document as value and fetch after that document. he starting position is relative to the order of the query.
+          // The [documentSnapshot] must contain all of the fields provided in the orderBy of this query.
+          query = query.startAfterDocument(condition.value);
+          break;
+        case QueryType.startAtDocument:
+          //Creates and returns a new [Query] that starts at the provided document (inclusive). The starting position is relative to the order of the query. The document must contain all of the fields provided in the orderBy of this query.
+          ///Calling this method will replace any existing cursor "start" query modifiers.
+          query = query.startAtDocument(condition.value);
           break;
         default:
           query = collectionReference;
@@ -225,6 +246,7 @@ class FirestoreService {
   Future<List<Map<String, dynamic>>> fetchWithMultipleConditions({
     required String collection,
     required List<QueryModel> queries,
+    Function(DocumentSnapshot?)? lastDocSnapshot,
   }) async {
     final CollectionReference<Map<String, dynamic>> collectionReference =
         _firestore.collection(collection);
@@ -232,7 +254,14 @@ class FirestoreService {
     final Query<Map<String, dynamic>> query = _generateQuery(
         queries: queries, collectionReference: collectionReference);
 
-    return _getWithQuery(query: query);
+    return _getWithQuery(
+      query: query,
+      lastDocSnapshot: (snapshot) {
+        if (lastDocSnapshot != null) {
+          lastDocSnapshot(snapshot);
+        }
+      },
+    );
   }
 
   //  Delete Services ====================================

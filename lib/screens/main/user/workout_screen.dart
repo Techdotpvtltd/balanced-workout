@@ -15,6 +15,7 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
+import 'cardio/cardio_exercise_screen.dart';
 import 'components/navigation_button.dart';
 import 'period_screen.dart';
 import 'playlist_screen.dart';
@@ -126,7 +127,7 @@ class WorkoutScreen extends StatelessWidget {
                     icon: AppAssets.cardioIcon,
                     title: "Cardio Exercise",
                     onPressed: () {
-                      NavigationService.go(const PlaylistScreen());
+                      NavigationService.go(const CardioExerciseScreen());
                       AppManager().screenTitle = "Cardio Exercise";
                       AppManager().records = [
                         {
