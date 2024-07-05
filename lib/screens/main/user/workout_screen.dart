@@ -5,6 +5,7 @@
 // Date:        06-05-24 15:00:27 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/stretches/stretches_exercises_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,6 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Cardio Exercise",
                     onPressed: () {
                       NavigationService.go(const CardioExerciseScreen());
-                      AppManager().screenTitle = "Cardio Exercise";
                     },
                   ),
                 ),
@@ -143,31 +143,7 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Stretches",
                     isSVG: true,
                     onPressed: () {
-                      NavigationService.go(const PlaylistScreen());
-                      AppManager().screenTitle = "Stretches";
-                      AppManager().records = [
-                        {
-                          "Neck Stretches": [
-                            "Neck Rotation",
-                            "Neck Flexion",
-                            "Neck Extension"
-                          ]
-                        },
-                        {
-                          "Shoulder Stretches": [
-                            "Shoulder Roll",
-                            "Shoulder Stretch",
-                            "Arm Cross"
-                          ]
-                        },
-                        {
-                          "Hamstring Stretches": [
-                            "Standing Hamstring Stretch",
-                            "Seated Hamstring Stretch",
-                            "Lying Hamstring Stretch"
-                          ]
-                        },
-                      ];
+                      NavigationService.go(const StretchesExercisesScreen());
                     },
                   ),
                 ),

@@ -1,14 +1,16 @@
 // Project: 	   balanced_workout
-// File:    	   cardio_exercise_screen
-// Path:    	   lib/screens/main/user/cardio_exercise_screen.dart
+// File:    	   stretches_exercises_screen
+// Path:    	   lib/screens/main/stretches/stretches_exercises_screen.dart
 // Author:       Ali Akbar
-// Date:        07-05-24 20:03:28 -- Tuesday
+// Date:        05-07-24 20:03:18 -- Friday
 // Description:
-
 import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
 import 'package:balanced_workout/blocs/plan/plan_event.dart';
 import 'package:balanced_workout/blocs/plan/plan_state.dart';
 import 'package:balanced_workout/models/plan_model.dart';
+import 'package:balanced_workout/screens/components/custom_app_bar.dart';
+import 'package:balanced_workout/screens/components/custom_ink_well.dart';
+import 'package:balanced_workout/screens/main/user/content_detail_screen.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,29 +21,27 @@ import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/extensions/navigation_service.dart';
-import '../../../components/custom_app_bar.dart';
-import '../../../components/custom_ink_well.dart';
-import '../../../components/custom_network_image.dart';
-import '../content_detail_screen.dart';
+import '../../components/custom_network_image.dart';
 
-class CardioExerciseScreen extends StatefulWidget {
-  const CardioExerciseScreen({super.key});
+class StretchesExercisesScreen extends StatefulWidget {
+  const StretchesExercisesScreen({super.key});
 
   @override
-  State<CardioExerciseScreen> createState() => _CardioExerciseScreenState();
+  State<StretchesExercisesScreen> createState() =>
+      _StretchesExercisesScreenState();
 }
 
-class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
-  PlanModel? cardio;
+class _StretchesExercisesScreenState extends State<StretchesExercisesScreen> {
+  PlanModel? stretches;
   bool isLoading = false;
 
-  void triggerFetchCardioEvent() {
-    context.read<PlanBloc>().add(PlanEventFetchCardio());
+  void triggerFetchStretchesEvent() {
+    context.read<PlanBloc>().add(PlanEventFetchStretches());
   }
 
   @override
   void initState() {
-    triggerFetchCardioEvent();
+    triggerFetchStretchesEvent();
     super.initState();
   }
 
@@ -49,19 +49,19 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
   Widget build(BuildContext context) {
     return BlocListener<PlanBloc, PlanState>(
       listener: (context, state) {
-        if (state is PlanStateCardioFetchFailure ||
-            state is PlanStateCardioFetched ||
-            state is PlanStateCardioFetching) {
+        if (state is PlanStateStretchesFetchFailure ||
+            state is PlanStateStretchesFetched ||
+            state is PlanStateStretchesFetching) {
           setState(() {
             isLoading = state.isLoading;
           });
 
-          if (state is PlanStateCardioFetchFailure) {
+          if (state is PlanStateStretchesFetchFailure) {
             debugPrint(state.exception.message);
           }
-          if (state is PlanStateCardioFetched) {
+          if (state is PlanStateStretchesFetched) {
             setState(() {
-              cardio = state.cardio;
+              stretches = state.stretches;
             });
           }
         }
@@ -82,7 +82,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
 
                       /// Background Image
                       child: CustomNetworkImage(
-                        imageUrl: cardio?.coverUrl ?? "",
+                        imageUrl: stretches?.coverUrl ?? "",
                       ),
                     ),
                   ),
@@ -90,7 +90,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
 
                 /// Custom App Bar
                 customAppBar(
-                  title: "Cardio Exercises",
+                  title: "Stretches Exercises",
                 ),
               ],
             ),
@@ -136,7 +136,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  cardio?.difficultyLevel.name
+                                  stretches?.difficultyLevel.name
                                           .firstCapitalize() ??
                                       "-",
                                   style: const TextStyle(
@@ -169,7 +169,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  (cardio?.exercises.length ?? 0).toString(),
+                                  (stretches?.exercises.length ?? 0).toString(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
@@ -229,11 +229,11 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
                         itemCount:
-                            isLoading ? 15 : (cardio?.exercises.length ?? 0),
+                            isLoading ? 15 : (stretches?.exercises.length ?? 0),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final PlanExercise? planExer =
-                              cardio?.exercises[index];
+                              stretches?.exercises[index];
 
                           return CustomInkWell(
                             onTap: () {
