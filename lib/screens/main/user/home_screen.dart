@@ -187,6 +187,7 @@ class HomeScreen extends StatelessWidget {
                     child: NavigationButton(
                       title: "Active Workout",
                       icon: AppAssets.workoutIcon,
+                      isSVG: true,
                       onPressed: () {
                         NavigationService.go(const ActiveChallengeScreen());
                       },
@@ -197,6 +198,7 @@ class HomeScreen extends StatelessWidget {
                     child: NavigationButton(
                       title: "Challenges",
                       icon: AppAssets.challengeIcon,
+                      isSVG: true,
                       onPressed: () {
                         NavigationService.go(const ChallengeScreen());
                       },

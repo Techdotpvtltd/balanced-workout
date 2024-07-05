@@ -5,6 +5,7 @@
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
 
+import 'package:balanced_workout/utils/constants/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/extensions/navigation_service.dart';
@@ -21,9 +22,9 @@ class ActivityLevelScreen extends StatelessWidget {
     "Advance",
   ];
   final images = [
-    'https://propakistani.pk/how-to/wp-content/uploads/2020/07/sxsasd.jpg',
-    'https://hips.hearstapps.com/hmg-prod/images/701/rowing-workouts-burn-fat-build-muscle-main-1518562362.jpg?crop=1xw:0.786xh;center,top&resize=640:*',
-    'https://www.mensjournal.com/.image/t_share/MTk2MTM3Mjk2NTQ5NTIwNTI5/_main_liftlift.jpg',
+    AppAssets.beginnersLevel,
+    AppAssets.intermedianLevel,
+    AppAssets.advancedLevel,
   ];
 
   @override
@@ -41,6 +42,7 @@ class ActivityLevelScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return ProductCard(
             title: items[index],
+            isAsset: true,
             onClickCard: () {
               NavigationService.go(const PlaylistScreen());
             },

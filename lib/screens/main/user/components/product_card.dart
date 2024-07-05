@@ -22,13 +22,14 @@ class ProductCard extends StatelessWidget {
     required this.title,
     this.subTitle,
     required this.coverUrl,
+    this.isAsset = false,
   });
   final VoidCallback? onClickCard;
   final VoidCallback? onClickStartButton;
   final String title;
   final String? subTitle;
   final String coverUrl;
-
+  final bool isAsset;
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
@@ -48,9 +49,12 @@ class ProductCard extends StatelessWidget {
                 colorFilter: ColorFilter.mode(
                     const Color(0xff000000).withOpacity(0.35),
                     BlendMode.srcOver),
-                child: CustomNetworkImage(
-                  imageUrl: coverUrl,
-                ),
+                child: isAsset
+                    ? Image.asset(
+                        coverUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : CustomNetworkImage(imageUrl: coverUrl),
               ),
             ),
             Positioned.fill(

@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -14,14 +15,17 @@ import '../../../components/circle_button.dart';
 import '../../../components/custom_ink_well.dart';
 
 class NavigationButton extends StatelessWidget {
-  const NavigationButton(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.onPressed});
+  const NavigationButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onPressed,
+    this.isSVG = false,
+  });
   final String icon;
   final String title;
   final VoidCallback onPressed;
+  final bool isSVG;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +54,15 @@ class NavigationButton extends StatelessWidget {
               child: Column(
                 children: [
                   // Icon
-                  Image.asset(
-                    icon,
-                    height: 63,
-                  ),
+                  isSVG
+                      ? SvgPicture.asset(
+                          icon,
+                          height: 63,
+                        )
+                      : Image.asset(
+                          icon,
+                          height: 63,
+                        ),
                   gapH10,
                   Text(
                     title,

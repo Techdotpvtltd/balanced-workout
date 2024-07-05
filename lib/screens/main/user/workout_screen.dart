@@ -39,7 +39,8 @@ class WorkoutScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: NavigationButton(
-                    icon: AppAssets.heartIcon,
+                    icon: AppAssets.whiteboardWorkoutIcon,
+                    isSVG: true,
                     title: "Basic Movement Patterns",
                     onPressed: () {
                       NavigationService.go(const ProgressionScreen());
@@ -49,7 +50,8 @@ class WorkoutScreen extends StatelessWidget {
                 gapW10,
                 Expanded(
                   child: NavigationButton(
-                    icon: AppAssets.exerciseIcon,
+                    icon: AppAssets.dumbbellIcon3,
+                    isSVG: true,
                     title: "Daily Workouts",
                     onPressed: () {
                       NavigationService.go(ActivityLevelScreen());
@@ -91,6 +93,7 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.dumbbellIcon2,
+                    isSVG: true,
                     title: "Courses",
                     onPressed: () {
                       NavigationService.go(PeriodScreen());
@@ -142,6 +145,7 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.stretchesIcon,
                     title: "Stretches",
+                    isSVG: true,
                     onPressed: () {
                       NavigationService.go(const PlaylistScreen());
                       AppManager().screenTitle = "Stretches";
@@ -176,6 +180,7 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.challengeIcon,
                     title: "Challenges",
+                    isSVG: true,
                     onPressed: () {
                       NavigationService.go(const PlaylistScreen());
                       AppManager().screenTitle = "Challenges";
