@@ -33,20 +33,20 @@ class RoundedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ButtonStyle(
-        minimumSize: MaterialStatePropertyAll(
+        minimumSize: WidgetStatePropertyAll(
           Size(
             width ?? double.infinity,
             height ?? 60,
           ),
         ),
-        shadowColor: const MaterialStatePropertyAll(Colors.transparent),
-        surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
-        side: const MaterialStatePropertyAll(
+        shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+        side: const WidgetStatePropertyAll(
           BorderSide(
             color: Colors.white,
           ),
         ),
-        backgroundColor: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(
           withBorderOnly ? Colors.transparent : buttonColor ?? Colors.white,
         ),
       ),

@@ -22,13 +22,13 @@ class CustomChildButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(
+        padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(
           horizontal: 35,
           vertical: 22,
         )),
-        backgroundColor: MaterialStatePropertyAll(
-            backgroundColor ?? const Color(0xFF303030)),
-        shape: const MaterialStatePropertyAll(
+        backgroundColor:
+            WidgetStatePropertyAll(backgroundColor ?? const Color(0xFF303030)),
+        shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
         ),

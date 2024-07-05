@@ -69,7 +69,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 TextButton(
                   onPressed: () {},
                   style: const ButtonStyle(
-                    padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                    padding: WidgetStatePropertyAll(EdgeInsets.zero),
                   ),
 
                   /// Add Missing Button

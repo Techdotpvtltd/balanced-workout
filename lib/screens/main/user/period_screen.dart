@@ -12,7 +12,6 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
-import 'components/ranks_screen.dart';
 
 class PeriodScreen extends StatelessWidget {
   PeriodScreen({super.key});

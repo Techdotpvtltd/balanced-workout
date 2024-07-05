@@ -33,8 +33,8 @@ class CircleButton extends StatelessWidget {
         height: iconSize?.height,
       ),
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(
-            backgroundColor ?? AppTheme.darkButtonColor),
+        backgroundColor:
+            WidgetStatePropertyAll(backgroundColor ?? AppTheme.darkButtonColor),
         visualDensity: VisualDensity.compact,
       ),
     );

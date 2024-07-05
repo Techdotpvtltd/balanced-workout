@@ -137,10 +137,10 @@ class _MyDataScreenState extends State<MyDataScreen> {
                   });
                 },
                 style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0xFF303030)),
-                  padding: MaterialStatePropertyAll(
+                  backgroundColor: WidgetStatePropertyAll(Color(0xFF303030)),
+                  padding: WidgetStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 15)),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)))),
                 ),
                 child: const Row(

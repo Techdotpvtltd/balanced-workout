@@ -22,11 +22,11 @@ class CustomBackButton extends StatelessWidget {
               NavigationService.back();
             },
       style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         visualDensity: VisualDensity.compact,
-        backgroundColor: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(
             backgroundColor ?? const Color(0xFF8B8B8B).withOpacity(0.2)),
-        fixedSize: const MaterialStatePropertyAll(
+        fixedSize: const WidgetStatePropertyAll(
           Size(54, 54),
         ),
       ),

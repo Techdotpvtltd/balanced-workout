@@ -113,11 +113,11 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(300)),
                             ),
-                            fillColor: const MaterialStatePropertyAll(
+                            fillColor: const WidgetStatePropertyAll(
                                 Colors.transparent),
                             materialTapTargetSize:
                                 MaterialTapTargetSize.shrinkWrap,
-                            side: MaterialStateBorderSide.resolveWith(
+                            side: WidgetStateBorderSide.resolveWith(
                               (states) => BorderSide(
                                   color: !isSelected
                                       ? const Color(0xFF434242)

@@ -223,7 +223,7 @@ class HomeScreen extends StatelessWidget {
                       NavigationService.go(const ChallengeScreen());
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      padding: WidgetStatePropertyAll(EdgeInsets.zero),
                       visualDensity: VisualDensity.compact,
                     ),
                     child: const Text(
@@ -281,7 +281,7 @@ class HomeScreen extends StatelessWidget {
                       NavigationService.go(const CommunityScreen());
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      padding: WidgetStatePropertyAll(EdgeInsets.zero),
                       visualDensity: VisualDensity.compact,
                     ),
                     child: const Text(
@@ -325,7 +325,7 @@ class HomeScreen extends StatelessWidget {
                       NavigationService.go(const ArticleScreen());
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                      padding: WidgetStatePropertyAll(EdgeInsets.zero),
                       visualDensity: VisualDensity.compact,
                     ),
                     child: const Text(
