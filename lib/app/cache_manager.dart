@@ -7,23 +7,22 @@
 
 import '../models/plan_model.dart';
 
-class CacheManager {
-  /// Singleton Instance
-  static final CacheManager _instance = CacheManager._internal();
-  CacheManager._internal();
-  factory CacheManager() => _instance;
-// ============================== Properties =============================
-  PlanModel? _cardio;
+abstract class CacheManager<T> {
+  T? _item;
+  set set(T item) => _item = item;
 
-  // ===========================Setters================================
-  set setCardio(PlanModel item) => _cardio = item;
-  // ===========================Getters================================
+  /// getter
+  T? get getItem => _item;
+}
 
-  /// Cardio Getters
-  PlanModel? get cardio => _cardio;
-  // ===========================Utility Methods================================
+// Cardio Manager
+class CacheCardio implements CacheManager<PlanModel> {
+  @override
+  PlanModel? _item;
 
-  void clear() {
-    _cardio = null;
-  }
+  @override
+  PlanModel? get getItem => _item;
+
+  @override
+  set set(PlanModel item) => _item = item;
 }

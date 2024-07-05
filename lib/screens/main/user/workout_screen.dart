@@ -129,11 +129,6 @@ class WorkoutScreen extends StatelessWidget {
                     onPressed: () {
                       NavigationService.go(const CardioExerciseScreen());
                       AppManager().screenTitle = "Cardio Exercise";
-                      AppManager().records = [
-                        {
-                          "Cardio Workout": ["Running", "Cycling", "Jump Rope"]
-                        },
-                      ];
                     },
                   ),
                 ),

@@ -20,13 +20,14 @@ class CardioRepo extends PlanRepo {
   /// Fetch Cardio
   Future<PlanModel> fetch() async {
     try {
-      final CacheManager cache = CacheManager();
-      if (cache.cardio != null) {
-        return cache.cardio!;
+      final CacheCardio cache = CacheCardio();
+      if (cache.getItem != null) {
+        log("Getting from cache: ${cache.getItem}");
+        return cache.getItem!;
       }
 
       final PlanModel cardio = await super.fetchFor(type: PlanType.cardio);
-      cache.setCardio = cardio;
+      cache.set = cardio;
       return cardio;
     } catch (e) {
       log("Error: Fetch Cardio => $e");
