@@ -22,7 +22,10 @@ abstract class PlanRepo {
           await FirestoreService().fetchWithMultipleConditions(
         collection: FIREBASE_COLLECTION_PLANS,
         queries: [
-          QueryModel(field: "type", value: type, type: QueryType.isEqual),
+          QueryModel(
+              field: "type",
+              value: type.name.toLowerCase(),
+              type: QueryType.isEqual),
           QueryModel(field: "", value: 1, type: QueryType.limit),
         ],
       );

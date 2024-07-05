@@ -22,7 +22,7 @@ class CardioRepo extends PlanRepo {
     try {
       final CacheCardio cache = CacheCardio();
       if (cache.getItem != null) {
-        log("Getting from cache: ${cache.getItem}");
+        log("Getting from cache: ${cache.getItem?.name}");
         return cache.getItem!;
       }
 

@@ -5,6 +5,7 @@
 // Date:        07-05-24 16:42:04 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/models/plan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -21,27 +22,20 @@ import 'complete_video_alert_screen.dart';
 import 'components/video_cover_widget.dart';
 
 class ContentDetailScreen extends StatefulWidget {
-  const ContentDetailScreen({super.key});
-
+  const ContentDetailScreen({super.key, this.model, this.nextExercise});
+  final PlanExercise? model;
+  final PlanExercise? nextExercise;
   @override
   State<ContentDetailScreen> createState() => _ContentDetailScreenState();
 }
 
 class _ContentDetailScreenState extends State<ContentDetailScreen> {
-  final List<String> points = [
-    'Alternating side',
-    'Bicep curl',
-    'Benched tricep',
-    'Squat jumps',
-    'Press up into superman ',
-    'Benched tricep',
-    'Squat jumps',
-    'Press up into superman '
-  ];
+  late final PlanExercise? model = widget.model;
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: customAppBar(title: "Pull Up"),
+      appBar: customAppBar(title: model?.exercise.name),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: HorizontalPadding(
         child: CustomButton(
@@ -66,8 +60,7 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                   Expanded(
                     child: VideoCoverWidget(
                       onPressed: () {},
-                      coverUrl:
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuPjEe-kJYDagf7pC-1IKVXund4G6paaHR-wkPODKGWg&s',
+                      coverUrl: model?.exercise.coverUrl ?? "",
                     ),
                   ),
                   gapW10,
@@ -89,8 +82,10 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                         Expanded(
                           child: ListView.builder(
                             physics: const ScrollPhysics(),
-                            itemCount: points.length,
+                            itemCount: model?.exercise.steps.length,
                             itemBuilder: (context, index) {
+                              final String step =
+                                  model?.exercise.steps[index] ?? "";
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5),
@@ -102,7 +97,7 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                                     ),
                                     gapW8,
                                     Text(
-                                      points[index],
+                                      step,
                                       style: const TextStyle(
                                         color: Color(0xFF91929F),
                                         fontSize: 14,
@@ -131,9 +126,9 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
               child: Column(
                 children: [
                   /// Status Title
-                  const Text(
-                    "Pull Out",
-                    style: TextStyle(
+                  Text(
+                    model?.exercise.name ?? "",
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -142,16 +137,18 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                   gapH10,
 
                   /// Status Subtile
-                  const Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus libero eget.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  if ((model?.note ?? model?.exercise.description) != null)
+                    Text(
+                      model?.note ?? model?.exercise.description ?? "",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  gapH8,
+                  if ((model?.note ?? model?.exercise.description) != null)
+                    gapH8,
 
                   /// Sttaus White Widget
                   CustomContainer(

@@ -17,6 +17,42 @@ abstract class CacheManager<T> {
 
 // Cardio Manager
 class CacheCardio implements CacheManager<PlanModel> {
+  static final _instance = CacheCardio._internal();
+  CacheCardio._internal();
+  factory CacheCardio() => _instance;
+
+  @override
+  PlanModel? _item;
+
+  @override
+  PlanModel? get getItem => _item;
+
+  @override
+  set set(PlanModel item) => _item = item;
+}
+
+// Stretches Manager
+class CacheStreches implements CacheManager<PlanModel> {
+  static final _instance = CacheStreches._internal();
+  CacheStreches._internal();
+  factory CacheStreches() => _instance;
+
+  @override
+  PlanModel? _item;
+
+  @override
+  PlanModel? get getItem => _item;
+
+  @override
+  set set(PlanModel item) => _item = item;
+}
+
+// Challenges Manager
+class CacheChallenege implements CacheManager<PlanModel> {
+  static final _instance = CacheChallenege._internal();
+  CacheChallenege._internal();
+  factory CacheChallenege() => _instance;
+
   @override
   PlanModel? _item;
 

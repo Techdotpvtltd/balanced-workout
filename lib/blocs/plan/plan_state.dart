@@ -34,3 +34,39 @@ class PlanStateCardioFetched extends PlanState {
 
   PlanStateCardioFetched({required this.cardio});
 }
+
+// ===========================Fetch Stretches States================================
+
+class PlanStateStretchesFetching extends PlanState {
+  PlanStateStretchesFetching({super.isLoading = true});
+}
+
+class PlanStateStretchesFetchFailure extends PlanState {
+  final AppException exception;
+
+  PlanStateStretchesFetchFailure({required this.exception});
+}
+
+class PlanStateStretchesFetched extends PlanState {
+  final PlanModel stretches;
+
+  PlanStateStretchesFetched({required this.stretches});
+}
+
+// ===========================Fetch Challenge States================================
+
+class PlanStateChallengeFetching extends PlanState {
+  PlanStateChallengeFetching({super.isLoading = true});
+}
+
+class PlanStateChallengeFetchFailure extends PlanState {
+  final AppException exception;
+
+  PlanStateChallengeFetchFailure({required this.exception});
+}
+
+class PlanStateChallengeFetched extends PlanState {
+  final PlanModel challenge;
+
+  PlanStateChallengeFetched({required this.challenge});
+}

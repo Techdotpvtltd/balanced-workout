@@ -9,3 +9,7 @@ abstract class PlanEvent {}
 
 /// Fetch Cardio Event
 class PlanEventFetchCardio extends PlanEvent {}
+
+class PlanEventFetchChallenge extends PlanEvent {}
+
+class PlanEventFetchStretches extends PlanEvent {}
