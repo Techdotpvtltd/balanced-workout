@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'query_model.dart';
 
-@Deprecated("User WebService instread")
+// @Deprecated("User WebService instread")
 class FirestoreService {
   late final FirebaseFirestore _firestore;
 

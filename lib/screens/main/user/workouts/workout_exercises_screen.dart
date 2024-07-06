@@ -5,10 +5,10 @@
 // Date:        06-07-24 11:01:40 -- Saturday
 // Description:
 
-import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
-import 'package:balanced_workout/blocs/plan/plan_event.dart';
-import 'package:balanced_workout/blocs/plan/plan_state.dart';
-import 'package:balanced_workout/models/plan_model.dart';
+import 'package:balanced_workout/blocs/workout/workout_bloc.dart';
+import 'package:balanced_workout/blocs/workout/workout_event.dart';
+import 'package:balanced_workout/blocs/workout/workout_state.dart';
+import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/screens/components/custom_dropdown.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
@@ -20,50 +20,52 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
-import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
-import '../content_detail_screen.dart';
 
 class WorkoutExercisesScreen extends StatefulWidget {
-  const WorkoutExercisesScreen({super.key});
+  const WorkoutExercisesScreen({super.key, required this.selectedLevel});
+  final Level selectedLevel;
 
   @override
   State<WorkoutExercisesScreen> createState() => _WorkoutExercisesScreenState();
 }
 
 class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
-  PlanModel? cardio;
+  WorkoutModel? workout;
   bool isLoading = false;
+  late Level selecetedLevel = widget.selectedLevel;
 
-  void triggerFetchCardioEvent() {
-    context.read<PlanBloc>().add(PlanEventFetchChallenge());
+  void triggerFetchWorkoutEvent() {
+    context
+        .read<WorkoutBloc>()
+        .add(WorkoutEventFetch(forLevel: selecetedLevel));
   }
 
   @override
   void initState() {
-    triggerFetchCardioEvent();
+    triggerFetchWorkoutEvent();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PlanBloc, PlanState>(
+    return BlocListener<WorkoutBloc, WorkoutState>(
       listener: (context, state) {
-        if (state is PlanStateCardioFetchFailure ||
-            state is PlanStateCardioFetched ||
-            state is PlanStateCardioFetching) {
+        if (state is WorkoutStateFetching ||
+            state is WorkoutStateFetchFailure ||
+            state is WorkoutStateFetched) {
           setState(() {
             isLoading = state.isLoading;
           });
 
-          if (state is PlanStateCardioFetchFailure) {
+          if (state is WorkoutStateFetchFailure) {
             debugPrint(state.exception.message);
           }
-          if (state is PlanStateCardioFetched) {
+          if (state is WorkoutStateFetched) {
             setState(() {
-              cardio = state.cardio;
+              workout = state.model;
             });
           }
         }
@@ -84,7 +86,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
 
                       /// Background Image
                       child: CustomNetworkImage(
-                        imageUrl: cardio?.coverUrl ?? "",
+                        imageUrl: workout?.coverUrl ?? "",
                       ),
                     ),
                   ),
@@ -140,10 +142,22 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                                   textSize: 14,
                                   isTransparent: true,
                                   hintText: "Select Level",
+                                  selectedValue:
+                                      selecetedLevel.name.firstCapitalize(),
                                   items: Level.values
                                       .map((e) => e.name.firstCapitalize())
                                       .toList(),
-                                  onSelectedItem: (e) {},
+                                  onSelectedItem: (s) {
+                                    setState(() {
+                                      workout = null;
+                                      selecetedLevel = Level.values.firstWhere(
+                                          (a) =>
+                                              a.name.toLowerCase() ==
+                                              s.toLowerCase());
+                                    });
+
+                                    triggerFetchWorkoutEvent();
+                                  },
                                 )
                                 // Text(
                                 //   cardio?.difficultyLevel.name
@@ -179,7 +193,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  (cardio?.exercises.length ?? 0).toString(),
+                                  (workout?.exercises.length ?? 0).toString(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
@@ -239,16 +253,16 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
                         itemCount:
-                            isLoading ? 15 : (cardio?.exercises.length ?? 0),
+                            isLoading ? 15 : (workout?.exercises.length ?? 0),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          final PlanExercise? planExer =
-                              cardio?.exercises[index];
+                          final WorkoutExercise? planExer =
+                              workout?.exercises[index];
 
                           return CustomInkWell(
                             onTap: () {
-                              NavigationService.go(
-                                  ContentDetailScreen(model: planExer));
+                              // NavigationService.go(
+                              //     ContentDetailScreen(model: planExer));
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

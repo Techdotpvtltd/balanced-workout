@@ -6,6 +6,6 @@
 // Description:
 
 abstract class ModelPrototype {
-  Map<String, dynamic> toMap<T>(T data);
-  T fromMap<T>(Map<String, dynamic> data);
+  Map<String, dynamic> toMap();
+  T fromMap<T extends ModelPrototype>(Map<String, dynamic> map);
 }

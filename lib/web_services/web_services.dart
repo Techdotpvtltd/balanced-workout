@@ -8,7 +8,6 @@
 import 'dart:developer';
 import 'dart:ui';
 
-import 'package:balanced_workout/exceptions/data_exceptions.dart';
 import 'package:balanced_workout/exceptions/exception_parsing.dart';
 import 'package:balanced_workout/web_services/query_model.dart';
 import 'package:balanced_workout/web_services/web_service_prototype.dart';
@@ -54,10 +53,6 @@ class WebServices implements WebServicePrototype<FirebaseFirestore> {
       required List<QueryModel> queries,
       Function(DocumentSnapshot<Object?>? p1)? lastDocSnapshot}) async {
     try {
-      if (T is! ModelPrototype) {
-        throw DataExceptionModelPrototype(
-            message: "$T must implements ModelPrototype");
-      }
       final CollectionReference<Map<String, dynamic>> collectionReference =
           service.collection(collection);
 
@@ -72,8 +67,7 @@ class WebServices implements WebServicePrototype<FirebaseFirestore> {
         },
       );
 
-      return map.map((e) => (T as ModelPrototype).fromMap(e)).toList()
-          as List<T>;
+      return convertListToModel(map, T as ModelPrototype) as List<T>;
     } catch (e) {
       log('WebService: $T => ${e.toString()}');
       throw throwAppException(e: e);
@@ -185,5 +179,11 @@ extension _WebServicePrivate on WebServices {
     lastDocSnapshot(snapshot.docs.lastOrNull);
 
     return snapshot.docs.map((e) => e.data()).toList();
+  }
+
+  /// Conversion
+  List<T> convertListToModel<T extends ModelPrototype>(
+      List<Map<String, dynamic>> data, ModelPrototype type) {
+    return data.map((e) => type.fromMap(e)).toList() as List<T>;
   }
 }
