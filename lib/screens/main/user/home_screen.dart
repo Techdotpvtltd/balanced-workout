@@ -5,6 +5,7 @@
 // Date:        06-05-24 13:09:09 -- Monday
 // Description:
 
+import 'package:balanced_workout/utils/extensions/date_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -125,13 +126,13 @@ class HomeScreen extends StatelessWidget {
                   color: AppTheme.darkWidgetColor,
                   borderRadius: BorderRadius.all(Radius.circular(24)),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Today Activity",
                           style: TextStyle(
                             fontSize: 22,
@@ -140,8 +141,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "2024 October 25",
-                          style: TextStyle(
+                          DateTime.now()
+                              .dateToString('yyyy MMMM dd')
+                              .toUpperCase(),
+                          style: const TextStyle(
                             fontSize: 12,
                             color: Color(0xFF94A3B8),
                             fontWeight: FontWeight.w400,
@@ -151,7 +154,7 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                     /// Circle Widget
-                    SizedBox(
+                    const SizedBox(
                       width: 80,
                       height: 80,
                       child: PieChart(

@@ -89,9 +89,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                 ),
 
                 /// Custom App Bar
-                customAppBar(
-                  title: "Cardio Exercises",
-                ),
+                customAppBar(title: "Cardio Exercises"),
               ],
             ),
 
