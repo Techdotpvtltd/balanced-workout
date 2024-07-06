@@ -38,7 +38,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
   bool isLoading = false;
 
   void triggerFetchCardioEvent() {
-    context.read<PlanBloc>().add(PlanEventFetchCardio());
+    context.read<PlanBloc>().add(PlanEventFetchChallenge());
   }
 
   @override

@@ -29,6 +29,10 @@ class DataExceptionNotFound extends DataException {
   DataExceptionNotFound({super.message = "Requested data was not found."});
 }
 
+class DataExceptionModelPrototype<T> extends DataException {
+  DataExceptionModelPrototype({required super.message});
+}
+
 /// The service is currently unavailable.
 class DataExceptionUnavailable extends DataException {
   DataExceptionUnavailable(
