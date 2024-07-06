@@ -5,6 +5,8 @@
 // Date:        05-07-24 15:59:45 -- Friday
 // Description:
 
+import 'package:balanced_workout/models/workout_model.dart';
+
 import '../models/plan_model.dart';
 
 abstract class CacheManager<T> {
@@ -61,4 +63,20 @@ class CacheChallenege implements CacheManager<PlanModel> {
 
   @override
   set set(PlanModel item) => _item = item;
+}
+
+// Challenges Manager
+class CacheWorkout implements CacheManager<WorkoutModel> {
+  static final _instance = CacheWorkout._internal();
+  CacheWorkout._internal();
+  factory CacheWorkout() => _instance;
+
+  @override
+  WorkoutModel? _item;
+
+  @override
+  WorkoutModel? get getItem => _item;
+
+  @override
+  set set(WorkoutModel item) => _item = item;
 }
