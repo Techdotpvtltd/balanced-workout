@@ -7,11 +7,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_scaffold.dart';
 
-import '../activity_level_screen.dart';
 import 'product_card.dart';
 
 class RankScreen extends StatelessWidget {
@@ -36,7 +34,7 @@ class RankScreen extends StatelessWidget {
           return ProductCard(
             title: items[index],
             onClickCard: () {
-              NavigationService.go(ActivityLevelScreen());
+              // NavigationService.go(ActivityLevelScreen());
             },
             coverUrl:
                 'https://img.freepik.com/free-photo/young-happy-sportswoman-getting-ready-workout-tying-shoelace-fitness-center_637285-470.jpg?size=626&ext=jpg&ga=GA1.1.1224184972.1714867200&semt=sph',

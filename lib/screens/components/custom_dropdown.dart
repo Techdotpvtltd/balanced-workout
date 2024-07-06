@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/constants/app_theme.dart';
 import '../../utils/constants/constants.dart';
 
+@Deprecated("User CustomDropdownTF instead")
 class CustomTextFieldDropdown extends StatefulWidget {
   const CustomTextFieldDropdown(
       {super.key,
@@ -32,6 +33,7 @@ class CustomTextFieldDropdown extends StatefulWidget {
       _CustomTextFieldDropdownState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _CustomTextFieldDropdownState extends State<CustomTextFieldDropdown> {
   bool isShowPassword = true;
   List<String> items = [];
@@ -197,4 +199,121 @@ class DropdownMenuModel {
   final IconData icon;
 
   DropdownMenuModel({required this.title, required this.icon});
+}
+
+// ===========================Small Dropdown TF================================
+
+class CustomDropdownTF extends StatefulWidget {
+  const CustomDropdownTF({
+    super.key,
+    this.titleText,
+    required this.hintText,
+    required this.items,
+    required this.onSelectedItem,
+    this.selectedValue,
+    this.isEnabled = true,
+    this.isTransparent = false,
+    this.textSize = 10,
+    this.width,
+    this.height,
+  });
+  final String? titleText;
+  final String hintText;
+  final List<String> items;
+  final Function(String) onSelectedItem;
+  final String? selectedValue;
+  final bool isEnabled;
+  final bool isTransparent;
+  final double? width;
+  final double? height;
+  final double textSize;
+  @override
+  State<CustomDropdownTF> createState() => _CustomSmallTextFieldDropdownState();
+}
+
+class _CustomSmallTextFieldDropdownState extends State<CustomDropdownTF> {
+  bool isShowPassword = true;
+  List<String> items = [];
+  String? selectedItem;
+
+  @override
+  void initState() {
+    setState(() {
+      items = List.from(widget.items);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// Dropdown Buttton
+        DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            isExpanded: true,
+            dropdownStyleData: DropdownStyleData(
+              width: widget.width != null ? (widget.width! + 50) : 150,
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              decoration: const BoxDecoration(
+                color: Color(0xFF303030),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+            menuItemStyleData: MenuItemStyleData(height: widget.textSize + 20),
+            items: widget.isEnabled
+                ? items
+                    .map(
+                      (String item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: TextStyle(
+                            color: AppTheme.titleColor1,
+                            fontSize: widget.textSize,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                    .toList()
+                : [],
+            value: widget.selectedValue ?? selectedItem,
+            onChanged: (value) {
+              setState(() {
+                selectedItem = value as String? ?? "";
+              });
+              widget.onSelectedItem(value as String? ?? "");
+            },
+            hint: Text(
+              widget.hintText,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: AppTheme.placeholderColor,
+                fontWeight: FontWeight.w700,
+                fontSize: widget.textSize,
+              ),
+            ),
+            buttonStyleData: ButtonStyleData(
+              width: widget.width ?? 100,
+              height: widget.height,
+              padding: widget.isTransparent
+                  ? EdgeInsets.zero
+                  : const EdgeInsets.only(left: 20, right: 20),
+              decoration: BoxDecoration(
+                color: widget.isTransparent
+                    ? Colors.transparent
+                    : const Color(0xFF303030),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(124),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

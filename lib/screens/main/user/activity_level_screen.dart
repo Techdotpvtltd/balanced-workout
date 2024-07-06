@@ -5,7 +5,9 @@
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/app_assets.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/extensions/navigation_service.dart';
@@ -15,7 +17,8 @@ import 'components/product_card.dart';
 import 'playlist_screen.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
-  ActivityLevelScreen({super.key});
+  ActivityLevelScreen({super.key, required this.type});
+  final ScreenType type;
   final List<String> items = [
     "Beginner",
     "Intermediate",
@@ -44,7 +47,9 @@ class ActivityLevelScreen extends StatelessWidget {
             title: items[index],
             isAsset: true,
             onClickCard: () {
-              NavigationService.go(const PlaylistScreen());
+              NavigationService.go(type == ScreenType.workout
+                  ? const WorkoutExercisesScreen()
+                  : const PlaylistScreen());
             },
             coverUrl: images[index],
           );

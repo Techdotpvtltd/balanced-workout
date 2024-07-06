@@ -218,6 +218,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
 
             /// Weight TF
             gapH50,
+            // ignore: deprecated_member_use_from_same_package
             CustomTextFieldDropdown(
               titleText: 'Weight',
               isEnabled: isEditable,
@@ -230,6 +231,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
             gapH24,
 
             /// Height TF
+            // ignore: deprecated_member_use_from_same_package
             CustomTextFieldDropdown(
               titleText: 'Height',
               hintText: '${user.height} CM',
@@ -243,6 +245,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
             gapH24,
 
             /// Height TF
+            // ignore: deprecated_member_use_from_same_package
             CustomTextFieldDropdown(
               titleText: 'Goal',
               hintText: (user.goal ?? "").firstCapitalize(),
@@ -265,6 +268,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
             gapH24,
 
             /// Height TF
+            // ignore: deprecated_member_use_from_same_package
             CustomTextFieldDropdown(
               titleText: 'Physical Activity',
               hintText: (user.activityLevel ?? "").firstCapitalize(),

@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/extensions/navigation_service.dart';
@@ -32,7 +33,8 @@ class PeriodScreen extends StatelessWidget {
           return ProductCard(
             title: items[index],
             onClickCard: () {
-              NavigationService.go(ActivityLevelScreen());
+              NavigationService.go(
+                  ActivityLevelScreen(type: ScreenType.courses));
             },
             coverUrl:
                 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?cs=srgb&dl=pexels-victorfreitas-841130.jpg&fm=jpg',

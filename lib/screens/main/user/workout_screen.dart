@@ -9,6 +9,7 @@ import 'package:balanced_workout/screens/main/stretches/stretches_exercises_scre
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/app_manager.dart';
@@ -20,7 +21,6 @@ import '../../components/custom_scaffold.dart';
 import 'cardio/cardio_exercise_screen.dart';
 import 'components/navigation_button.dart';
 import 'period_screen.dart';
-import 'playlist_screen.dart';
 import 'progression_screen.dart';
 
 class WorkoutScreen extends StatelessWidget {
@@ -57,7 +57,8 @@ class WorkoutScreen extends StatelessWidget {
                     isSVG: true,
                     title: "Daily Workouts",
                     onPressed: () {
-                      NavigationService.go(ActivityLevelScreen());
+                      NavigationService.go(
+                          ActivityLevelScreen(type: ScreenType.workout));
                       AppManager().screenTitle = "Workout";
                       AppManager().records = [
                         {
