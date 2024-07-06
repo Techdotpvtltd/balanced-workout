@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/screens/main/stretches/stretches_exercises_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
+import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -154,8 +155,7 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Challenges",
                     isSVG: true,
                     onPressed: () {
-                      NavigationService.go(const PlaylistScreen());
-                      AppManager().screenTitle = "Challenges";
+                      NavigationService.go(const ChallengeExerciseScreen());
                     },
                   ),
                 ),
