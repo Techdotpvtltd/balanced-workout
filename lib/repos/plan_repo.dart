@@ -19,6 +19,7 @@ abstract class PlanRepo {
   Future<PlanModel> fetchFor({required PlanType type}) async {
     try {
       final List<Map<String, dynamic>> map =
+          // ignore: deprecated_member_use_from_same_package
           await FirestoreService().fetchWithMultipleConditions(
         collection: FIREBASE_COLLECTION_PLANS,
         queries: [
