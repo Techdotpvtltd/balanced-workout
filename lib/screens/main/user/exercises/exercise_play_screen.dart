@@ -9,6 +9,7 @@ import 'dart:async';
 
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
+import 'package:balanced_workout/screens/components/custom_network_image.dart';
 import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
@@ -16,21 +17,49 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class ExercisePlayScreen extends StatefulWidget {
-  const ExercisePlayScreen({super.key});
+import '../../../../models/plan_model.dart';
 
+class ExercisePlayScreen extends StatefulWidget {
+  const ExercisePlayScreen({super.key, required this.planExercises});
+  final List<PlanExercise> planExercises;
   @override
   State<ExercisePlayScreen> createState() => _ExercisePlayScreenState();
 }
 
 class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
+  late PlanExercise currentExercise = widget.planExercises.first;
+  late List<PlanExercise> planExercises = List.from(widget.planExercises);
+
   int seconds = 0;
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
+
+  void processNextExercise() {
+    final int nextIndex =
+        planExercises.indexWhere((e) => e.uuid == currentExercise.uuid) + 1;
+    if (nextIndex < planExercises.length) {
+      setState(() {
+        setState(() {
+          chewieController?.dispose();
+          chewieController?.videoPlayerController.dispose();
+          chewieController = null;
+        });
+        currentExercise = planExercises[nextIndex];
+      });
+
+      prepareVideoController();
+    }
+  }
+
   void prepareVideoController() async {
-    final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"));
+    if (currentExercise.exercise.video == null) {
+      return;
+    }
+
+    final videoPlayerController = VideoPlayerController.networkUrl(
+      Uri.parse(currentExercise.exercise.video!.url),
+    );
     await videoPlayerController.initialize();
     setState(() {
       chewieController = ChewieController(
@@ -42,14 +71,6 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
         aspectRatio: 1.5,
       );
     });
-
-    chewieController?.videoPlayerController.addListener(
-      () {
-        setState(() {
-          isPlaying = chewieController?.isPlaying ?? true;
-        });
-      },
-    );
   }
 
   void executeTime() {
@@ -86,7 +107,9 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
         child: CustomButton(
           title: "Complete Exercise",
           onlyBorder: true,
-          onPressed: () {},
+          onPressed: () {
+            processNextExercise();
+          },
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -114,11 +137,15 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
               color: AppTheme.darkWidgetColor2,
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
-            child: chewieController != null
-                ? Chewie(
-                    controller: chewieController!,
-                  )
-                : const SizedBox(),
+            child: currentExercise.exercise.video != null
+                ? chewieController != null
+                    ? Chewie(
+                        controller: chewieController!,
+                      )
+                    : const SizedBox()
+                : CustomNetworkImage(
+                    imageUrl: currentExercise.exercise.coverUrl ?? "",
+                  ),
           ),
 
           gapH20,
@@ -139,20 +166,20 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     /// Basic Info
-                    const Column(
+                    Column(
                       children: [
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "Push up",
-                            style: TextStyle(
+                            currentExercise.exercise.name,
+                            style: const TextStyle(
                               color: AppTheme.titleColor2,
                               fontSize: 28,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
-                        Align(
+                        const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "3 Reps",
@@ -167,82 +194,86 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                     ),
 
                     /// Equipments
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        gapH20,
-                        Text(
-                          "EQUIPMENTS",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
+                    if (currentExercise.exercise.equipments.isNotEmpty)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          gapH20,
+                          const Text(
+                            "EQUIPMENTS",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        gapH6,
-                        Text(
-                          "Dumbbell, Dumbell",
-                          style: TextStyle(
-                            color: AppTheme.titleColor3,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
+                          gapH6,
+                          Text(
+                            currentExercise.exercise.equipments.join(', '),
+                            style: const TextStyle(
+                              color: AppTheme.titleColor3,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
                     /// Steps Column
+                    if (currentExercise.exercise.steps.isNotEmpty)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          gapH20,
+                          const Text(
+                            "STEPS",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          gapH6,
+                          for (int i = 0;
+                              i < currentExercise.exercise.steps.length;
+                              i++)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${i + 1}.  ",
+                                    style: const TextStyle(
+                                      color: AppTheme.titleColor1,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      currentExercise.exercise.steps[i],
+                                      style: const TextStyle(
+                                        color: AppTheme.titleColor1,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+
+                    gapH20,
+
+                    /// PrimaryFocus
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         gapH20,
                         const Text(
-                          "STEPS",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        gapH6,
-                        for (int i = 0; i < 4; i++)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 7),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${i + 1}.  ",
-                                  style: const TextStyle(
-                                    color: AppTheme.titleColor1,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const Flexible(
-                                  child: Text(
-                                    "Reloaded 1 of 2365 libraries in 301ms (compile: 27 ms, reload: 116 ms, reassemble: 146 ms).",
-                                    style: TextStyle(
-                                      color: AppTheme.titleColor1,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-
-                    gapH20,
-
-                    /// PrimaryFocus
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        gapH20,
-                        Text(
                           "PRIMARY FOCUS",
                           style: TextStyle(
                             color: Colors.white,
@@ -256,7 +287,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Primary Muscle",
                               style: TextStyle(
                                 color: Colors.white,
@@ -266,8 +297,9 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                             ),
                             gapH6,
                             Text(
-                              "Triceps, Biceps",
-                              style: TextStyle(
+                              currentExercise.exercise.primaryMuscles
+                                  .join(', '),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -278,55 +310,59 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                         ),
 
                         /// Secondary Muscle
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Secondary Muscle",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                        if (currentExercise
+                            .exercise.secondaryMuscles.isNotEmpty)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Secondary Muscle",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            gapH6,
-                            Text(
-                              "Triceps, Biceps",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                              gapH6,
+                              Text(
+                                currentExercise.exercise.primaryMuscles
+                                    .join(', '),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            gapH6,
-                          ],
-                        ),
+                              gapH6,
+                            ],
+                          ),
 
                         /// Note
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            gapH10,
-                            Text(
-                              "Note",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                        if (currentExercise.exercise.note != "")
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              gapH10,
+                              const Text(
+                                "Note",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            gapH6,
-                            Text(
-                              "Reloaded 1 of 2365 libraries in 379msReloaded 1 of 2365 libraries in 379msReloaded 1 of 2365 libraries in 379ms",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                              gapH6,
+                              Text(
+                                currentExercise.exercise.note ?? "",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            gapH6,
-                          ],
-                        ),
+                              gapH6,
+                            ],
+                          ),
                       ],
                     ),
                   ],

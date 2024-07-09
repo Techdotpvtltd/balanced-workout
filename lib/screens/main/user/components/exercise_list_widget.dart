@@ -30,7 +30,12 @@ class ExerciseListWidget extends StatelessWidget {
 
         return CustomInkWell(
           onTap: () {
-            NavigationService.go(const ExercisePlayScreen());
+            final exercises = List<PlanExercise>.from(planExercises)
+                .skipWhile((e) => e.uuid != planExercise.uuid)
+                .toList();
+            NavigationService.go(
+              ExercisePlayScreen(planExercises: exercises),
+            );
           },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
