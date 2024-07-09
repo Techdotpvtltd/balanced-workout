@@ -13,7 +13,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import 'components/custom_tab_bar.dart';
 import 'components/product_card.dart';
-import 'progress_challenge_screen.dart';
+import 'courses/progress_course_screen.dart';
 import 'startup_challenge_screen.dart';
 
 class CoursesScreen extends StatelessWidget {
@@ -60,7 +60,7 @@ class CoursesScreen extends StatelessWidget {
                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMkj6sxP6kJP0QbBiL1u3YLodQqH4fu8waUO-ct1jVlw&s",
                         subTitle: '7 Week',
                         onClickCard: () {
-                          NavigationService.go(const ProgressChallengeScreen());
+                          NavigationService.go(const ProgressCourseScreen());
                         },
                       ),
                     ),

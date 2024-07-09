@@ -5,6 +5,7 @@
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/courses/progress_course_screen.dart';
 import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/app_assets.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -15,7 +16,6 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
-import 'playlist_screen.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
   ActivityLevelScreen({super.key, required this.type, this.selectedPeriod});
@@ -46,11 +46,15 @@ class ActivityLevelScreen extends StatelessWidget {
             title: items[index].name.firstCapitalize(),
             isAsset: true,
             onClickCard: () {
-              NavigationService.go(type == ScreenType.workout
-                  ? WorkoutExercisesScreen(
-                      selectedLevel: items[index],
-                    )
-                  : const PlaylistScreen());
+              if (type == ScreenType.workout) {
+                NavigationService.go(WorkoutExercisesScreen(
+                  selectedLevel: items[index],
+                ));
+              }
+
+              if (type == ScreenType.courses) {
+                NavigationService.go(const ProgressCourseScreen());
+              }
             },
             coverUrl: images[index],
           );

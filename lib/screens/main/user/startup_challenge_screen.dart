@@ -16,7 +16,7 @@ import '../../components/custom_app_bar.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_network_image.dart';
 import '../../components/custom_paddings.dart';
-import 'progress_challenge_screen.dart';
+import 'courses/progress_course_screen.dart';
 
 class StartupChallengeScreen extends StatelessWidget {
   const StartupChallengeScreen({super.key});
@@ -87,7 +87,7 @@ class StartupChallengeScreen extends StatelessWidget {
                             child: CustomButton(
                               onPressed: () {
                                 NavigationService.go(
-                                    const ProgressChallengeScreen());
+                                    const ProgressCourseScreen());
                               },
                               width: 217,
                               title: "Start Now",

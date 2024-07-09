@@ -1,6 +1,6 @@
 // Project: 	   balanced_workout
-// File:    	   progress_challenge_screen
-// Path:    	   lib/screens/main/user/progress_challenge_screen.dart
+// File:    	   progress_course_screen
+// Path:    	   lib/screens/main/user/progress_course_screen.dart
 // Author:       Ali Akbar
 // Date:        07-05-24 12:14:56 -- Tuesday
 // Description:
@@ -10,25 +10,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
-import '../../../utils/constants/app_assets.dart';
-import '../../../utils/constants/app_theme.dart';
-import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
-import '../../components/custom_app_bar.dart';
-import '../../components/custom_ink_well.dart';
-import '../../components/custom_network_image.dart';
-import '../../components/custom_paddings.dart';
-import 'playlist_screen.dart';
+import '../../../../utils/constants/app_assets.dart';
+import '../../../../utils/constants/app_theme.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
+import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_ink_well.dart';
+import '../../../components/custom_network_image.dart';
+import '../../../components/custom_paddings.dart';
+import '../playlist_screen.dart';
 
-class ProgressChallengeScreen extends StatefulWidget {
-  const ProgressChallengeScreen({super.key});
+class ProgressCourseScreen extends StatefulWidget {
+  const ProgressCourseScreen({super.key});
 
   @override
-  State<ProgressChallengeScreen> createState() =>
-      _ProgressChallengeScreenState();
+  State<ProgressCourseScreen> createState() => _ProgressCourseScreenState();
 }
 
-class _ProgressChallengeScreenState extends State<ProgressChallengeScreen>
+class _ProgressCourseScreenState extends State<ProgressCourseScreen>
     with TickerProviderStateMixin {
   late AnimationController controller;
 
@@ -80,7 +79,7 @@ class _ProgressChallengeScreenState extends State<ProgressChallengeScreen>
 
                     /// Custom App Bar
                     Positioned(
-                      child: customAppBar(title: "7x4 Challenge"),
+                      child: customAppBar(title: "Course"),
                     ),
 
                     /// Progress Show Widget
