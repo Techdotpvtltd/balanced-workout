@@ -9,3 +9,5 @@ const String FIREBASE_COLLECTION_USER_PROFILES =
 const FIREBASE_COLLECTION_PLANS = "${kReleaseMode ? "Rel-" : "Dev-"}Plans";
 const FIREBASE_COLLECTION_WORKOUTS =
     "${kReleaseMode ? "Rel-" : "Dev-"}Workouts";
+
+const FIREBASE_COLLECTION_COURSE = "${kReleaseMode ? "Rel-" : "Dev-"}Course";
