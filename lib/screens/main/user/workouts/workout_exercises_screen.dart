@@ -159,16 +159,6 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                                     triggerFetchWorkoutEvent();
                                   },
                                 )
-                                // Text(
-                                //   cardio?.difficultyLevel.name
-                                //           .firstCapitalize() ??
-                                //       "-",
-                                //   style: const TextStyle(
-                                //     color: Colors.white,
-                                //     fontWeight: FontWeight.w700,
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
                               ],
                             ),
                             gapH10,
