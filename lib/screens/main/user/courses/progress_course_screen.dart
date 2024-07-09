@@ -10,6 +10,7 @@ import 'package:balanced_workout/blocs/course/course_event.dart';
 import 'package:balanced_workout/blocs/course/course_state.dart';
 import 'package:balanced_workout/models/course_model.dart';
 import 'package:balanced_workout/models/plan_model.dart';
+import 'package:balanced_workout/screens/main/user/courses/course_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,7 +116,9 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
                         /// Color Blur Widget
                         child: ColorFiltered(
                           colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.6), BlendMode.srcOver),
+                            Colors.black.withOpacity(0.6),
+                            BlendMode.srcOver,
+                          ),
 
                           /// Background Image
                           child: CustomNetworkImage(
@@ -231,7 +234,12 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
                                   weekdata: course?.weeks[index],
                                   onPressedDay: (week, day, planExercises) {
                                     NavigationService.go(
-                                        const PlaylistScreen());
+                                      CourseExercisesScreen(
+                                        day: day,
+                                        week: week,
+                                        planExercises: planExercises,
+                                      ),
+                                    );
                                   },
                                 ),
                               );

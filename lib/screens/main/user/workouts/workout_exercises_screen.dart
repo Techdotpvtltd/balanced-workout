@@ -299,7 +299,8 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                                         Row(
                                           children: [
                                             SvgPicture.asset(
-                                                AppAssets.clockIcon),
+                                              AppAssets.clockIcon,
+                                            ),
                                             gapW8,
                                             Text(
                                               planExer?.exercise.duration
