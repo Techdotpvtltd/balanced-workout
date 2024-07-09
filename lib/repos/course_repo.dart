@@ -11,6 +11,7 @@ import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/constants/firebase_collections.dart';
 import 'package:balanced_workout/web_services/firestore_services.dart';
 import 'package:balanced_workout/web_services/query_model.dart';
+import 'package:flutter/material.dart';
 
 abstract class _CourseRepoInterface {
   Future<List<CourseModel>> fetchAll(
@@ -49,6 +50,7 @@ class CourseRepo extends _CourseRepoInterface with _CourseRepoInterfaceMixin {
 
       return data.map((e) => CourseModel.fromMap(e)).toList();
     } catch (e) {
+      debugPrint(e.toString());
       throw throwAppException(e: e);
     }
   }
