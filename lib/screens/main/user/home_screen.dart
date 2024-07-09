@@ -27,7 +27,6 @@ import 'components/article_items.dart';
 import 'components/horizontal_product_card.dart';
 import 'components/navigation_button.dart';
 import 'notification_screen.dart';
-import 'courses/progress_course_screen.dart';
 import 'settings/edit_profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -261,7 +260,8 @@ class HomeScreen extends StatelessWidget {
                           title: 'Full Body stretching',
                           celeries: '130 Kcal',
                           onClick: () {
-                            NavigationService.go(const ProgressCourseScreen());
+                            NavigationService.go(
+                                const ChallengeExerciseScreen());
                           },
                         ),
                       ),

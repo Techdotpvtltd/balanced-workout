@@ -53,7 +53,9 @@ class ActivityLevelScreen extends StatelessWidget {
               }
 
               if (type == ScreenType.courses) {
-                NavigationService.go(const ProgressCourseScreen());
+                NavigationService.go(ProgressCourseScreen(
+                    selectedLevel: items[index],
+                    selectedPeriod: selectedPeriod ?? Period.weekly));
               }
             },
             coverUrl: images[index],

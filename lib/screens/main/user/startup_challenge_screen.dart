@@ -11,13 +11,12 @@ import 'package:flutter_svg/svg.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_network_image.dart';
 import '../../components/custom_paddings.dart';
-import 'courses/progress_course_screen.dart';
 
+// FIXME: Check for usages
 class StartupChallengeScreen extends StatelessWidget {
   const StartupChallengeScreen({super.key});
 
@@ -86,8 +85,8 @@ class StartupChallengeScreen extends StatelessWidget {
                             alignment: Alignment.bottomCenter,
                             child: CustomButton(
                               onPressed: () {
-                                NavigationService.go(
-                                    const ProgressCourseScreen());
+                                // NavigationService.go(
+                                //     const ProgressCourseScreen());
                               },
                               width: 217,
                               title: "Start Now",

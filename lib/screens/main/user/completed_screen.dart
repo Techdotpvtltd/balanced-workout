@@ -9,13 +9,11 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_container.dart';
 import '../../components/custom_paddings.dart';
 import 'components/custom_tab_bar.dart';
 import 'components/product_card.dart';
-import 'courses/progress_course_screen.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});
@@ -95,9 +93,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   return ProductCard(
                     title: "Simply Chest Work",
                     subTitle: "7 weeks",
-                    onClickCard: () {
-                      NavigationService.go(const ProgressCourseScreen());
-                    },
+                    onClickCard: () {},
                     coverUrl:
                         'https://allmaxnutrition.com/cdn/shop/articles/13576-1200x600-1.jpg?v=1678816564',
                   );
