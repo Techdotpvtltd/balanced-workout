@@ -59,7 +59,7 @@ class CourseModel {
 
   @override
   String toString() {
-    return 'CourseModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, title: $title, description: $description, weeks: $weeks, coverUrl: $coverUrl, period: $period, difficulty: $difficulty)';
+    return 'CourseModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, title: $title, description: $description, coverUrl: $coverUrl, period: $period, difficulty: $difficulty)';
   }
 }
 

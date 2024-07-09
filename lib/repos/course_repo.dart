@@ -40,8 +40,8 @@ class CourseRepo extends _CourseRepoInterface with _CourseRepoInterfaceMixin {
             type: QueryType.isEqual,
           ),
           QueryModel(
-            field: "period",
-            value: [period.name.toLowerCase()],
+            field: "difficulty",
+            value: [level.name.toLowerCase()],
             type: QueryType.whereIn,
           ),
           QueryModel(field: "", value: 1, type: QueryType.limit),
