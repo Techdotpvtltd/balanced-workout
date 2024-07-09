@@ -5,6 +5,9 @@
 // Date:        06-05-24 13:09:09 -- Monday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
+import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/date_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -18,9 +21,7 @@ import '../../components/avatar_widget.dart';
 import '../../components/chat_widget.dart';
 import '../../components/circle_button.dart';
 import '../../components/custom_ink_well.dart';
-import 'active_challenge_screen.dart';
 import 'article_screen.dart';
-import 'challenge_screen.dart';
 import 'community/community_screen.dart';
 import 'components/article_items.dart';
 import 'components/horizontal_product_card.dart';
@@ -192,7 +193,9 @@ class HomeScreen extends StatelessWidget {
                       icon: AppAssets.workoutIcon,
                       isSVG: true,
                       onPressed: () {
-                        NavigationService.go(const ActiveChallengeScreen());
+                        NavigationService.go(
+                          ActivityLevelScreen(type: ScreenType.workout),
+                        );
                       },
                     ),
                   ),
@@ -203,7 +206,7 @@ class HomeScreen extends StatelessWidget {
                       icon: AppAssets.challengeIcon,
                       isSVG: true,
                       onPressed: () {
-                        NavigationService.go(const ChallengeScreen());
+                        NavigationService.go(const ChallengeExerciseScreen());
                       },
                     ),
                   ),
@@ -225,7 +228,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      NavigationService.go(const ChallengeScreen());
+                      NavigationService.go(const ChallengeExerciseScreen());
                     },
                     style: const ButtonStyle(
                       padding: WidgetStatePropertyAll(EdgeInsets.zero),

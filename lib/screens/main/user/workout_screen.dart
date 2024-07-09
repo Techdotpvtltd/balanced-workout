@@ -5,15 +5,12 @@
 // Date:        06-05-24 15:00:27 -- Monday
 // Description:
 
-import 'package:balanced_workout/blocs/course/course_bloc.dart';
-import 'package:balanced_workout/blocs/course/course_event.dart';
 import 'package:balanced_workout/screens/main/stretches/stretches_exercises_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/extensions/navigation_service.dart';
@@ -76,9 +73,6 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Courses",
                     onPressed: () {
                       NavigationService.go(PeriodScreen());
-                      context.read<CourseBloc>().add(CourseEventFetch(
-                          difficultyLevel: Level.beginner,
-                          period: Period.yearly));
                     },
                   ),
                 ),

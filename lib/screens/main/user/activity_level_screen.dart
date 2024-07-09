@@ -18,9 +18,11 @@ import 'components/product_card.dart';
 import 'playlist_screen.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
-  ActivityLevelScreen({super.key, required this.type});
+  ActivityLevelScreen({super.key, required this.type, this.selectedPeriod});
   final ScreenType type;
   final List<Level> items = Level.values;
+  final Period? selectedPeriod;
+
   final images = [
     AppAssets.beginnersLevel,
     AppAssets.intermedianLevel,

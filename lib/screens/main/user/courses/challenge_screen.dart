@@ -7,16 +7,15 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../utils/constants/constants.dart';
-import '../../../utils/extensions/navigation_service.dart';
-import '../../components/custom_app_bar.dart';
-import '../../components/custom_paddings.dart';
-import 'components/horizontal_product_card.dart';
-import 'components/product_card.dart';
-import 'progress_challenge_screen.dart';
-import 'startup_challenge_screen.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
+import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_paddings.dart';
+import '../components/horizontal_product_card.dart';
+import '../components/product_card.dart';
+import '../progress_challenge_screen.dart';
+import '../startup_challenge_screen.dart';
 
-// FIXME: Later
 class ChallengeScreen extends StatelessWidget {
   const ChallengeScreen({super.key});
 
