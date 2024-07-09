@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // Project: 	   balanced_workout
 // File:    	   course_model
 // Path:    	   lib/models/course_model.dart
@@ -6,6 +7,7 @@
 // Description:
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../utils/constants/enum.dart';
 import 'plan_model.dart';
 
@@ -54,6 +56,11 @@ class CourseModel {
           .toList(),
     );
   }
+
+  @override
+  String toString() {
+    return 'CourseModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, title: $title, description: $description, weeks: $weeks, coverUrl: $coverUrl, period: $period, difficulty: $difficulty)';
+  }
 }
 
 class CourseWeekModel {
@@ -72,6 +79,9 @@ class CourseWeekModel {
           .toList(),
     );
   }
+
+  @override
+  String toString() => 'CourseWeekModel(week: $week, days: $days)';
 }
 
 class CourseDayModel {
@@ -90,4 +100,8 @@ class CourseDayModel {
           .toList(),
     );
   }
+
+  @override
+  String toString() =>
+      'CourseDayModel(day: $day, planExercises: $planExercises)';
 }

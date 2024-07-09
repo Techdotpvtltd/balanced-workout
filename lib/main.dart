@@ -1,3 +1,4 @@
+import 'package:balanced_workout/blocs/course/course_bloc.dart';
 import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
 import 'package:balanced_workout/blocs/workout/workout_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,6 +44,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => UserBloc()),
         BlocProvider(create: (context) => PlanBloc()),
         BlocProvider(create: (context) => WorkoutBloc()),
+        BlocProvider(create: (context) => CourseBloc()),
       ],
       child: MaterialApp(
         navigatorKey: navKey,

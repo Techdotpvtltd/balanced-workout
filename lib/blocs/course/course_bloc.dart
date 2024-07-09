@@ -19,9 +19,9 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       (event, emit) async {
         try {
           emit(CourseStateFetching());
-          final List<CourseModel> courses = await CourseRepo()
-              .fetchAll(level: event.difficultyLevel, period: event.period);
-          emit(CourseStateFetched(courses: courses));
+          final CourseModel course = await CourseRepo()
+              .fetch(level: event.difficultyLevel, period: event.period);
+          emit(CourseStateFetched(course: course));
         } on AppException catch (e) {
           emit(CourseStateFetchFailure(exception: e));
         }
