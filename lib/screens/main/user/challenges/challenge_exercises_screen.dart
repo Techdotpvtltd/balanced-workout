@@ -22,7 +22,7 @@ import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
-import '../content_detail_screen.dart';
+import '../exercises/exercise_play_screen.dart';
 
 class ChallengeExerciseScreen extends StatefulWidget {
   const ChallengeExerciseScreen({super.key});
@@ -237,7 +237,11 @@ class _ChallengeExerciseScreenState extends State<ChallengeExerciseScreen> {
                           return CustomInkWell(
                             onTap: () {
                               NavigationService.go(
-                                  ContentDetailScreen(model: planExer));
+                                ExercisePlayScreen(
+                                  planExercises: challenge?.exercises ?? [],
+                                  currentExercise: planExer,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

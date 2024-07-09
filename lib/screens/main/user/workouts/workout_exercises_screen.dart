@@ -17,12 +17,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../models/plan_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
+import '../exercises/exercise_play_screen.dart';
 
 class WorkoutExercisesScreen extends StatefulWidget {
   const WorkoutExercisesScreen({super.key, required this.selectedLevel});
@@ -246,13 +249,17 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                             isLoading ? 15 : (workout?.exercises.length ?? 0),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          final WorkoutExercise? planExer =
+                          final PlanExercise? planExer =
                               workout?.exercises[index];
 
                           return CustomInkWell(
                             onTap: () {
-                              // NavigationService.go(
-                              //     ContentDetailScreen(model: planExer));
+                              NavigationService.go(
+                                ExercisePlayScreen(
+                                  planExercises: workout?.exercises ?? [],
+                                  currentExercise: planExer,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

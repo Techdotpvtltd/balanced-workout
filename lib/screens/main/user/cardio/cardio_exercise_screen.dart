@@ -22,7 +22,7 @@ import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
-import '../content_detail_screen.dart';
+import '../exercises/exercise_play_screen.dart';
 
 class CardioExerciseScreen extends StatefulWidget {
   const CardioExerciseScreen({super.key});
@@ -236,7 +236,11 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                           return CustomInkWell(
                             onTap: () {
                               NavigationService.go(
-                                  ContentDetailScreen(model: planExer));
+                                ExercisePlayScreen(
+                                  planExercises: cardio?.exercises ?? [],
+                                  currentExercise: planExer,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

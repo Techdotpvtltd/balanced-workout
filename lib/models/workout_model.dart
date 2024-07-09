@@ -8,8 +8,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/constants/enum.dart';
-import 'exercise_model.dart';
-import 'set_model.dart';
+import 'plan_model.dart';
 
 class WorkoutModel {
   final String uuid;
@@ -17,7 +16,7 @@ class WorkoutModel {
   final String? coverUrl;
   final Level difficultyLevel;
   final String? description;
-  final List<WorkoutExercise> exercises;
+  final List<PlanExercise> exercises;
   final DateTime createdAt;
   final String createdBy;
   WorkoutModel({
@@ -42,7 +41,7 @@ class WorkoutModel {
           map['description'] != null ? map['description'] as String : null,
       coverUrl: map['coverUrl'] != null ? map['coverUrl'] as String : null,
       exercises: (map['exercises'] as List<dynamic>)
-          .map((e) => WorkoutExercise.fromMap(e as Map<String, dynamic>))
+          .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
           .toList(),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       createdBy: map['createdBy'] as String,
@@ -52,45 +51,5 @@ class WorkoutModel {
   @override
   String toString() {
     return 'WorkoutModel(uuid: $uuid, name: $name coverUrl, $coverUrl, difficultyLevel: $difficultyLevel, description: $description, exercises: $exercises, createdAt: $createdAt, createdBy: $createdBy)';
-  }
-}
-
-class WorkoutExercise {
-  final String uuid;
-  final ExerciseModel exercise;
-  final List<SetValueModel> sets;
-  final String? note;
-  final String? tempo;
-  final List<WorkoutExercise> supersets;
-  final DateTime addedAt;
-  WorkoutExercise({
-    required this.uuid,
-    required this.exercise,
-    required this.sets,
-    this.note,
-    this.tempo,
-    required this.supersets,
-    required this.addedAt,
-  });
-
-  factory WorkoutExercise.fromMap(Map<String, dynamic> map) {
-    return WorkoutExercise(
-      uuid: map['uuid'] as String,
-      exercise: ExerciseModel.fromMap(map['exercise'] as Map<String, dynamic>),
-      sets: (map['sets'] as List<dynamic>)
-          .map((e) => SetValueModel.fromMap((e as Map<String, dynamic>)))
-          .toList(),
-      note: map['note'] != null ? map['note'] as String : null,
-      tempo: map['tempo'] != null ? map['tempo'] as String : null,
-      supersets: (map['supersets'] as List<dynamic>)
-          .map((e) => WorkoutExercise.fromMap(e as Map<String, dynamic>))
-          .toList(),
-      addedAt: (map['addedAt'] as Timestamp).toDate(),
-    );
-  }
-
-  @override
-  String toString() {
-    return 'WorkoutExercise(uuid: $uuid, exercise: $exercise, sets: $sets, note: $note, tempo: $tempo, supersets: $supersets, addedAt: $addedAt)';
   }
 }

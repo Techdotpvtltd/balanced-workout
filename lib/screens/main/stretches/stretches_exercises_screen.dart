@@ -10,7 +10,7 @@ import 'package:balanced_workout/blocs/plan/plan_state.dart';
 import 'package:balanced_workout/models/plan_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_ink_well.dart';
-import 'package:balanced_workout/screens/main/user/content_detail_screen.dart';
+import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -238,7 +238,11 @@ class _StretchesExercisesScreenState extends State<StretchesExercisesScreen> {
                           return CustomInkWell(
                             onTap: () {
                               NavigationService.go(
-                                  ContentDetailScreen(model: planExer));
+                                ExercisePlayScreen(
+                                  planExercises: stretches?.exercises ?? [],
+                                  currentExercise: planExer,
+                                ),
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

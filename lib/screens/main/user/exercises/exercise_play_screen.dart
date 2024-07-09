@@ -20,14 +20,17 @@ import 'package:video_player/video_player.dart';
 import '../../../../models/plan_model.dart';
 
 class ExercisePlayScreen extends StatefulWidget {
-  const ExercisePlayScreen({super.key, required this.planExercises});
+  const ExercisePlayScreen(
+      {super.key, required this.planExercises, this.currentExercise});
   final List<PlanExercise> planExercises;
+  final PlanExercise? currentExercise;
   @override
   State<ExercisePlayScreen> createState() => _ExercisePlayScreenState();
 }
 
 class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
-  late PlanExercise currentExercise = widget.planExercises.first;
+  late PlanExercise currentExercise =
+      widget.currentExercise ?? widget.planExercises.first;
   late List<PlanExercise> planExercises = List.from(widget.planExercises);
 
   int seconds = 0;
