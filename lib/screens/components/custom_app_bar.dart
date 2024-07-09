@@ -18,6 +18,7 @@ PreferredSizeWidget customAppBar({
   double appBarSize = 60,
   List<Widget>? actions,
   Widget? titleWidget,
+  bool centerTitle = false,
 }) {
   return PreferredSize(
     preferredSize: Size.fromHeight(topPadding + appBarSize),
@@ -36,7 +37,7 @@ PreferredSizeWidget customAppBar({
                 ),
               )
             : null,
-        centerTitle: false,
+        centerTitle: centerTitle,
         title: titleWidget ??
             Text(
               title ?? "",

@@ -27,7 +27,6 @@ import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
 import '../../../components/custom_paddings.dart';
-import '../playlist_screen.dart';
 
 class ProgressCourseScreen extends StatefulWidget {
   const ProgressCourseScreen({
@@ -78,6 +77,7 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
   @override
   void dispose() {
     controller.dispose();
+
     controller.removeListener(() {});
     super.dispose();
   }

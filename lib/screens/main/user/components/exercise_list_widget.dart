@@ -5,6 +5,8 @@
 // Date:        09-07-24 16:08:04 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
+import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -27,7 +29,9 @@ class ExerciseListWidget extends StatelessWidget {
         final PlanExercise planExercise = planExercises[index];
 
         return CustomInkWell(
-          onTap: () {},
+          onTap: () {
+            NavigationService.go(const ExercisePlayScreen());
+          },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
