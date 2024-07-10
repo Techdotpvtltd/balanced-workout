@@ -200,7 +200,7 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                                           .map((e) => e.exercise.duration)
                                           .reduce((a, b) => a + b)
                                           .formatTime() ??
-                                      "0",
+                                      "00:00",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
