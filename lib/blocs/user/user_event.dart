@@ -34,3 +34,10 @@ class UserEventUpdateProfile extends UserEvent {
       this.role,
       this.activityLevel});
 }
+
+class UserEventSearchUsers extends UserEvent {
+  final String search;
+  final List<String> ignoreIds;
+
+  UserEventSearchUsers({required this.search, required this.ignoreIds});
+}

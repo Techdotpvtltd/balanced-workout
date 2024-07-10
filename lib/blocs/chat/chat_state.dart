@@ -77,16 +77,16 @@ class ChatStateUpdates extends ChatState {
 }
 
 // ===========================Joined================================
-class ChatStateJoining extends ChatState {
-  ChatStateJoining({super.isLoading = true});
+class ChatStateAddingMembers extends ChatState {
+  ChatStateAddingMembers({super.isLoading = true});
 }
 
-class ChatStateJoinFailure extends ChatState {
+class ChatStateAddMemberFailure extends ChatState {
   final AppException exception;
-  ChatStateJoinFailure({required this.exception});
+  ChatStateAddMemberFailure({required this.exception});
 }
 
-class ChatStateJoined extends ChatState {}
+class ChatStateAddedMembers extends ChatState {}
 
 // ===========================Remove Member Chat================================
 

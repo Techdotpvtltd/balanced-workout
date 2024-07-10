@@ -44,10 +44,11 @@ class ChatEventUpdate extends ChatEvent {
       required this.maxMembers});
 }
 
-class ChatEventJoin extends ChatEvent {
+class ChatEventAddMembers extends ChatEvent {
   final String chatId;
+  final List<UserProfileModel> users;
 
-  ChatEventJoin({required this.chatId});
+  ChatEventAddMembers({required this.users, required this.chatId});
 }
 
 /// Remove Member

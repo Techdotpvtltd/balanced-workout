@@ -96,14 +96,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
 
     /// Join Group Chat
-    on<ChatEventJoin>(
+    on<ChatEventAddMembers>(
       (event, emit) async {
         try {
-          emit(ChatStateJoining());
-          await ChatRepo().joinGroupChat(chatId: event.chatId);
-          emit(ChatStateJoined());
+          emit(ChatStateAddingMembers());
+          await ChatRepo().addMembers(chatId: event.chatId, users: event.users);
+          emit(ChatStateAddedMembers());
         } on AppException catch (e) {
-          emit(ChatStateJoinFailure(exception: e));
+          emit(ChatStateAddMemberFailure(exception: e));
         }
       },
     );

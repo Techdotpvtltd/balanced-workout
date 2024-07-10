@@ -73,18 +73,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       },
     );
 
-    /// OnFindUser
-    // on<UserEventFindBy>(
-    //   (event, emit) async {
-    //     try {
-    //       emit(UserStateFinding());
-    //       // final List<UserModel> users = await UserRepo()
-    //       //     .fetchUsersBy(searchText: event.searchText, bounds: event.bounds);
-    //       // emit(UserStateFinded(users: users));
-    //     } on AppException catch (e) {
-    //       emit(UserStateFindFailure(exception: e));
-    //     }
-    //   },
-    // );
+    // OnFindUser
+    on<UserEventSearchUsers>(
+      (event, emit) async {
+        try {
+          emit(UserStateSearchFetching());
+          final List<UserModel> users = await UserRepo().fetchUsersWith(
+              searchName: event.search, ignoreIds: event.ignoreIds);
+          emit(UserStateSearchFetched(users: users));
+        } on AppException catch (e) {
+          emit(UserStateSearchFetchFailure(exception: e));
+        }
+      },
+    );
   }
 }

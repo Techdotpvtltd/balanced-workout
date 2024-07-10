@@ -82,24 +82,6 @@ class UserRepo {
     required UserModel user,
   }) async {
     try {
-      // /// There is no user profile
-      // if (_userModel == null) {
-      //   final UserModel model = UserModel(
-      //     uid:
-      //     name: name,
-      //     email: email,
-      //     createdAt: DateTime.now(),
-      //     avatar: imagePath ?? "",
-      //   );
-      //   await FirestoreService().saveWithDocId(
-      //     path: FIREBASE_COLLECTION_USER,
-      //     docId: model.uid,
-      //     data: model.toMap(),
-      //   );
-      //   _userModel = model;
-      //   return _userModel!;
-      // }
-
       await FirestoreService().updateWithDocId(
           path: FIREBASE_COLLECTION_USER, docId: user.uid, data: user.toMap());
       AppManager().user = user;
@@ -237,6 +219,30 @@ class UserRepo {
         }
       }
       return users;
+    } catch (e) {
+      throw throwAppException(e: e);
+    }
+  }
+
+  Future<List<UserModel>> fetchUsersWith(
+      {required String searchName, required List<String> ignoreIds}) async {
+    try {
+      final List<Map<String, dynamic>> data =
+          await FirestoreService().fetchWithMultipleConditions(
+        collection: FIREBASE_COLLECTION_USER,
+        queries: [
+          QueryModel(field: "name", value: searchName, type: QueryType.isEqual),
+          QueryModel(
+            field: "uid",
+            value: ignoreIds,
+            type: QueryType.whereNotIn,
+          ),
+        ],
+      );
+      if (data.isNotEmpty) {
+        return data.map((e) => UserModel.fromMap(e)).toList();
+      }
+      return [];
     } catch (e) {
       throw throwAppException(e: e);
     }

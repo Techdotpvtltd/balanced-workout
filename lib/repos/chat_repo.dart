@@ -77,24 +77,17 @@ class ChatRepo {
         queries: queries);
   }
 
-  Future<void> joinGroupChat({required String chatId}) async {
+  Future<void> addMembers(
+      {required String chatId, required List<UserProfileModel> users}) async {
     try {
       await FirestoreService().updateWithDocId(
         path: FIREBASE_COLLECTION_CHAT,
         docId: chatId,
         data: {
-          "participantUids": FieldValue.arrayUnion([user.uid]),
-          "participants": FieldValue.arrayUnion(
-            [
-              UserProfileModel(
-                      uid: user.uid,
-                      name: user.name,
-                      avatarUrl: user.avatar,
-                      about: "",
-                      createdAt: DateTime.now())
-                  .toMap(),
-            ],
-          ),
+          "participantUids":
+              FieldValue.arrayUnion(users.map((e) => e.uid).toList()),
+          "participants":
+              FieldValue.arrayUnion(users.map((e) => e.toMap()).toList()),
         },
       );
     } catch (e) {

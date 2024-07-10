@@ -65,3 +65,21 @@ class UserStateFinded extends UserState {
 
   UserStateFinded({required this.users});
 }
+
+// ===========================Fetch Search Users================================
+
+class UserStateSearchFetching extends UserState {
+  UserStateSearchFetching({super.isLoading = true});
+}
+
+class UserStateSearchFetchFailure extends UserState {
+  final AppException exception;
+
+  UserStateSearchFetchFailure({super.loadingText, required this.exception});
+}
+
+class UserStateSearchFetched extends UserState {
+  final List<UserModel> users;
+
+  UserStateSearchFetched({super.loadingText, required this.users});
+}
