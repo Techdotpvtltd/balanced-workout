@@ -38,10 +38,25 @@ class CommunityScreen extends StatefulWidget {
 
 class _CommunityScreenState extends State<CommunityScreen> {
   List<ChatModel> chats = [];
+  List<ChatModel> filteredChats = [];
   bool isLoading = false;
 
   void triggerFetchChatsEvent() {
     context.read<ChatBloc>().add(ChatEventFetchAll());
+  }
+
+  void triggerSearchChatEvent(String search) {
+    if (search == "") {
+      setState(() {
+        filteredChats = chats;
+      });
+    } else {
+      setState(() {
+        filteredChats = chats
+            .where((e) => e.title.toLowerCase().contains(search.toLowerCase()))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -64,6 +79,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
           if (state is ChatStateUpdates) {
             setState(() {
               chats = state.chats;
+              filteredChats = state.chats;
             });
           }
 
@@ -86,12 +102,15 @@ class _CommunityScreenState extends State<CommunityScreen> {
           child: Column(
             children: [
               /// Search Text
-              const CustomTextField(
+              CustomTextField(
                 hintText: "Search",
-                prefixWidget: Icon(
+                prefixWidget: const Icon(
                   Icons.search,
                   color: Colors.white,
                 ),
+                onChange: (p0) {
+                  triggerSearchChatEvent(p0);
+                },
               ),
 
               /// Community Widget
@@ -102,9 +121,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.only(top: 15, bottom: 70),
-                        itemCount: chats.length,
+                        itemCount: filteredChats.length,
                         itemBuilder: (context, index) {
-                          final ChatModel chat = chats[index];
+                          final ChatModel chat = filteredChats[index];
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
