@@ -7,12 +7,14 @@
 
 import 'dart:async';
 
+import 'package:balanced_workout/models/set_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
 import 'package:balanced_workout/screens/components/custom_network_image.dart';
 import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
+import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -128,6 +130,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Video Player Widget
           Container(
@@ -165,35 +168,93 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
               ),
               child: SingleChildScrollView(
                 padding: const EdgeInsets.only(
-                    left: 29, right: 10, top: 20, bottom: 100),
+                  left: 29,
+                  right: 10,
+                  top: 20,
+                  bottom: 100,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     /// Basic Info
+
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Align(
                           alignment: Alignment.center,
                           child: Text(
                             currentExercise.exercise.name,
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: AppTheme.titleColor2,
-                              fontSize: 28,
+                              fontSize: 24,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
-                        const Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "3 Reps",
-                            style: TextStyle(
-                              color: AppTheme.titleColor1,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w700,
+                        gapH20,
+
+                        /// Durations
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "DURATION",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
+                            gapH6,
+                            Text(
+                              currentExercise.exercise.duration.formatTime(),
+                              style: const TextStyle(
+                                color: AppTheme.titleColor1,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
+                        if (currentExercise.sets.isNotEmpty) gapH20,
+                        if (currentExercise.sets.isNotEmpty)
+                          GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: currentExercise.sets.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 3,
+                            ),
+                            itemBuilder: (ctx, index) {
+                              final SetModel set = currentExercise.sets[index];
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "${set.name.firstCapitalize()}:",
+                                    style: const TextStyle(
+                                      color: AppTheme.titleColor1,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    " ${set.value ?? "-"}${set.name.toLowerCase() == "time" ? "s" : set.name.toLowerCase() == "weights" ? "Kg" : ""}",
+                                    style: const TextStyle(
+                                      color: AppTheme.titleColor1,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          )
                       ],
                     ),
 
@@ -331,6 +392,61 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                               Text(
                                 currentExercise.exercise.primaryMuscles
                                     .join(', '),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              gapH6,
+                            ],
+                          ),
+
+                        /// Secondary Muscle
+                        if (currentExercise.exercise.modality.isNotEmpty)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Modality",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              gapH6,
+                              Text(
+                                currentExercise.exercise.modality
+                                    .firstCapitalize(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              gapH6,
+                            ],
+                          ),
+
+                        /// Difficulty
+                        if (currentExercise.exercise.difficulty != null)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Difficulty",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              gapH6,
+                              Text(
+                                currentExercise.exercise.difficulty
+                                        ?.firstCapitalize() ??
+                                    "-",
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
