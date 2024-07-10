@@ -14,14 +14,10 @@ import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
-import '../../../components/custom_button.dart';
 import '../../../components/custom_container.dart';
-import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
-import '../components/custom_tab_bar.dart';
-import 'community_info_screen.dart';
 import 'create_community_screen.dart';
 import 'group_chat_screen.dart';
 
@@ -38,23 +34,20 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      floatingActionButton: Visibility(
-        visible: isMyCommunityView,
-        child: CircleButton(
-          onPressed: () {
-            NavigationService.go(const CreateCommunityScreen());
-          },
-          icon: AppAssets.plusIcon,
-          backgroundColor: AppTheme.primaryColor1,
-        ),
+      floatingActionButton: CircleButton(
+        onPressed: () {
+          NavigationService.go(const CreateCommunityScreen());
+        },
+        icon: AppAssets.plusIcon,
+        backgroundColor: AppTheme.primaryColor1,
       ),
       appBar: customAppBar(title: "Community"),
-      body: CustomPadding(
+      body: const CustomPadding(
         top: 30,
         child: Column(
           children: [
             /// Search Text
-            const CustomTextField(
+            CustomTextField(
               hintText: "Search",
               prefixWidget: Icon(
                 Icons.search,
@@ -63,22 +56,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
 
             /// Custom Tab Bar
-            gapH20,
-            CustomTabBar(
-              items: const [
-                'App Community',
-                'My Community',
-                'Other Communities'
-              ],
-              onPressed: (index) {
-                setState(() {
-                  isMyCommunityView = index == 1;
-                });
-              },
-            ),
+            // gapH20,
+            // CustomTabBar(
+            //   items: const [
+            //     'App Community',
+            //     'My Community',
+            //     'Other Communities'
+            //   ],
+            //   onPressed: (index) {
+            //     setState(() {
+            //       isMyCommunityView = index == 1;
+            //     });
+            //   },
+            // ),
 
             /// Community Widget
-            const Expanded(
+            Expanded(
               child: _CommunityItemWidget(),
             ),
           ],
@@ -97,106 +90,6 @@ class _CommunityItemWidget extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.only(top: 15, bottom: 70),
       itemCount: 4,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: CustomContainer(
-            color: const Color(0xFF303030).withOpacity(0.72),
-            padding:
-                const EdgeInsets.only(left: 20, right: 16, top: 16, bottom: 20),
-            borderRadius: const BorderRadius.all(Radius.circular(21)),
-            child: Column(
-              children: [
-                /// Community Text And Avatar Widget
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomInkWell(
-                      onTap: () {
-                        NavigationService.go(const CommunityInfoScreen());
-                      },
-                      child: const AvatarWidget(
-                        avatarUrl: "",
-                        backgroundColor: Colors.green,
-                        placeholderChar: 'C',
-                        width: 32,
-                        height: 32,
-                      ),
-                    ),
-                    gapW10,
-
-                    /// Community Description
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Community Title",
-                            maxLines: 2,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-
-                          /// Description and Join Button Feature
-                          Visibility(
-                            visible: index == 1 || index == 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                gapH2,
-                                const Text(
-                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard",
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                gapH14,
-                                CustomButton(
-                                  onPressed: () {},
-                                  title: 'Join Community',
-                                  width: 180,
-                                  isSmallText: true,
-                                )
-                              ],
-                            ),
-                          ),
-
-                          /// Group View
-                          Visibility(
-                            visible: index == 0 || index == 2,
-                            child: const _GroupList(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _GroupList extends StatelessWidget {
-  const _GroupList();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 1,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(top: 10),
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),

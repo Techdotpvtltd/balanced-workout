@@ -95,27 +95,15 @@ class CommunityInfoScreen extends StatelessWidget {
           gapH50,
 
           /// Buttoms
-          Row(
-            children: [
-              Expanded(
-                child: CustomButton(
-                  onPressed: () {
-                    NavigationService.go(const AddMemberScreen());
-                  },
-                  title: "Add Member",
-                  onlyBorder: true,
-                  isSmallText: true,
-                ),
-              ),
-              gapW22,
-              Expanded(
-                child: CustomButton(
-                  onPressed: () {},
-                  title: "Add Group",
-                  isSmallText: true,
-                ),
-              ),
-            ],
+          Expanded(
+            child: CustomButton(
+              onPressed: () {
+                NavigationService.go(const AddMemberScreen());
+              },
+              title: "Add Member",
+              onlyBorder: true,
+              isSmallText: true,
+            ),
           ),
 
           /// Name
