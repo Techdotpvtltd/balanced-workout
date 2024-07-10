@@ -20,9 +20,10 @@ class ChatModel {
   final String createdBy;
   final List<UserProfileModel> participants;
   final List<String> participantUids;
-  final bool isChatEnabled;
-  final String? title;
+  final String title;
+  final int maxMemebrs;
   final String? avatar;
+  final String? description;
   final MessageModel? lastMessage;
   ChatModel({
     required this.uuid,
@@ -30,9 +31,10 @@ class ChatModel {
     required this.createdBy,
     required this.participants,
     required this.participantUids,
-    required this.isChatEnabled,
-    this.title,
+    required this.maxMemebrs,
+    required this.title,
     this.avatar,
+    this.description,
     this.lastMessage,
   });
 
@@ -42,8 +44,9 @@ class ChatModel {
     String? createdBy,
     List<UserProfileModel>? participants,
     List<String>? participantUids,
-    bool? isChatEnabled,
+    int? maxMemebrs,
     String? avatar,
+    String? description,
     String? title,
     MessageModel? lastMessage,
   }) {
@@ -51,10 +54,11 @@ class ChatModel {
       uuid: uuid ?? this.uuid,
       createdAt: createdAt ?? this.createdAt,
       createdBy: createdBy ?? this.createdBy,
+      description: description ?? this.description,
       participants: participants ?? this.participants,
       participantUids: participantUids ?? this.participantUids,
-      isChatEnabled: isChatEnabled ?? this.isChatEnabled,
-      title: title ?? title,
+      maxMemebrs: maxMemebrs ?? this.maxMemebrs,
+      title: title ?? this.title,
       avatar: avatar ?? avatar,
       lastMessage: lastMessage,
     );
@@ -67,26 +71,30 @@ class ChatModel {
       'createdBy': createdBy,
       'participants': participants.map((x) => x.toMap()).toList(),
       'participantUids': participantUids,
-      'isChatEnabled': isChatEnabled,
+      'maxMemebrs': maxMemebrs,
+      'description': description,
       'title': title,
       'avatar': avatar,
-      'lastMessage': lastMessage,
+      'lastMessage': lastMessage!.toMap(),
     };
   }
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      uuid: map['uuid'] as String,
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      createdBy: map['createdBy'] as String,
-      participants: (map['participants'] as List<dynamic>)
-          .map((e) => UserProfileModel.fromMap(e))
-          .toList(),
-      participantUids: List<String>.from(map['participantUids'] as List),
-      isChatEnabled: map['isChatEnabled'] as bool,
-      title: map['title'] as String?,
-      avatar: map['avatar'] as String?,
-    );
+        uuid: map['uuid'] as String,
+        createdAt: (map['createdAt'] as Timestamp).toDate(),
+        createdBy: map['createdBy'] as String,
+        description: map['description'] as String?,
+        participants: (map['participants'] as List<dynamic>)
+            .map((e) => UserProfileModel.fromMap(e))
+            .toList(),
+        participantUids: List<String>.from(map['participantUids'] as List),
+        maxMemebrs:
+            map['maxMemebrs'] == null ? 0 : map['maxMemebrs'] as int? ?? 0,
+        title: map['title'] as String,
+        avatar: map['avatar'] as String?,
+        lastMessage:
+            MessageModel.fromMap(map['lastMessage'] as Map<String, dynamic>));
   }
 
   String toJson() => json.encode(toMap());
@@ -96,7 +104,7 @@ class ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, participants: $participants, participantUids: $participantUids, isChatEnabled: $isChatEnabled, title: $title, avatar: $avatar, lastMessage: $lastMessage)';
+    return 'ChatModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, participants: $participants, participantUids: $participantUids, maxMemebrs: $maxMemebrs, title: $title, avatar: $avatar, lastMessage: $lastMessage)';
   }
 
   @override
@@ -108,7 +116,7 @@ class ChatModel {
         other.createdBy == createdBy &&
         listEquals(other.participants, participants) &&
         listEquals(other.participantUids, participantUids) &&
-        other.isChatEnabled == isChatEnabled &&
+        other.maxMemebrs == maxMemebrs &&
         other.title == title &&
         other.lastMessage == lastMessage &&
         other.avatar == avatar;
@@ -121,7 +129,7 @@ class ChatModel {
         createdBy.hashCode ^
         participants.hashCode ^
         participantUids.hashCode ^
-        isChatEnabled.hashCode ^
+        maxMemebrs.hashCode ^
         title.hashCode ^
         lastMessage.hashCode ^
         avatar.hashCode;

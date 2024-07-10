@@ -33,6 +33,21 @@ class ChatStateCreated extends ChatState {
   ChatStateCreated({required this.chat});
 }
 
+// ===========================Udpate Chat================================
+class ChatStateUpdating extends ChatState {
+  ChatStateUpdating({super.isLoading = true});
+}
+
+class ChatStateeUpdateFailure extends ChatState {
+  final AppException exception;
+  ChatStateeUpdateFailure({required this.exception});
+}
+
+class ChatStateeUpdated extends ChatState {
+  final ChatModel chat;
+  ChatStateeUpdated({required this.chat});
+}
+
 // ===========================Fetch all chats================================
 class ChatStateFetchingAll extends ChatState {
   ChatStateFetchingAll({super.isLoading = true});

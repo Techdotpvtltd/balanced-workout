@@ -6,11 +6,15 @@
 // Description:
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/models/message_model.dart';
 import 'package:balanced_workout/models/user_profile_model.dart';
+import 'package:balanced_workout/repos/validations/check_validation.dart';
+import 'package:balanced_workout/web_services/storage_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../exceptions/app_exceptions.dart';
 import '../exceptions/exception_parsing.dart';
@@ -32,6 +36,7 @@ class ChatRepo {
     required Function(ChatModel) onDeleted,
     required Function(ChatModel) onChanged,
     required Function(AppException) onError,
+    required VoidCallback onFetched,
   }) async {
     final List<QueryModel> queries = [
       QueryModel(
@@ -40,9 +45,10 @@ class ChatRepo {
         type: QueryType.arrayContains,
       ),
       QueryModel(
-          field: "lastMessage.messageTime",
-          value: false,
-          type: QueryType.orderBy),
+        field: "lastMessage.messageTime",
+        value: true,
+        type: QueryType.orderBy,
+      ),
       QueryModel(field: "", value: 20, type: QueryType.limit),
     ];
 
@@ -64,7 +70,9 @@ class ChatRepo {
           final chat = ChatModel.fromMap(data);
           onChanged(chat);
         },
-        onAllDataGet: () {},
+        onAllDataGet: () {
+          onFetched();
+        },
         onCompleted: (l) {},
         queries: queries);
   }
@@ -112,6 +120,40 @@ class ChatRepo {
     }
   }
 
+  Future<void> update({
+    String? title,
+    String? avatar,
+    int? totoalMemebrs,
+    String? description,
+    required String chatId,
+  }) async {
+    try {
+      await CheckVaidation.chat(max: totoalMemebrs ?? 0, name: title);
+
+      if (avatar != null && Uri.parse(avatar).host.isEmpty) {
+        avatar = await StorageService().uploadImage(
+          withFile: File(avatar),
+          collectionPath:
+              "$FIREBASE_COLLECTION_CHAT/${DateTime.now().millisecondsSinceEpoch}",
+        );
+      }
+
+      await FirestoreService().updateWithDocId(
+        path: FIREBASE_COLLECTION_CHAT,
+        data: {
+          "title": title,
+          "avatar": avatar,
+          "maxMemebrs": totoalMemebrs,
+          "description": description,
+        },
+        docId: chatId,
+      );
+    } catch (e) {
+      log("[debug CreateChat] $e");
+      throw throwAppException(e: e);
+    }
+  }
+
   /// Create Chat Method
   Future<ChatModel> createChat({
     String? title,
@@ -120,9 +162,16 @@ class ChatRepo {
     String? description,
   }) async {
     try {
+      await CheckVaidation.chat(max: totoalMemebrs ?? 0, name: title);
       final List<UserProfileModel> participants = [];
       final List<String> participantIds = [];
-
+      if (avatar != null && Uri.parse(avatar).host.isEmpty) {
+        avatar = await StorageService().uploadImage(
+          withFile: File(avatar),
+          collectionPath:
+              "$FIREBASE_COLLECTION_CHAT/${DateTime.now().millisecondsSinceEpoch}",
+        );
+      }
       // Current User Info
       participantIds.add(user.uid);
       participants.add(
@@ -141,9 +190,10 @@ class ChatRepo {
         createdBy: user.uid,
         participants: participants,
         participantUids: participantIds,
-        isChatEnabled: true,
+        maxMemebrs: totoalMemebrs ?? 0,
         avatar: avatar,
-        title: title,
+        description: description,
+        title: title!,
         lastMessage: MessageModel(
           messageId: "",
           conversationId: "",

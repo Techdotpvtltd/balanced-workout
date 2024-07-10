@@ -28,6 +28,22 @@ class ChatEventCreate extends ChatEvent {
       required this.maxMembers});
 }
 
+/// Update Chat Event
+class ChatEventUpdate extends ChatEvent {
+  final String title;
+  final String? avatar;
+  final String? description;
+  final int maxMembers;
+  final String chatId;
+
+  ChatEventUpdate(
+      {required this.title,
+      this.avatar,
+      this.description,
+      required this.chatId,
+      required this.maxMembers});
+}
+
 class ChatEventJoin extends ChatEvent {
   final String chatId;
 

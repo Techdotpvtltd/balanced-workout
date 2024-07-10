@@ -118,4 +118,15 @@ class CheckVaidation {
       throw AuthExceptionRequiredPhone();
     }
   }
+
+  static Future<void> chat({String? name, required int max}) async {
+    if (name == null || name == "") {
+      throw DataExceptionRequiredField(message: "Community name required");
+    }
+
+    if (max < 0 || max > 250) {
+      throw DataExceptionRequiredField(
+          message: "Maximum Limit of community is 1 to 250");
+    }
+  }
 }

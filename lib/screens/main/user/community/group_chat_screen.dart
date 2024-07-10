@@ -5,6 +5,7 @@
 // Date:        09-05-24 17:49:06 -- Thursday
 // Description:
 
+import 'package:balanced_workout/models/chat_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/constants/app_assets.dart';
@@ -20,9 +21,16 @@ import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
 import 'community_info_screen.dart';
 
-class GroupChatScreen extends StatelessWidget {
-  const GroupChatScreen({super.key});
+class GroupChatScreen extends StatefulWidget {
+  const GroupChatScreen({super.key, required this.chat});
+  final ChatModel chat;
 
+  @override
+  State<GroupChatScreen> createState() => _GroupChatScreenState();
+}
+
+class _GroupChatScreenState extends State<GroupChatScreen> {
+  late final ChatModel chat = widget.chat;
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -32,14 +40,16 @@ class GroupChatScreen extends StatelessWidget {
         /// Title Widget
         titleWidget: CustomInkWell(
           onTap: () {
-            NavigationService.go(const CommunityInfoScreen());
+            NavigationService.go(
+              CommunityInfoScreen(chat: chat),
+            );
           },
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Pets United",
-                style: TextStyle(
+                chat.title,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
@@ -47,8 +57,8 @@ class GroupChatScreen extends StatelessWidget {
               gapH6,
               Text.rich(
                 TextSpan(
-                  text: "1023",
-                  children: [
+                  text: chat.participantUids.length.toString(),
+                  children: const [
                     TextSpan(
                       text: ' members',
                       style: TextStyle(
@@ -57,7 +67,7 @@ class GroupChatScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 10,
                   fontWeight: FontWeight.w700,

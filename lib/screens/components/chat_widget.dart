@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/constants/app_theme.dart';
 import '../../utils/constants/constants.dart';
-import '../../utils/extensions/navigation_service.dart';
-import '../main/user/community/group_chat_screen.dart';
+
 import 'avatar_widget.dart';
 import 'custom_container.dart';
 
@@ -24,7 +23,7 @@ class ChatWidget extends StatelessWidget {
       color: const Color(0xFF2B2B2B).withOpacity(0.68),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       onPressed: () {
-        NavigationService.go(const GroupChatScreen());
+        // NavigationService.go(const GroupChatScreen());
       },
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.end,

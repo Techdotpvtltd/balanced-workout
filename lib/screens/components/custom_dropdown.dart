@@ -176,7 +176,7 @@ class CustomMenuDropdown extends StatelessWidget {
             .toList(),
         dropdownStyleData: const DropdownStyleData(
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor1,
+            color: Colors.black,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           direction: DropdownDirection.left,
