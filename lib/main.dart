@@ -1,5 +1,6 @@
 import 'package:balanced_workout/blocs/chat/%20chat_bloc.dart';
 import 'package:balanced_workout/blocs/course/course_bloc.dart';
+import 'package:balanced_workout/blocs/message/mesaage_bloc.dart';
 import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
 import 'package:balanced_workout/blocs/workout/workout_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +48,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => WorkoutBloc()),
         BlocProvider(create: (context) => CourseBloc()),
         BlocProvider(create: (context) => ChatBloc()),
+        BlocProvider(create: (context) => MessageBloc()),
       ],
       child: MaterialApp(
         navigatorKey: navKey,

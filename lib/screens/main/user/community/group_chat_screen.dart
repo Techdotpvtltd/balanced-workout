@@ -6,19 +6,24 @@
 // Description:
 
 import 'package:balanced_workout/models/chat_model.dart';
+import 'package:balanced_workout/screens/main/user/community/bubble_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../../blocs/message/mesaage_bloc.dart';
+import '../../../../blocs/message/message_event.dart';
+import '../../../../models/message_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../../utils/extensions/navigation_service.dart';
-import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
 import '../../../components/custom_app_bar.dart';
-import '../../../components/custom_container.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../components/custom_title_textfiled.dart';
+import '../../../components/my_image_picker.dart';
 import 'community_info_screen.dart';
 
 class GroupChatScreen extends StatefulWidget {
@@ -31,6 +36,39 @@ class GroupChatScreen extends StatefulWidget {
 
 class _GroupChatScreenState extends State<GroupChatScreen> {
   late final ChatModel chat = widget.chat;
+  TextEditingController messageController = TextEditingController();
+
+  void triggerSenderMediaMessageEvent(
+      {required String fileUrl, required String contentType}) {
+    context.read<MessageBloc>().add(MessageEventSend(
+        content: fileUrl,
+        type: MessageType.photo,
+        conversationId: widget.chat.uuid,
+        friendId: ""));
+  }
+
+  void onMediaPressed() {
+    final MyImagePicker imagePicker = MyImagePicker();
+    imagePicker.pick();
+    imagePicker.onSelection((exception, data) {
+      if (data is XFile) {
+        triggerSenderMediaMessageEvent(
+            fileUrl: data.path, contentType: "image/jpeg");
+      }
+    });
+  }
+
+  void triggerSenderMessageEvent() {
+    context.read<MessageBloc>().add(
+          MessageEventSend(
+            content: messageController.text,
+            type: MessageType.text,
+            conversationId: widget.chat.uuid,
+            friendId: "",
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -79,11 +117,11 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
         /// Menu Button
         actions: [
-          CircleButton(
-            icon: AppAssets.menuIcon,
-            onPressed: () {},
-            backgroundColor: const Color(0xFFDEDEE0).withOpacity(0.11),
-          ),
+          // CircleButton(
+          //   icon: AppAssets.menuIcon,
+          //   onPressed: () {},
+          //   backgroundColor: const Color(0xFFDEDEE0).withOpacity(0.11),
+          // ),
           gapW20,
         ],
       ),
@@ -101,14 +139,15 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
             ),
           ),
 
-          const Expanded(
-            child: _BubbleList(),
+          Expanded(
+            child: BubbleWidget(conversationId: chat.uuid),
           ),
 
           /// TextField
           Padding(
             padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
             child: CustomTextField(
+              controller: messageController,
               hintText: "Message",
               maxLines: 5,
               minLines: 1,
@@ -117,107 +156,24 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                 height: 20,
                 child: Center(
                   child: CircleButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onMediaPressed();
+                    },
                     icon: AppAssets.plusIcon,
                     backgroundColor: AppTheme.primaryColor1,
                   ),
                 ),
               ),
-              suffixWidget: const Icon(
-                Icons.send,
-                color: AppTheme.primaryColor1,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ===========================Bubble List================================
-class _BubbleList extends StatelessWidget {
-  const _BubbleList();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
-      children: const [
-        _BubbleWidget(),
-        _BubbleWidget(isSender: false),
-        _BubbleWidget(),
-      ],
-    );
-  }
-}
-
-// ===========================Bubble Widget================================
-
-class _BubbleWidget extends StatelessWidget {
-  const _BubbleWidget({this.isSender = true});
-  final bool isSender;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        crossAxisAlignment:
-            isSender ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-
-        /// Image and Messages
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Avatar Widget
-              Visibility(
-                visible: !isSender,
-                child: const AvatarWidget(
-                  width: 30,
-                  height: 30,
-                  backgroundColor: Colors.black,
+              suffixWidget: CustomInkWell(
+                onTap: () {
+                  triggerSenderMessageEvent();
+                  messageController.clear();
+                },
+                child: const Icon(
+                  Icons.send,
+                  color: AppTheme.primaryColor1,
                 ),
               ),
-              gapW10,
-              Expanded(
-                child: CustomContainer(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  color: isSender
-                      ? AppTheme.primaryColor1
-                      : const Color(0xFF2C2C2E).withOpacity(0.37),
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  child: Text(
-                    "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.",
-                    style: TextStyle(
-                      color: isSender ? Colors.black : Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
-              gapW10,
-
-              /// Avatar Widget
-              Visibility(
-                visible: isSender,
-                child: const AvatarWidget(
-                  width: 30,
-                  height: 30,
-                  backgroundColor: Colors.green,
-                ),
-              ),
-            ],
-          ),
-
-          /// Time
-          gapH4,
-          const Text(
-            "30:01 Pm",
-            style: TextStyle(
-              color: Color(0xFFBFBFBF),
-              fontSize: 9,
             ),
           ),
         ],

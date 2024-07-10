@@ -5,10 +5,11 @@
 // Date:        09-05-24 14:41:26 -- Thursday
 // Description:
 
+import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/blocs/chat/%20chat_bloc.dart';
 import 'package:balanced_workout/blocs/chat/chat_event.dart';
 import 'package:balanced_workout/blocs/chat/chat_state.dart';
-import 'package:balanced_workout/utils/extensions/date_extension.dart';
+import 'package:balanced_workout/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,7 @@ import '../../../../models/chat_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/helping_methods.dart';
 import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/avatar_widget.dart';
 import '../../../components/circle_button.dart';
@@ -156,12 +158,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                             gapW10,
                                             Flexible(
                                               child: Text(
-                                                (chat.lastMessage
-                                                            ?.messageTime ??
-                                                        DateTime.now())
-                                                    .dateToString(
-                                                  "dd MMM yyyy hh:mm a",
-                                                ),
+                                                formatChatDateToString(chat
+                                                        .lastMessage
+                                                        ?.messageTime) ??
+                                                    "",
                                                 maxLines: 1,
                                                 style: const TextStyle(
                                                   color: Colors.white,
@@ -176,10 +176,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                         /// Description and Join Button Feature
                                         gapH2,
                                         Text(
-                                          chat.lastMessage?.content == ""
-                                              ? (chat.description ?? "")
-                                              : (chat.lastMessage?.content ??
-                                                  ""),
+                                          chat.lastMessage?.type ==
+                                                  MessageType.text
+                                              ? "${chat.lastMessage?.senderId == AppManager().user.uid ? "You: ${chat.lastMessage?.content}" : chat.lastMessage?.content}"
+                                              : chat.lastMessage?.senderId ==
+                                                      AppManager().user.uid
+                                                  ? "You sent Photo"
+                                                  : "Recieved Photo",
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
