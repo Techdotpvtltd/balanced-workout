@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
+import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -80,9 +81,9 @@ class ExerciseListWidget extends StatelessWidget {
                         children: [
                           SvgPicture.asset(AppAssets.clockIcon),
                           gapW8,
-                          const Text(
-                            "12:10",
-                            style: TextStyle(
+                          Text(
+                            planExercise.exercise.duration.formatTime(),
+                            style: const TextStyle(
                               color: Color(0xFF8C8C8C),
                               fontSize: 10,
                               fontWeight: FontWeight.w400,

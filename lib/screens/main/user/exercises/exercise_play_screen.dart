@@ -108,8 +108,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
-          title: "Complete Exercise",
-          onlyBorder: true,
+          title: "Next Exercise",
           onPressed: () {
             processNextExercise();
           },
@@ -145,7 +144,9 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                     ? Chewie(
                         controller: chewieController!,
                       )
-                    : const SizedBox()
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      )
                 : CustomNetworkImage(
                     imageUrl: currentExercise.exercise.coverUrl ?? "",
                   ),

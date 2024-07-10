@@ -24,24 +24,3 @@ class SetModel {
     );
   }
 }
-
-class SetValueModel {
-  final int setIndex;
-  final List<SetModel> sets;
-  SetValueModel({
-    required this.setIndex,
-    required this.sets,
-  });
-
-  factory SetValueModel.fromMap(Map<String, dynamic> map) {
-    return SetValueModel(
-      setIndex: map['setIndex'] as int,
-      sets: ((map['sets'] as List<dynamic>)
-          .map((e) => SetModel.fromMap(e as Map<String, dynamic>))
-          .toList()),
-    );
-  }
-
-  @override
-  String toString() => 'SetValueModel(setIndex: $setIndex, sets: $sets)';
-}

@@ -64,7 +64,7 @@ class PlanModel {
 class PlanExercise {
   final String uuid;
   final ExerciseModel exercise;
-  final List<SetValueModel> sets;
+  final List<SetModel> sets;
   final String? note;
   final String? tempo;
   final List<PlanExercise> supersets;
@@ -84,7 +84,7 @@ class PlanExercise {
       uuid: map['uuid'] as String,
       exercise: ExerciseModel.fromMap(map['exercise'] as Map<String, dynamic>),
       sets: (map['sets'] as List<dynamic>)
-          .map((e) => SetValueModel.fromMap(e as Map<String, dynamic>))
+          .map((e) => SetModel.fromMap(e as Map<String, dynamic>))
           .toList(),
       note: map['note'] != null ? map['note'] as String : null,
       tempo: map['tempo'] != null ? map['tempo'] as String : null,

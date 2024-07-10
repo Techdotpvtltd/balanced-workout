@@ -9,20 +9,17 @@ import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
 import 'package:balanced_workout/blocs/plan/plan_event.dart';
 import 'package:balanced_workout/blocs/plan/plan_state.dart';
 import 'package:balanced_workout/models/plan_model.dart';
+import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
-import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
-import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
-import '../exercises/exercise_play_screen.dart';
+import '../components/exercise_list_widget.dart';
 
 class CardioExerciseScreen extends StatefulWidget {
   const CardioExerciseScreen({super.key});
@@ -180,27 +177,31 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                             gapH10,
 
                             /// Time
-                            const Row(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.watch_later_outlined,
                                   color: Colors.grey,
                                   size: 24,
                                 ),
                                 gapW10,
-                                Text(
-                                  "Time",
+                                const Text(
+                                  "Time (mm:ss)",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Text(
-                                  "---",
-                                  style: TextStyle(
+                                  cardio?.exercises
+                                          .map((e) => e.exercise.duration)
+                                          .reduce((a, b) => a + b)
+                                          .formatTime() ??
+                                      "0",
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
@@ -221,94 +222,8 @@ class _CardioExerciseScreenState extends State<CardioExerciseScreen> {
                         ),
                       ),
                       gapH14,
-
-                      /// Play List Widget
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount:
-                            isLoading ? 15 : (cardio?.exercises.length ?? 0),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final PlanExercise? planExer =
-                              cardio?.exercises[index];
-
-                          return CustomInkWell(
-                            onTap: () {
-                              NavigationService.go(
-                                ExercisePlayScreen(
-                                  planExercises: cardio?.exercises ?? [],
-                                  currentExercise: planExer,
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF303030),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(36)),
-                              ),
-                              child: Row(
-                                children: [
-                                  /// Play Button
-                                  Container(
-                                    padding: const EdgeInsets.all(6),
-                                    decoration: const BoxDecoration(
-                                      color: AppTheme.primaryColor1,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.play_arrow,
-                                      color: Colors.black,
-                                      size: 26,
-                                    ),
-                                  ),
-                                  gapW16,
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          planExer?.exercise.name ?? "",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-
-                                        /// Time Zone View
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                AppAssets.clockIcon),
-                                            gapW8,
-                                            Text(
-                                              planExer?.exercise.duration
-                                                      .toString() ??
-                                                  "",
-                                              style: const TextStyle(
-                                                color: Color(0xFF8C8C8C),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                      ExerciseListWidget(
+                        planExercises: cardio?.exercises ?? [],
                       ),
                     ],
                   ),
