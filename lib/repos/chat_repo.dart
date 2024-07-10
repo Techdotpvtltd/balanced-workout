@@ -69,11 +69,11 @@ class ChatRepo {
         queries: queries);
   }
 
-  Future<void> joinGroupChat({required String eventId}) async {
+  Future<void> joinGroupChat({required String chatId}) async {
     try {
       await FirestoreService().updateWithDocId(
         path: FIREBASE_COLLECTION_CHAT,
-        docId: eventId,
+        docId: chatId,
         data: {
           "participantUids": FieldValue.arrayUnion([user.uid]),
           "participants": FieldValue.arrayUnion(
