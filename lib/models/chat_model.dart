@@ -21,9 +21,8 @@ class ChatModel {
   final List<UserProfileModel> participants;
   final List<String> participantUids;
   final bool isChatEnabled;
-  final bool isGroup;
-  final String? groupTitle;
-  final String? groupAvatar;
+  final String? title;
+  final String? avatar;
   final MessageModel? lastMessage;
   ChatModel({
     required this.uuid,
@@ -32,9 +31,8 @@ class ChatModel {
     required this.participants,
     required this.participantUids,
     required this.isChatEnabled,
-    required this.isGroup,
-    this.groupTitle,
-    this.groupAvatar,
+    this.title,
+    this.avatar,
     this.lastMessage,
   });
 
@@ -45,8 +43,8 @@ class ChatModel {
     List<UserProfileModel>? participants,
     List<String>? participantUids,
     bool? isChatEnabled,
-    bool? isGroup,
-    String? groupTitle,
+    String? avatar,
+    String? title,
     MessageModel? lastMessage,
   }) {
     return ChatModel(
@@ -56,9 +54,8 @@ class ChatModel {
       participants: participants ?? this.participants,
       participantUids: participantUids ?? this.participantUids,
       isChatEnabled: isChatEnabled ?? this.isChatEnabled,
-      isGroup: isGroup ?? this.isGroup,
-      groupTitle: groupTitle ?? this.groupTitle,
-      groupAvatar: groupAvatar ?? groupAvatar,
+      title: title ?? title,
+      avatar: avatar ?? avatar,
       lastMessage: lastMessage,
     );
   }
@@ -71,9 +68,8 @@ class ChatModel {
       'participants': participants.map((x) => x.toMap()).toList(),
       'participantUids': participantUids,
       'isChatEnabled': isChatEnabled,
-      'isGroup': isGroup,
-      'groupTitle': groupTitle,
-      'groupAvatar': groupAvatar,
+      'title': title,
+      'avatar': avatar,
       'lastMessage': lastMessage,
     };
   }
@@ -88,9 +84,8 @@ class ChatModel {
           .toList(),
       participantUids: List<String>.from(map['participantUids'] as List),
       isChatEnabled: map['isChatEnabled'] as bool,
-      isGroup: map['isGroup'] as bool,
-      groupTitle: map['groupTitle'] as String?,
-      groupAvatar: map['groupAvatar'] as String?,
+      title: map['title'] as String?,
+      avatar: map['avatar'] as String?,
     );
   }
 
@@ -101,7 +96,7 @@ class ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, participants: $participants, participantUids: $participantUids, isChatEnabled: $isChatEnabled, isGroup: $isGroup, groupTitle: $groupTitle, groupAvatar: $groupAvatar, lastMessage: $lastMessage)';
+    return 'ChatModel(uuid: $uuid, createdAt: $createdAt, createdBy: $createdBy, participants: $participants, participantUids: $participantUids, isChatEnabled: $isChatEnabled, title: $title, avatar: $avatar, lastMessage: $lastMessage)';
   }
 
   @override
@@ -114,10 +109,9 @@ class ChatModel {
         listEquals(other.participants, participants) &&
         listEquals(other.participantUids, participantUids) &&
         other.isChatEnabled == isChatEnabled &&
-        other.isGroup == isGroup &&
-        other.groupTitle == groupTitle &&
+        other.title == title &&
         other.lastMessage == lastMessage &&
-        other.groupAvatar == groupAvatar;
+        other.avatar == avatar;
   }
 
   @override
@@ -128,9 +122,8 @@ class ChatModel {
         participants.hashCode ^
         participantUids.hashCode ^
         isChatEnabled.hashCode ^
-        isGroup.hashCode ^
-        groupTitle.hashCode ^
+        title.hashCode ^
         lastMessage.hashCode ^
-        groupAvatar.hashCode;
+        avatar.hashCode;
   }
 }
