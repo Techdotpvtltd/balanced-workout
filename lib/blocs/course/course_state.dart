@@ -31,7 +31,7 @@ class CourseStateFetchFailure extends CourseState {
 }
 
 class CourseStateFetched extends CourseState {
-  final CourseModel course;
+  final List<CourseModel> courses;
 
-  CourseStateFetched({required this.course});
+  CourseStateFetched({required this.courses});
 }

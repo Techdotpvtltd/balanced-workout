@@ -5,7 +5,7 @@
 // Date:        06-05-24 15:00:27 -- Monday
 // Description:
 
-import 'package:balanced_workout/screens/main/stretches/stretches_exercises_screen.dart';
+import 'package:balanced_workout/screens/main/user/stretches/stretches_exercises_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';

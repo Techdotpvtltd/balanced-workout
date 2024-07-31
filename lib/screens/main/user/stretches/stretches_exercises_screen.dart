@@ -16,9 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../utils/constants/app_theme.dart';
-import '../../../../utils/constants/constants.dart';
-import '../../components/custom_network_image.dart';
+import '../../../../../utils/constants/app_theme.dart';
+import '../../../../../utils/constants/constants.dart';
+import '../../../components/custom_network_image.dart';
 
 class StretchesExercisesScreen extends StatefulWidget {
   const StretchesExercisesScreen({super.key});

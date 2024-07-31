@@ -5,7 +5,7 @@
 // Date:        06-05-24 20:02:40 -- Monday
 // Description:
 
-import 'package:balanced_workout/screens/main/user/courses/progress_course_screen.dart';
+import 'package:balanced_workout/screens/main/user/courses/course_screen.dart';
 import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/app_assets.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -53,9 +53,11 @@ class ActivityLevelScreen extends StatelessWidget {
               }
 
               if (type == ScreenType.courses) {
-                NavigationService.go(ProgressCourseScreen(
-                    selectedLevel: items[index],
-                    selectedPeriod: selectedPeriod ?? Period.weekly));
+                NavigationService.go(
+                  CourseScreen(
+                      selectedLevel: items[index],
+                      selectedPeriod: selectedPeriod ?? Period.weekly),
+                );
               }
             },
             coverUrl: images[index],
