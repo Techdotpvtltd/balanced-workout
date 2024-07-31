@@ -168,7 +168,7 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
                   contentsAlign: ContentsAlign.basic,
                   connectionDirection: ConnectionDirection.before,
                   nodePositionBuilder: (context, index) => 0,
-                  itemCount: course.weeks.length ?? 0,
+                  itemCount: course.weeks.length,
                   contentsBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 20, bottom: 20),

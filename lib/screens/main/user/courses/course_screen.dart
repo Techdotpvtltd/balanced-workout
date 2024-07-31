@@ -39,8 +39,10 @@ class _CourseScreenState extends State<CourseScreen> {
   List<CourseModel> courses = [];
 
   void triggerFetchCourseEvent() {
-    context.read<CourseBloc>().add(CourseEventFetch(
-        difficultyLevel: selectedLevel, period: selectedPeriod));
+    context.read<CourseBloc>().add(
+          CourseEventFetch(
+              difficultyLevel: selectedLevel, period: selectedPeriod),
+        );
   }
 
   @override
