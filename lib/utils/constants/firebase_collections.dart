@@ -17,3 +17,6 @@ const String FIREBASE_COLLECTION_CHAT =
 
 const FIREBASE_COLLECTION_MESSAGES =
     "${kReleaseMode ? "Rel-" : "Dev-"}Messages";
+
+const FIREBASE_COLLECTION_ARTICLES =
+    "${kReleaseMode ? "Rel-" : "Dev-"}Articles";

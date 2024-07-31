@@ -139,9 +139,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
             ),
           ),
 
-          Expanded(
-            child: BubbleWidget(conversationId: chat.uuid),
-          ),
+          Expanded(child: BubbleWidget(conversationId: chat.uuid)),
 
           /// TextField
           Padding(
@@ -166,8 +164,10 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               ),
               suffixWidget: CustomInkWell(
                 onTap: () {
-                  triggerSenderMessageEvent();
-                  messageController.clear();
+                  if (messageController.text != "") {
+                    triggerSenderMessageEvent();
+                    messageController.clear();
+                  }
                 },
                 child: const Icon(
                   Icons.send,

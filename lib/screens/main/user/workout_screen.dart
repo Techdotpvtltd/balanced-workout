@@ -80,6 +80,7 @@ class WorkoutScreen extends StatelessWidget {
                 Expanded(
                   child: NavigationButton(
                     icon: AppAssets.cardioIcon,
+                    isSVG: true,
                     title: "Cardio Exercise",
                     onPressed: () {
                       NavigationService.go(const CardioExerciseScreen());

@@ -116,9 +116,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
               /// Community Widget
               Expanded(
                 child: isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                    ? const Center(child: CircularProgressIndicator())
                     : ListView.builder(
                         padding: const EdgeInsets.only(top: 15, bottom: 70),
                         itemCount: filteredChats.length,
@@ -136,7 +134,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                 );
                               },
                               padding: const EdgeInsets.only(
-                                  left: 17, top: 16, bottom: 16, right: 20),
+                                left: 17,
+                                top: 16,
+                                bottom: 16,
+                                right: 20,
+                              ),
                               color: const Color(0xFFF2F2F2).withOpacity(0.12),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),

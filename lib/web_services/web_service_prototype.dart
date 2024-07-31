@@ -42,7 +42,7 @@ abstract class WebServicePrototype<D> {
     required Function(T)? onRemoved,
     required Function(T)? onUpdated,
     VoidCallback? onAllDataGet,
-    onCompleted,
+    VoidCallback? onCompleted,
     required List<QueryModel> queries,
   });
 

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'article_model.dart';
+import 'exercise_article_model.dart';
 import 'set_model.dart';
 import 'video_model.dart';
 
@@ -20,7 +20,7 @@ class ExerciseModel {
   final String createdBy;
   final DateTime createdAt;
   final VideoModel? video;
-  final ArticleModel? article;
+  final ExerciseArticleModel? article;
   final String? coverUrl;
   final List<String> primaryMuscles;
   final List<String> secondaryMuscles;
@@ -66,7 +66,7 @@ class ExerciseModel {
           ? VideoModel.fromMap(map['video'] as Map<String, dynamic>)
           : null,
       article: map['article'] != null
-          ? ArticleModel.fromMap(map['article'] as Map<String, dynamic>)
+          ? ExerciseArticleModel.fromMap(map['article'] as Map<String, dynamic>)
           : null,
       coverUrl: map['coverUrl'] != null ? map['coverUrl'] as String : null,
       primaryMuscles: (map['primaryMuscles'] as List<dynamic>)

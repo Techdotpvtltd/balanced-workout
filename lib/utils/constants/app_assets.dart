@@ -73,7 +73,7 @@ class AppAssets {
   static const String backgroundMindedsIcon =
       "${AppAssets._iconPath}/background-minded-ic.png";
   static const String workoutIcon = "${AppAssets._iconPath}/workout-ic.svg";
-  static const String cardioIcon = "${AppAssets._iconPath}/cardio-ic.png";
+  static const String cardioIcon = "${AppAssets._iconPath}/cardio.svg";
   static const String whiteboardWorkoutIcon =
       "${AppAssets._iconPath}/whiteboard-workout-ic.svg";
   static const String dumbbellIcon3 = "${AppAssets._iconPath}/dumbell-ic-3.svg";
