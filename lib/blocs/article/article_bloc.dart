@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/blocs/article/article_state.dart';
+import 'package:balanced_workout/models/article_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../exceptions/app_exceptions.dart';
@@ -13,14 +14,24 @@ import '../../repos/article/article_repo_impl.dart';
 import 'article_event.dart';
 
 class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
+  final List<ArticleModel> articles = [];
   ArticleBloc() : super(ArticleStateInitial()) {
     /// Fetch Event
     on<ArticleEventFetch>(
       (event, emit) async {
         try {
           emit(ArticleStateFetching());
-          final articles = await ArticleRepo().fetchAll();
-          emit(ArticleStateFetched(articles: articles));
+          final data = await ArticleRepo().fetchAll();
+          for (final article in data) {
+            if (!articles.contains(article)) {
+              articles.add(article);
+            }
+          }
+
+          articles.sort((a, b) => b.createdAt.millisecondsSinceEpoch
+              .compareTo(a.createdAt.millisecondsSinceEpoch));
+
+          emit(ArticleStateFetched());
         } on AppException catch (e) {
           emit(ArticleStateFetchFailure(exception: e));
         }

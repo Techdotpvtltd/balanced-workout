@@ -5,6 +5,9 @@
 // Date:        10-05-24 12:04:12 -- Friday
 // Description:
 
+import 'dart:convert';
+
+import 'package:balanced_workout/models/article_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/constants/app_theme.dart';
@@ -13,9 +16,29 @@ import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_container.dart';
 import '../../../components/custom_network_image.dart';
 import '../article_detail_screen.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 
-class ArticleItem extends StatelessWidget {
-  const ArticleItem({super.key});
+class ArticleItem extends StatefulWidget {
+  const ArticleItem({super.key, required this.article});
+
+  final ArticleModel article;
+
+  @override
+  State<ArticleItem> createState() => _ArticleItemState();
+}
+
+class _ArticleItemState extends State<ArticleItem> {
+  late ArticleModel article = widget.article;
+  String? description = "";
+
+  @override
+  void initState() {
+    List<dynamic> json = jsonDecode(article.data);
+    final document = quill.Document.fromJson(json);
+    description = document.toPlainText();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +46,20 @@ class ArticleItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: CustomContainer(
         onPressed: () {
-          NavigationService.go(const ArticleDetailScreen());
+          NavigationService.go(ArticleDetailScreen(article: article));
         },
         padding: const EdgeInsets.only(left: 12, right: 13, top: 7, bottom: 7),
         color: AppTheme.darkWidgetColor,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        child: const Row(
+        child: Row(
           children: [
             /// Cover Widget
             SizedBox(
               height: 128,
               width: 148,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: CustomNetworkImage(
-                  imageUrl:
-                      "https://hips.hearstapps.com/hmg-prod/images/strength-and-power-royalty-free-image-1604353154.?crop=1xw:0.84415xh;center,top",
-                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: CustomNetworkImage(imageUrl: article.cover ?? ""),
               ),
             ),
 
@@ -51,9 +71,9 @@ class ArticleItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Strength training",
+                    article.title,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -61,10 +81,10 @@ class ArticleItem extends StatelessWidget {
                   ),
                   gapH6,
                   Text(
-                    "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface.",
+                    description ?? "",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppTheme.titleColor2,
                       fontSize: 10,
                     ),

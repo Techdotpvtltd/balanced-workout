@@ -28,8 +28,4 @@ class ArticleStateFetchFailure extends ArticleState {
   ArticleStateFetchFailure({required this.exception});
 }
 
-class ArticleStateFetched extends ArticleState {
-  final List<ArticleModel> articles;
-
-  ArticleStateFetched({required this.articles});
-}
+class ArticleStateFetched extends ArticleState {}

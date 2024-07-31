@@ -5,94 +5,110 @@
 // Date:        08-05-24 19:31:45 -- Wednesday
 // Description:
 
+import 'dart:convert';
+
+import 'package:balanced_workout/models/article_model.dart';
+import 'package:balanced_workout/utils/extensions/date_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../utils/constants/app_assets.dart';
-import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_network_image.dart';
 import '../../components/custom_paddings.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 
-class ArticleDetailScreen extends StatelessWidget {
-  const ArticleDetailScreen({super.key});
+class ArticleDetailScreen extends StatefulWidget {
+  const ArticleDetailScreen({super.key, required this.article});
+  final ArticleModel article;
+
+  @override
+  State<ArticleDetailScreen> createState() => _ArticleDetailScreenState();
+}
+
+class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+  late final ArticleModel article = widget.article;
+  QuillController _controller = QuillController.basic();
+
+  void setData() {
+    // Convert JSON string to Delta
+    List<dynamic> json = jsonDecode(article.data);
+    final document = quill.Document.fromJson(json);
+
+    // Initialize the QuillController with the Document
+
+    _controller = quill.QuillController(
+      document: document,
+      readOnly: true,
+      selection: const TextSelection.collapsed(offset: 0),
+    );
+  }
+
+  @override
+  void initState() {
+    setData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: "Strength training tips"),
-      body: CustomPadding(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Date Label widget
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      backgroundColor: Colors.white,
+      appBar: customAppBar(
+        title: article.title,
+        background: const Color(0xFF161616),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Date Label widget
+          CustomPadding(
+            bottom: 0,
+            child: Column(
               children: [
-                SvgPicture.asset(AppAssets.clockIcon),
-                gapW8,
-                const Text(
-                  "Published on September 15",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SvgPicture.asset(AppAssets.clockIcon),
+                    gapW8,
+                    Text(
+                      "Published on ${article.createdAt.dateToString("MMMM dd, yyyy")}",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
                 ),
+
+                /// Cover Widget
+                if (article.cover != "" && article.cover != null) gapH18,
+                if (article.cover != "" && article.cover != null)
+                  SizedBox(
+                    height: 190,
+                    width: SCREEN_WIDTH,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      child: CustomNetworkImage(imageUrl: article.cover ?? ""),
+                    ),
+                  ),
+                gapH14,
               ],
             ),
-
-            /// Cover Widget
-            gapH18,
-            SizedBox(
-              height: 190,
-              width: SCREEN_WIDTH,
-              child: const ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: CustomNetworkImage(
-                  imageUrl:
-                      "https://www.mensjournal.com/.image/t_share/MTk2MTM2OTc4OTkxMTYyNTEz/mj-618_348_the-perfect-pull-up.jpg",
-                ),
+          ),
+          // Text Widget List
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              color: Colors.white,
+              child: QuillEditor.basic(
+                controller: _controller,
               ),
             ),
-            gapH14,
-            // Text Widget List
-            Expanded(
-              child: ListView.builder(
-                itemCount: 13,
-                itemBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 14),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Title Widget
-                        Text(
-                          "Plan Your Routine:",
-                          style: TextStyle(
-                            color: AppTheme.primaryColor1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-
-                        /// Description
-                        Text(
-                          "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.",
-                          style: TextStyle(
-                            color: AppTheme.titleColor1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
