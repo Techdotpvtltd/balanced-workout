@@ -23,6 +23,7 @@ class ArticleRepo implements ArticleRepoInterface {
         queries: [
           QueryModel(field: "createdAt", value: true, type: QueryType.orderBy),
           QueryModel(field: "", value: 40, type: QueryType.limit),
+          QueryModel(field: "isActive", value: true, type: QueryType.isEqual),
         ],
       );
       return data.map((e) => ArticleModel.fromMap(e)).toList();

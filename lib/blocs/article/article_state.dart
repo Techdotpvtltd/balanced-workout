@@ -5,8 +5,6 @@
 // Date:        31-07-24 16:11:20 -- Wednesday
 // Description:
 
-import 'package:balanced_workout/models/article_model.dart';
-
 import '../../exceptions/app_exceptions.dart';
 
 abstract class ArticleState {
