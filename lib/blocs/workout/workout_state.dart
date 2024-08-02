@@ -30,7 +30,7 @@ class WorkoutStateFetchFailure extends WorkoutState {
 }
 
 class WorkoutStateFetched extends WorkoutState {
-  final WorkoutModel model;
+  final List<WorkoutModel> workouts;
 
-  WorkoutStateFetched({required this.model});
+  WorkoutStateFetched({required this.workouts});
 }
