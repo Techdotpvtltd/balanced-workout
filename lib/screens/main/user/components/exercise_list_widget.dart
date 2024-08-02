@@ -24,6 +24,7 @@ class ExerciseListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: planExercises.length,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 20),
       shrinkWrap: true,
       itemBuilder: (ctx, index) {
