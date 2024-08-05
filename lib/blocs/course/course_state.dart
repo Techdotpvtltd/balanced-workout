@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/course_model.dart';
 
@@ -22,6 +23,12 @@ class CourseStateInitial extends CourseState {}
 
 class CourseStateFetching extends CourseState {
   CourseStateFetching({super.isLoading = true});
+}
+
+class CourseStateFetchLastSnapDoc extends CourseState {
+  final DocumentSnapshot? lastSnapDoc;
+
+  CourseStateFetchLastSnapDoc({required this.lastSnapDoc});
 }
 
 class CourseStateFetchFailure extends CourseState {

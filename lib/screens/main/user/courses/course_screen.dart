@@ -10,6 +10,7 @@ import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/courses/progress_course_screen.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -37,24 +38,53 @@ class _CourseScreenState extends State<CourseScreen> {
   late Level selectedLevel = widget.selectedLevel;
   bool isLoading = false;
   List<CourseModel> courses = [];
+  bool isReachedEnd = false;
+  DocumentSnapshot? lastSnapDoc;
+  final ScrollController scrollController = ScrollController();
+
+  void addScrollListener() {
+    scrollController.addListener(
+      () {
+        if (scrollController.offset >=
+                scrollController.position.maxScrollExtent &&
+            !scrollController.position.outOfRange) {
+          if (!isReachedEnd) triggerFetchCourseEvent();
+        }
+      },
+    );
+  }
 
   void triggerFetchCourseEvent() {
     context.read<CourseBloc>().add(
           CourseEventFetch(
-              difficultyLevel: selectedLevel, period: selectedPeriod),
+            difficultyLevel: selectedLevel,
+            period: selectedPeriod,
+            lastSnapDoc: lastSnapDoc,
+          ),
         );
   }
 
   @override
   void initState() {
     triggerFetchCourseEvent();
+    addScrollListener();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(() {});
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<CourseBloc, CourseState>(
       listener: (context, state) {
+        if (state is CourseStateFetchLastSnapDoc) {
+          isReachedEnd = state.lastSnapDoc == null;
+          lastSnapDoc = state.lastSnapDoc;
+        }
         if (state is CourseStateFetching ||
             state is CourseStateFetchFailure ||
             state is CourseStateFetched) {
@@ -63,9 +93,12 @@ class _CourseScreenState extends State<CourseScreen> {
           });
 
           if (state is CourseStateFetched) {
-            setState(() {
-              courses = state.courses;
-            });
+            for (final course in state.courses) {
+              if (!courses.contains(course)) {
+                courses.add(course);
+              }
+            }
+            setState(() {});
           }
         }
       },
@@ -74,7 +107,7 @@ class _CourseScreenState extends State<CourseScreen> {
         body: CustomPadding(
           top: 6,
           child: Skeletonizer(
-            enabled: isLoading,
+            enabled: isLoading && lastSnapDoc == null,
             child: (courses.isEmpty && !isLoading)
                 ? const Center(
                     child: Text(
@@ -87,6 +120,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     ),
                   )
                 : ListView.builder(
+                    controller: scrollController,
                     itemCount: courses.length,
                     padding: const EdgeInsets.only(top: 20),
                     itemBuilder: (_, index) {

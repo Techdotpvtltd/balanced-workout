@@ -18,8 +18,14 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       (event, emit) async {
         try {
           emit(CourseStateFetching());
-          final courses = await CourseRepo()
-              .fetch(level: event.difficultyLevel, period: event.period);
+          final courses = await CourseRepo().fetch(
+            level: event.difficultyLevel,
+            period: event.period,
+            lastDocSnap: event.lastSnapDoc,
+            onLastSnap: (last) {
+              emit(CourseStateFetchLastSnapDoc(lastSnapDoc: last));
+            },
+          );
           emit(CourseStateFetched(courses: courses));
         } on AppException catch (e) {
           emit(CourseStateFetchFailure(exception: e));

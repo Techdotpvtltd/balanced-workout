@@ -11,25 +11,26 @@ import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/constants/firebase_collections.dart';
 import 'package:balanced_workout/web_services/firestore_services.dart';
 import 'package:balanced_workout/web_services/query_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 abstract class _CourseRepoInterface {
-  Future<List<CourseModel>> fetch(
-      {required Level level, required Period period});
+  Future<List<CourseModel>> fetch({
+    required Level level,
+    required Period period,
+    DocumentSnapshot? lastDocSnap,
+    required Function(DocumentSnapshot?) onLastSnap,
+  });
 }
 
-mixin _CourseRepoInterfaceMixin on _CourseRepoInterface {
+class CourseRepo implements _CourseRepoInterface {
   @override
-  Future<List<CourseModel>> fetch(
-      {required Level level, required Period period}) {
-    throw UnimplementedError();
-  }
-}
-
-class CourseRepo extends _CourseRepoInterface with _CourseRepoInterfaceMixin {
-  @override
-  Future<List<CourseModel>> fetch(
-      {required Level level, required Period period}) async {
+  Future<List<CourseModel>> fetch({
+    required Level level,
+    required Period period,
+    DocumentSnapshot? lastDocSnap,
+    required Function(DocumentSnapshot?) onLastSnap,
+  }) async {
     try {
       final List<Map<String, dynamic>> data =
           await FirestoreService().fetchWithMultipleConditions(
@@ -45,8 +46,17 @@ class CourseRepo extends _CourseRepoInterface with _CourseRepoInterfaceMixin {
             value: [level.name.toLowerCase()],
             type: QueryType.whereIn,
           ),
-          QueryModel(field: "", value: 20, type: QueryType.limit),
+          QueryModel(field: "title", value: false, type: QueryType.orderBy),
+          QueryModel(field: "", value: 10, type: QueryType.limit),
+          if (lastDocSnap != null)
+            QueryModel(
+                field: "",
+                value: lastDocSnap,
+                type: QueryType.startAfterDocument),
         ],
+        lastDocSnapshot: (last) {
+          onLastSnap(last);
+        },
       );
 
       return data.map((e) => CourseModel.fromMap(e)).toList();
