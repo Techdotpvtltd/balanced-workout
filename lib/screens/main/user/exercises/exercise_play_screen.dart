@@ -7,7 +7,6 @@
 
 import 'dart:async';
 
-import 'package:balanced_workout/models/set_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
 import 'package:balanced_workout/screens/components/custom_network_image.dart';
@@ -19,7 +18,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../../models/plan_model.dart';
+import '../../../../models/plan_exercise_model.dart';
 
 class ExercisePlayScreen extends StatefulWidget {
   const ExercisePlayScreen(
@@ -218,43 +217,66 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                             ),
                           ],
                         ),
-                        if (currentExercise.sets.isNotEmpty) gapH20,
-                        if (currentExercise.sets.isNotEmpty)
-                          GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: currentExercise.sets.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              childAspectRatio: 3,
+                        if (currentExercise.setsValue.isNotEmpty) gapH20,
+                        if (currentExercise.setsValue.isNotEmpty)
+                          DataTable(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppTheme.titleColor1,
+                                width: 0.1,
+                              ),
                             ),
-                            itemBuilder: (ctx, index) {
-                              final SetModel set = currentExercise.sets[index];
-                              return Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "${set.name.firstCapitalize()}:",
-                                    style: const TextStyle(
-                                      color: AppTheme.titleColor1,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                            dividerThickness: 0.2,
+                            headingTextStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            dataTextStyle: const TextStyle(
+                              color: AppTheme.titleColor1,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            columns: [
+                              const DataColumn(label: Text("Set")),
+                              for (int row = 0;
+                                  row < currentExercise.exercise.sets.length;
+                                  row++)
+                                DataColumn(
+                                  label: Text(
+                                    currentExercise.exercise.sets[row].name
+                                        .firstCapitalize(),
                                   ),
-                                  Text(
-                                    " ${set.value ?? "-"}${set.name.toLowerCase() == "time" ? "s" : set.name.toLowerCase() == "weights" ? "Kg" : ""}",
-                                    style: const TextStyle(
-                                      color: AppTheme.titleColor1,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
+                                ),
+                            ],
+                            rows: [
+                              for (int row = 0;
+                                  row < currentExercise.setsValue.length;
+                                  row++)
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Text(
+                                        "${row + 1}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                ],
-                              );
-                            },
-                          )
+                                    for (int col = 0;
+                                        col <
+                                            currentExercise
+                                                .exercise.sets.length;
+                                        col++)
+                                      DataCell(
+                                        Text(
+                                          "${currentExercise.setsValue[row].isEmpty ? "-" : currentExercise.setsValue[row][col].value ?? "-"} ${currentExercise.setsValue[row][col].value != null ? currentExercise.exercise.sets[col].name.toLowerCase() == "time" ? "s" : currentExercise.exercise.sets[col].name.toLowerCase() == "weights" ? "kg" : "" : ""}",
+                                        ),
+                                      )
+                                  ],
+                                )
+                            ],
+                          ),
                       ],
                     ),
 

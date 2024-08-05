@@ -11,7 +11,7 @@ import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/plan_model.dart';
+import '../../../../models/plan_exercise_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 

@@ -25,7 +25,7 @@ class ExerciseModel {
   final List<String> primaryMuscles;
   final List<String> secondaryMuscles;
   final String modality;
-  final List<SetModel> sets;
+  final List<SetNameModel> sets;
   final List<String> equipments;
   final List<String> steps;
   final String? note;
@@ -78,7 +78,7 @@ class ExerciseModel {
       modality: map['modality'] as String,
       visibility: map['visibility'] as bool? ?? true,
       sets: (map['sets'] as List<dynamic>? ?? [])
-          .map((e) => SetModel.fromMap(e as Map<String, dynamic>))
+          .map((e) => SetNameModel.fromMap(e as Map<String, dynamic>))
           .toList(),
       equipments: (map['equipments'] as List<dynamic>)
           .map((e) => e.toString())

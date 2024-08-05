@@ -7,8 +7,7 @@
 // Description:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/constants/enum.dart';
-import 'exercise_model.dart';
-import 'set_model.dart';
+import 'plan_exercise_model.dart';
 
 class PlanModel {
   final String uuid;
@@ -58,45 +57,5 @@ class PlanModel {
   @override
   String toString() {
     return 'PlanModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, type: $type, period: $period, exercises: $exercises, createdAt: $createdAt, createdBy: $createdBy)';
-  }
-}
-
-class PlanExercise {
-  final String uuid;
-  final ExerciseModel exercise;
-  final List<SetModel> sets;
-  final String? note;
-  final String? tempo;
-  final List<PlanExercise> supersets;
-  final DateTime addedAt;
-  PlanExercise({
-    required this.uuid,
-    required this.exercise,
-    required this.sets,
-    this.note,
-    this.tempo,
-    required this.supersets,
-    required this.addedAt,
-  });
-
-  factory PlanExercise.fromMap(Map<String, dynamic> map) {
-    return PlanExercise(
-      uuid: map['uuid'] as String,
-      exercise: ExerciseModel.fromMap(map['exercise'] as Map<String, dynamic>),
-      sets: (map['sets'] as List<dynamic>)
-          .map((e) => SetModel.fromMap(e as Map<String, dynamic>))
-          .toList(),
-      note: map['note'] != null ? map['note'] as String : null,
-      tempo: map['tempo'] != null ? map['tempo'] as String : null,
-      supersets: (map['supersets'] as List<dynamic>)
-          .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
-          .toList(),
-      addedAt: (map['addedAt'] as Timestamp).toDate(),
-    );
-  }
-
-  @override
-  String toString() {
-    return 'PlanExercise(uuid: $uuid, exercise: $exercise, sets: $sets, note: $note, tempo: $tempo, supersets: $supersets, addedAt: $addedAt)';
   }
 }

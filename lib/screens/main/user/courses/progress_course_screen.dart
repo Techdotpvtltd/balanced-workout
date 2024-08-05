@@ -6,13 +6,13 @@
 // Description:
 
 import 'package:balanced_workout/models/course_model.dart';
-import 'package:balanced_workout/models/plan_model.dart';
 import 'package:balanced_workout/screens/main/user/courses/course_exercises_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
+import '../../../../models/plan_exercise_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';

@@ -8,7 +8,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/constants/enum.dart';
-import 'plan_model.dart';
+import 'plan_exercise_model.dart';
 
 class WorkoutModel {
   final String uuid;
