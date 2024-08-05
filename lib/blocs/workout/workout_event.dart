@@ -6,12 +6,16 @@
 // Description:
 
 import 'package:balanced_workout/utils/constants/enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class WorkoutEvent {}
 
 /// Fetch Workout
 class WorkoutEventFetch extends WorkoutEvent {
   final Level forLevel;
-
-  WorkoutEventFetch({required this.forLevel});
+  final DocumentSnapshot? lastSnapDoc;
+  WorkoutEventFetch({
+    required this.forLevel,
+    this.lastSnapDoc,
+  });
 }

@@ -18,7 +18,13 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
       (event, emit) async {
         try {
           emit(WorkoutStateFetching());
-          final workouts = await WorkoutRepo().fetch(forLevel: event.forLevel);
+          final workouts = await WorkoutRepo().fetch(
+            forLevel: event.forLevel,
+            lastDocSnap: event.lastSnapDoc,
+            onLastDocSnap: (last) {
+              emit(WorkoutStateFetchLastDocSnap(lasSnapDoc: last));
+            },
+          );
           emit(WorkoutStateFetched(workouts: workouts));
         } on AppException catch (e) {
           emit(WorkoutStateFetchFailure(exception: e));

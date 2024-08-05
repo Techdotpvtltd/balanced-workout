@@ -10,6 +10,7 @@ import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -34,21 +35,55 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
   late Level selectedLevel = widget.selectedLevel;
   bool isLoading = false;
   List<WorkoutModel> workouts = [];
+  DocumentSnapshot? lastDocSnap;
+  bool isReachedEnd = false;
+
+  final ScrollController scrollController = ScrollController();
+
+  void addScrollListener() {
+    scrollController.addListener(
+      () {
+        if (scrollController.offset >=
+                scrollController.position.maxScrollExtent &&
+            !scrollController.position.outOfRange) {
+          if (!isReachedEnd) triggerFetchWorkoutEvent();
+        }
+      },
+    );
+  }
 
   void triggerFetchWorkoutEvent() {
-    context.read<WorkoutBloc>().add(WorkoutEventFetch(forLevel: selectedLevel));
+    context.read<WorkoutBloc>().add(
+          WorkoutEventFetch(
+            forLevel: selectedLevel,
+            lastSnapDoc: lastDocSnap,
+          ),
+        );
   }
 
   @override
   void initState() {
     triggerFetchWorkoutEvent();
+    addScrollListener();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<WorkoutBloc, WorkoutState>(
       listener: (context, state) {
+        if (state is WorkoutStateFetchLastDocSnap) {
+          isReachedEnd = state.lasSnapDoc == null;
+          debugPrint(isReachedEnd.toString());
+          lastDocSnap = state.lasSnapDoc;
+        }
+
         if (state is WorkoutStateFetching ||
             state is WorkoutStateFetchFailure ||
             state is WorkoutStateFetched) {
@@ -60,9 +95,12 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
             debugPrint(state.exception.message);
           }
           if (state is WorkoutStateFetched) {
-            setState(() {
-              workouts = state.workouts;
-            });
+            for (final workout in state.workouts) {
+              if (!workouts.contains(workout)) {
+                workouts.add(workout);
+              }
+            }
+            setState(() {});
           }
         }
       },
@@ -71,7 +109,7 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
         body: CustomPadding(
           top: 6,
           child: Skeletonizer(
-            enabled: isLoading,
+            enabled: isLoading && lastDocSnap == null,
             child: (workouts.isEmpty && !isLoading)
                 ? const Center(
                     child: Text(
@@ -84,6 +122,7 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
                     ),
                   )
                 : ListView.builder(
+                    controller: scrollController,
                     itemCount: workouts.length,
                     padding: const EdgeInsets.only(top: 20),
                     itemBuilder: (_, index) {

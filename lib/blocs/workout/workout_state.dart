@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
 import 'package:balanced_workout/models/workout_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class WorkoutState {
   final bool isLoading;
@@ -27,6 +28,12 @@ class WorkoutStateFetchFailure extends WorkoutState {
   final AppException exception;
 
   WorkoutStateFetchFailure({required this.exception});
+}
+
+class WorkoutStateFetchLastDocSnap extends WorkoutState {
+  final DocumentSnapshot? lasSnapDoc;
+
+  WorkoutStateFetchLastDocSnap({this.lasSnapDoc});
 }
 
 class WorkoutStateFetched extends WorkoutState {
