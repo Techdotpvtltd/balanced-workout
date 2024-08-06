@@ -5,6 +5,8 @@
 // Date:        06-05-24 13:09:09 -- Monday
 // Description:
 
+import 'package:balanced_workout/blocs/log/log_bloc.dart';
+import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/models/article_model.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
@@ -49,9 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<ArticleBloc>().add(ArticleEventFetch());
   }
 
+  void triggerFetchAllWorkoutsLogEvent() {
+    context.read<LogBloc>().add(LogEventFetchAllWorkouts());
+  }
+
   @override
   void initState() {
     triggerFetchArticlesEvent();
+    triggerFetchAllWorkoutsLogEvent();
     super.initState();
   }
 
