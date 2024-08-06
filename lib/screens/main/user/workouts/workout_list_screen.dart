@@ -5,10 +5,15 @@
 // Date:        31-07-24 19:42:07 -- Wednesday
 // Description:
 
+import 'package:balanced_workout/blocs/log/log_bloc.dart';
+import 'package:balanced_workout/blocs/log/log_event.dart';
+import 'package:balanced_workout/blocs/log/log_state.dart';
+import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
+import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +23,16 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../blocs/workout/workout_bloc.dart';
 import '../../../../blocs/workout/workout_event.dart';
 import '../../../../blocs/workout/workout_state.dart';
-import '../../../../models/workout_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/enum.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
 
 class WorkoutListScreen extends StatefulWidget {
-  const WorkoutListScreen({super.key, required this.selectedLevel});
+  const WorkoutListScreen(
+      {super.key, required this.selectedLevel, required this.isShowLogs});
   final Level selectedLevel;
+  final bool isShowLogs;
   @override
   State<WorkoutListScreen> createState() => _WorkoutScreenState();
 }
@@ -34,7 +40,8 @@ class WorkoutListScreen extends StatefulWidget {
 class _WorkoutScreenState extends State<WorkoutListScreen> {
   late Level selectedLevel = widget.selectedLevel;
   bool isLoading = false;
-  List<WorkoutModel> workouts = [];
+  List<dynamic> workouts = [];
+
   DocumentSnapshot? lastDocSnap;
   bool isReachedEnd = false;
 
@@ -52,6 +59,12 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
     );
   }
 
+  void triggerFetchLogsWorkoutEvent() {
+    context
+        .read<LogBloc>()
+        .add(LogEventFetchWorkoutsByLevel(level: widget.selectedLevel));
+  }
+
   void triggerFetchWorkoutEvent() {
     context.read<WorkoutBloc>().add(
           WorkoutEventFetch(
@@ -63,8 +76,12 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
 
   @override
   void initState() {
-    triggerFetchWorkoutEvent();
-    addScrollListener();
+    if (widget.isShowLogs) {
+      triggerFetchLogsWorkoutEvent();
+    } else {
+      triggerFetchWorkoutEvent();
+      addScrollListener();
+    }
     super.initState();
   }
 
@@ -76,34 +93,62 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<WorkoutBloc, WorkoutState>(
-      listener: (context, state) {
-        if (state is WorkoutStateFetchLastDocSnap) {
-          isReachedEnd = state.lasSnapDoc == null;
-          debugPrint(isReachedEnd.toString());
-          lastDocSnap = state.lasSnapDoc;
-        }
+    return MultiBlocListener(
+      listeners: [
+        /// Log Bloc
 
-        if (state is WorkoutStateFetching ||
-            state is WorkoutStateFetchFailure ||
-            state is WorkoutStateFetched) {
-          setState(() {
-            isLoading = state.isLoading;
-          });
+        BlocListener<LogBloc, LogState>(
+          listener: (_, state) {
+            if (state is LogStateWorkoutsFetching ||
+                state is LogStateWorkoutsFetched ||
+                state is LogStateWorkoutsFetchFailure) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
 
-          if (state is WorkoutStateFetchFailure) {
-            debugPrint(state.exception.message);
-          }
-          if (state is WorkoutStateFetched) {
-            for (final workout in state.workouts) {
-              if (!workouts.contains(workout)) {
-                workouts.add(workout);
+              if (state is LogStateWorkoutsFetched) {
+                setState(() {
+                  workouts = state.workouts;
+                });
+              }
+
+              if (state is LogStateWorkoutsFetchFailure) {
+                CustomDialogs().errorBox(message: state.exception.message);
               }
             }
-            setState(() {});
-          }
-        }
-      },
+          },
+        ),
+
+        /// WorkoutBloc
+        BlocListener<WorkoutBloc, WorkoutState>(
+          listener: (context, state) {
+            if (state is WorkoutStateFetchLastDocSnap) {
+              isReachedEnd = state.lasSnapDoc == null;
+              lastDocSnap = state.lasSnapDoc;
+            }
+
+            if (state is WorkoutStateFetching ||
+                state is WorkoutStateFetchFailure ||
+                state is WorkoutStateFetched) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
+
+              if (state is WorkoutStateFetchFailure) {
+                debugPrint(state.exception.message);
+              }
+              if (state is WorkoutStateFetched) {
+                for (final workout in state.workouts) {
+                  if (!workouts.contains(workout)) {
+                    workouts.add(workout);
+                  }
+                }
+                setState(() {});
+              }
+            }
+          },
+        ),
+      ],
       child: CustomScaffold(
         appBar: customAppBar(title: "Workouts"),
         body: CustomPadding(
@@ -129,8 +174,10 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
                       final workout = workouts[index];
                       return CustomInkWell(
                         onTap: () {
-                          NavigationService.go(
-                              WorkoutExercisesScreen(workout: workout));
+                          if (workout is WorkoutModel) {
+                            NavigationService.go(
+                                WorkoutExercisesScreen(workout: workout));
+                          } else {}
                         },
                         child: Container(
                           height: 193,

@@ -35,12 +35,12 @@ final List<String> selectedIcons = [
   AppAssets.selectedGearIcon,
 ];
 
-final List<Widget> screens = [
-  const HomeScreen(),
-  const WorkoutScreen(),
-  const MyScreen(),
-  const ExploreScreen(),
-  const SettingScreen(),
+const List<Widget> screens = [
+  HomeScreen(),
+  WorkoutScreen(),
+  MyScreen(),
+  ExploreScreen(),
+  SettingScreen(),
 ];
 
 class MainUserScreen extends StatefulWidget {

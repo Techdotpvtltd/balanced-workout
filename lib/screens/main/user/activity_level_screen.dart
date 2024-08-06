@@ -18,11 +18,16 @@ import '../../components/custom_scaffold.dart';
 import 'components/product_card.dart';
 
 class ActivityLevelScreen extends StatelessWidget {
-  ActivityLevelScreen({super.key, required this.type, this.selectedPeriod});
+  ActivityLevelScreen({
+    super.key,
+    required this.type,
+    this.selectedPeriod,
+    this.isShowLogs = false,
+  });
   final ScreenType type;
   final List<Level> items = Level.values;
   final Period? selectedPeriod;
-
+  final bool isShowLogs;
   final images = [
     AppAssets.beginnersLevel,
     AppAssets.intermedianLevel,
@@ -48,7 +53,11 @@ class ActivityLevelScreen extends StatelessWidget {
             onClickCard: () {
               if (type == ScreenType.workout) {
                 NavigationService.go(
-                    WorkoutListScreen(selectedLevel: items[index]));
+                  WorkoutListScreen(
+                    selectedLevel: items[index],
+                    isShowLogs: isShowLogs,
+                  ),
+                );
               }
 
               if (type == ScreenType.courses) {

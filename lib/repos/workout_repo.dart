@@ -5,6 +5,8 @@
 // Date:        06-07-24 13:03:26 -- Saturday
 // Description:
 
+import 'dart:developer';
+
 import 'package:balanced_workout/exceptions/exception_parsing.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -51,6 +53,7 @@ class WorkoutRepo {
 
       return workouts.map((e) => WorkoutModel.fromMap(e)).toList();
     } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "Workout Fetch");
       throw throwAppException(e: e);
     }
   }

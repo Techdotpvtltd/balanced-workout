@@ -239,7 +239,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         isSVG: true,
                         onPressed: () {
                           NavigationService.go(
-                            ActivityLevelScreen(type: ScreenType.workout),
+                            ActivityLevelScreen(
+                              type: ScreenType.workout,
+                              isShowLogs: true,
+                            ),
                           );
                         },
                       ),

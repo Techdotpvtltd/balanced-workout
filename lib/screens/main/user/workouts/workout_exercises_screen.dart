@@ -5,11 +5,14 @@
 // Date:        06-07-24 11:01:40 -- Saturday
 // Description:
 
+import 'package:balanced_workout/blocs/log/log_bloc.dart';
+import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
@@ -26,6 +29,20 @@ class WorkoutExercisesScreen extends StatefulWidget {
 
 class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
   late final WorkoutModel workout = widget.workout;
+
+  void triggerSaveWorkoutLogEvent() {
+    context.read<LogBloc>().add(LogEventSaveWorkout(
+        workoutId: workout.uuid,
+        name: workout.name,
+        coverUrl: workout.coverUrl,
+        difficultyLevel: workout.difficultyLevel));
+  }
+
+  @override
+  void initState() {
+    triggerSaveWorkoutLogEvent();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

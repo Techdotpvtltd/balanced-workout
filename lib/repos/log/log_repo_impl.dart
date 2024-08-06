@@ -30,13 +30,14 @@ class LogRepo implements LogRepoInterface {
             value: AppManager().user.uid,
             type: QueryType.isEqual,
           ),
+          QueryModel(field: "startDate", value: true, type: QueryType.orderBy),
         ],
       );
 
       CacheLogWorkout().set =
           data.map((e) => WorkoutLogModel.fromMap(e)).toList();
     } catch (e) {
-      log("Get Log Workouts $e");
+      log("", time: DateTime.now(), error: e, name: "WorkoutLog getWorkouts");
     }
   }
 
@@ -49,10 +50,12 @@ class LogRepo implements LogRepoInterface {
     try {
       /// If it already existed
       if (CacheLogWorkout().find(workoutId: workoutId)) {
+        log("Already existed",
+            time: DateTime.now(), name: "WorkoutLog markWorkoutAsActive");
         return;
       }
 
-      final log = WorkoutLogModel(
+      final logWorkout = WorkoutLogModel(
         uuid: "",
         workoutId: workoutId,
         userId: AppManager().user.uid,
@@ -65,12 +68,15 @@ class LogRepo implements LogRepoInterface {
       final Map<String, dynamic> map = await FirestoreService()
           .saveWithSpecificIdFiled(
               path: FIREBASE_COLLECTION_LOG_WORKOUTS,
-              data: log.toMap(),
+              data: logWorkout.toMap(),
               docIdFiled: 'uuid');
 
       CacheLogWorkout().add(WorkoutLogModel.fromMap(map));
     } catch (e) {
-      log("Save Log Workout $e");
+      log("",
+          time: DateTime.now(),
+          error: e,
+          name: "WorkoutLog markWorkoutAsActive");
     }
   }
 
@@ -79,7 +85,7 @@ class LogRepo implements LogRepoInterface {
     try {
       return CacheLogWorkout().getItemsBy(level: level);
     } catch (e) {
-      log("Get Log Workouts $e");
+      log("", time: DateTime.now(), error: e, name: "WorkoutLog getWorkoutsBy");
       throw throwAppException(e: e);
     }
   }

@@ -85,14 +85,17 @@ class CacheWorkout implements CacheManager<WorkoutModel> {
 
 /// Log Workouts
 class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
+  static final _instance = CacheLogWorkout._internal();
+  CacheLogWorkout._internal();
+  factory CacheLogWorkout() => _instance;
   @override
   List<WorkoutLogModel>? _item;
 
   @override
-  List<WorkoutLogModel>? getItem;
+  late List<WorkoutLogModel>? getItem = _item;
 
   @override
-  set set(List<WorkoutLogModel> item) => _item?.addAll(item);
+  set set(List<WorkoutLogModel> item) => _item = item;
 
   bool find({required String workoutId}) =>
       (_item?.indexWhere((e) => e.workoutId == workoutId) ?? -1) > -1;
