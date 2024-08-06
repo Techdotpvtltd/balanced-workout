@@ -20,3 +20,6 @@ const FIREBASE_COLLECTION_MESSAGES =
 
 const FIREBASE_COLLECTION_ARTICLES =
     "${kReleaseMode ? "Rel-" : "Dev-"}Articles";
+
+const FIREBASE_COLLECTION_LOG_WORKOUTS =
+    "${kReleaseMode ? "Rel-" : "Dev-"}Log-Workouts";

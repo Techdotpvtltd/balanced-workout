@@ -14,6 +14,7 @@ import '../../utils/constants/enum.dart';
 
 class WorkoutLogModel {
   final String uuid;
+  final String workoutId;
   final String userId;
   final String name;
   final String? coverUrl;
@@ -23,6 +24,7 @@ class WorkoutLogModel {
   final bool isCompleted;
   WorkoutLogModel({
     required this.uuid,
+    required this.workoutId,
     required this.userId,
     required this.name,
     this.coverUrl,
@@ -34,6 +36,7 @@ class WorkoutLogModel {
 
   WorkoutLogModel copyWith({
     String? uuid,
+    String? workoutId,
     String? userId,
     String? name,
     String? coverUrl,
@@ -44,6 +47,7 @@ class WorkoutLogModel {
   }) {
     return WorkoutLogModel(
       uuid: uuid ?? this.uuid,
+      workoutId: workoutId ?? this.workoutId,
       userId: userId ?? this.userId,
       name: name ?? this.name,
       coverUrl: coverUrl ?? this.coverUrl,
@@ -57,6 +61,7 @@ class WorkoutLogModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'uuid': uuid,
+      'workoutId': workoutId,
       'userId': userId,
       'name': name,
       'coverUrl': coverUrl,
@@ -71,6 +76,7 @@ class WorkoutLogModel {
   factory WorkoutLogModel.fromMap(Map<String, dynamic> map) {
     return WorkoutLogModel(
       uuid: map['uuid'] as String,
+      workoutId: map['workoutId'] as String,
       userId: map['userId'] as String,
       name: map['name'] as String,
       coverUrl: map['coverUrl'] != null ? map['coverUrl'] as String : null,
@@ -90,7 +96,7 @@ class WorkoutLogModel {
 
   @override
   String toString() {
-    return 'WorkoutLogModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, startDate: $startDate, isCompleted: $isCompleted, userId: $userId, completeDate: $completeDate)';
+    return 'WorkoutLogModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, startDate: $startDate, isCompleted: $isCompleted, userId: $userId, completeDate: $completeDate, workoutId $workoutId)';
   }
 
   @override
@@ -98,6 +104,7 @@ class WorkoutLogModel {
     if (identical(this, other)) return true;
 
     return other.uuid == uuid &&
+        other.workoutId == workoutId &&
         other.name == name &&
         other.coverUrl == coverUrl &&
         other.difficultyLevel == difficultyLevel &&
@@ -110,6 +117,7 @@ class WorkoutLogModel {
   @override
   int get hashCode {
     return uuid.hashCode ^
+        workoutId.hashCode ^
         name.hashCode ^
         coverUrl.hashCode ^
         difficultyLevel.hashCode ^

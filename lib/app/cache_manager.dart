@@ -5,6 +5,7 @@
 // Date:        05-07-24 15:59:45 -- Friday
 // Description:
 
+import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 
 import '../models/plan_model.dart';
@@ -79,4 +80,22 @@ class CacheWorkout implements CacheManager<WorkoutModel> {
 
   @override
   set set(WorkoutModel item) => _item = item;
+}
+
+/// Log Workouts
+class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
+  @override
+  List<WorkoutLogModel>? _item;
+
+  @override
+  List<WorkoutLogModel>? getItem;
+
+  @override
+  set set(List<WorkoutLogModel> item) => _item?.addAll(item);
+
+  bool find({required String workoutId}) =>
+      (_item?.indexWhere((e) => e.workoutId == workoutId) ?? -1) > -1;
+
+  void add(WorkoutLogModel workout) =>
+      !find(workoutId: workout.uuid) ? _item?.add(workout) : {};
 }
