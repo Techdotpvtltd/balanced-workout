@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 
 import '../models/plan_model.dart';
 
@@ -98,4 +99,6 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
 
   void add(WorkoutLogModel workout) =>
       !find(workoutId: workout.uuid) ? _item?.add(workout) : {};
+  List<WorkoutLogModel> getItemsBy({required Level level}) =>
+      _item?.where((e) => e.difficultyLevel == level).toList() ?? [];
 }

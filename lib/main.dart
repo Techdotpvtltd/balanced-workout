@@ -1,6 +1,7 @@
 import 'package:balanced_workout/blocs/article/article_bloc.dart';
 import 'package:balanced_workout/blocs/chat/%20chat_bloc.dart';
 import 'package:balanced_workout/blocs/course/course_bloc.dart';
+import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/message/mesaage_bloc.dart';
 import 'package:balanced_workout/blocs/plan/plan_bloc.dart';
 import 'package:balanced_workout/blocs/workout/workout_bloc.dart';
@@ -51,6 +52,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => ChatBloc()),
         BlocProvider(create: (context) => MessageBloc()),
         BlocProvider(create: (context) => ArticleBloc()),
+        BlocProvider(create: (context) => LogBloc()),
       ],
       child: MaterialApp(
         navigatorKey: navKey,

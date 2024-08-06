@@ -9,6 +9,7 @@ import 'dart:developer';
 
 import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:balanced_workout/exceptions/exception_parsing.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/repos/log/log_repo_interface.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -16,7 +17,7 @@ import 'package:balanced_workout/utils/constants/firebase_collections.dart';
 import 'package:balanced_workout/web_services/firestore_services.dart';
 import 'package:balanced_workout/web_services/query_model.dart';
 
-class LogRepoImpl implements LogRepoInterface {
+class LogRepo implements LogRepoInterface {
   @override
   Future<void> getWorkouts() async {
     try {
@@ -70,6 +71,16 @@ class LogRepoImpl implements LogRepoInterface {
       CacheLogWorkout().add(WorkoutLogModel.fromMap(map));
     } catch (e) {
       log("Save Log Workout $e");
+    }
+  }
+
+  @override
+  Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level}) async {
+    try {
+      return CacheLogWorkout().getItemsBy(level: level);
+    } catch (e) {
+      log("Get Log Workouts $e");
+      throw throwAppException(e: e);
     }
   }
 }
