@@ -19,3 +19,9 @@ class WorkoutEventFetch extends WorkoutEvent {
     this.lastSnapDoc,
   });
 }
+
+class WorkoutEventGet extends WorkoutEvent {
+  final String uuid;
+
+  WorkoutEventGet({required this.uuid});
+}

@@ -58,20 +58,21 @@ class WorkoutRepo {
     }
   }
 
-  // final List<WorkoutModel> workouts =
-  //       await WebServices().fetchMultipleWithConditions<WorkoutModel>(
-  //     collection: FIREBASE_COLLECTION_WORKOUTS,
-  //     queries: [
-  //       QueryModel(
-  //           field: "difficultyLevel",
-  //           value: forLevel.name.toLowerCase(),
-  //           type: QueryType.isEqual),
-  //       QueryModel(field: "", value: 1, type: QueryType.limit),
-  //     ],
-  //   );
-  //   if (workouts.isNotEmpty) {
-  //     return workouts.first;
-  //   }
-  //   throw throwAppException(e: DataExceptionNotFound());
-  // }
+  Future<WorkoutModel> getWorkout({required String uuid}) async {
+    try {
+      final Map<String, dynamic>? data = await FirestoreService()
+          .fetchSingleRecord(path: FIREBASE_COLLECTION_WORKOUTS, docId: uuid);
+      if (data != null) {
+        return WorkoutModel.fromMap(data);
+      }
+      log("",
+          time: DateTime.now(),
+          error: Exception("Workout not found"),
+          name: "Workout getWorkout");
+      throw throwAppException(e: Exception("Workout not found"));
+    } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "Workout getWorkout");
+      throw throwAppException(e: e);
+    }
+  }
 }

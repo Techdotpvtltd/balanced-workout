@@ -31,5 +31,18 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
         }
       },
     );
+
+    // On Get Event
+    on<WorkoutEventGet>(
+      (event, emit) async {
+        try {
+          emit(WorkoutStateGetting());
+          final workout = await WorkoutRepo().getWorkout(uuid: event.uuid);
+          emit(WorkoutStateHGot(workout: workout));
+        } on AppException catch (e) {
+          emit(WorkoutStateGetFailue(exception: e));
+        }
+      },
+    );
   }
 }

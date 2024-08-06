@@ -1,125 +1,101 @@
+import 'dart:ui';
+
+import 'package:balanced_workout/screens/components/custom_button.dart';
+import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../main.dart';
-import '../../screens/components/custom_button.dart';
-import '../../screens/components/custom_paddings.dart';
-import '../../screens/components/custom_title_textfiled.dart';
 import '../constants/constants.dart';
-import '../extensions/navigation_service.dart';
 import 'rounded_button.dart';
 
 class CustomDialogs {
-  void _genericDialog({
-    Widget? child,
-  }) {
-    showDialog(
-      context: navKey.currentContext!,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
-        child: child,
-      ),
-    );
-  }
-
   void _genericAlertDilaog({
     required IconData icon,
     required String title,
     required String message,
     required Widget bottomWidget,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
     int maxSubLines = 3,
-    Color iconColor = Colors.white,
-    Color titleColor = Colors.white,
+    Color iconColor = AppTheme.primaryColor1,
+    Color titleColor = AppTheme.primaryColor1,
   }) {
     showDialog(
       context: navKey.currentContext!,
-      barrierDismissible: barrierDismissible,
-      builder: (context) => AlertDialog(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: const Color.fromARGB(255, 115, 162, 13),
-        icon: Container(
-          width: 85,
-          height: 85,
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 251, 251, 251),
-            shape: BoxShape.circle,
+      barrierDismissible: barrierDismissible ?? true,
+      useSafeArea: false,
+      builder: (context) => _CustomDialogView(
+        title: title,
+        description: message,
+        icon: icon,
+        bottomWidget: bottomWidget,
+        maxSubLines: maxSubLines,
+      ),
+    );
+  }
+
+  void errorBox({
+    String? message,
+    String? negativeTitle,
+    String? positiveTitle,
+    VoidCallback? onNegativePressed,
+    VoidCallback? onPositivePressed,
+    bool showPositive = false,
+  }) {
+    _genericAlertDilaog(
+      icon: Icons.bug_report,
+      title: "Error",
+      titleColor: Colors.red,
+      message: message ?? "Error",
+      iconColor: Colors.red,
+      bottomWidget: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (showPositive)
+            CustomButton(
+              title: positiveTitle ?? "Go",
+              height: 44,
+              onPressed: () {
+                Navigator.of(navKey.currentContext!).pop();
+                if (onPositivePressed != null) {
+                  onPositivePressed();
+                }
+              },
+            ),
+          if (showPositive) gapH6,
+          CustomButton(
+            title: negativeTitle ?? "Close",
+            height: 44,
+            onPressed: onNegativePressed ??
+                () {
+                  Navigator.of(navKey.currentContext!).pop();
+                },
           ),
-          child: Icon(
-            icon,
-            size: 40,
-            color: iconColor,
-          ),
-        ),
-        title: Text(
-          title,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: titleColor,
-          ),
-        ),
-        content: Text(
-          message,
-          textAlign: TextAlign.center,
-          maxLines: maxSubLines,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: const Color.fromARGB(255, 23, 23, 23),
-          ),
-        ),
-        actions: [
-          bottomWidget,
         ],
       ),
     );
   }
 
-  void errorBox({String? message}) {
-    _genericAlertDilaog(
-      icon: Icons.close,
-      title: "Error",
-      titleColor: Colors.red,
-      message: message ?? "Error",
-      iconColor: Colors.red,
-      bottomWidget: RoundedButton(
-        title: "Close",
-        height: 50,
-        onPressed: () {
-          Navigator.of(navKey.currentContext!).pop();
-        },
-      ),
-    );
-  }
-
-  void alertBox({
-    String? message,
-    String? title,
-    String? negativeTitle,
-    String? positiveTitle,
-    VoidCallback? onNegativePressed,
-    VoidCallback? onPositivePressed,
-    IconData? icon,
-    bool showNegative = true,
-  }) {
+  void alertBox(
+      {String? message,
+      String? title,
+      String? negativeTitle,
+      String? positiveTitle,
+      VoidCallback? onNegativePressed,
+      VoidCallback? onPositivePressed,
+      IconData? icon,
+      bool showNegative = true,
+      bool? barrierDismissible}) {
     _genericAlertDilaog(
       icon: icon ?? Icons.warning,
       title: title ?? "Alert!",
       message: message ?? "Alet",
-      iconColor: Colors.yellow,
+      barrierDismissible: barrierDismissible,
       bottomWidget: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RoundedButton(
+          CustomButton(
             title: positiveTitle ?? "Done",
             height: 44,
-            textSize: 12,
             onPressed: () {
               Navigator.of(navKey.currentContext!).pop();
               if (onPositivePressed != null) {
@@ -129,11 +105,9 @@ class CustomDialogs {
           ),
           if (showNegative) gapH6,
           if (showNegative)
-            RoundedButton(
+            CustomButton(
               title: negativeTitle ?? "Cancel",
-              withBorderOnly: true,
               height: 44,
-              textSize: 12,
               onPressed: onNegativePressed ??
                   () {
                     Navigator.of(navKey.currentContext!).pop();
@@ -164,14 +138,12 @@ class CustomDialogs {
     VoidCallback? onNegativePressed,
     String? positiveTitle,
     String? negativeTitle,
-    bool barrierDismissible = true,
+    bool? barrierDismissible,
   }) {
     _genericAlertDilaog(
       icon: Icons.check,
       title: title ?? "Success",
       barrierDismissible: barrierDismissible,
-      iconColor: Colors.black,
-      titleColor: Colors.black,
       message: message,
       maxSubLines: 6,
       bottomWidget: Column(
@@ -206,64 +178,101 @@ class CustomDialogs {
       ),
     );
   }
+}
 
-  void showTextField({
-    required String title,
-    required String tfHint,
-    required Function(String) onDone,
-    required String buttonTitle,
-  }) {
-    final TextEditingController controller = TextEditingController();
-    final FocusNode focusNode = FocusNode(canRequestFocus: true);
-    focusNode.requestFocus();
-    _genericDialog(
-      child: Container(
-        height: SCREEN_HEIGHT * 0.4,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        child: HVPadding(
-          verticle: 0,
-          horizontal: 20,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+class _CustomDialogView extends StatefulWidget {
+  const _CustomDialogView(
+      {required this.title,
+      required this.description,
+      required this.icon,
+      required this.bottomWidget,
+      required this.maxSubLines});
+  final String title;
+  final String description;
+  final IconData icon;
+
+  final Widget bottomWidget;
+  final int maxSubLines;
+
+  @override
+  State<_CustomDialogView> createState() => _CustomDialogViewState();
+}
+
+class _CustomDialogViewState extends State<_CustomDialogView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        child: Scaffold(
+          backgroundColor: Colors.grey.withOpacity(0.6),
+          body: Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(10),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: SCREEN_WIDTH * 0.9,
+                  margin: const EdgeInsets.only(bottom: 30),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        gapH10,
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            widget.icon,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                        gapH6,
+                        Text(
+                          widget.title,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.description,
+                          // maxLines: widget.maxSubLines,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff2F3342).withOpacity(0.80),
+                          ),
+                        ),
+                        gapH10,
+                        widget.bottomWidget,
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              gapH20,
-              CustomTextField(
-                controller: controller,
-                hintText: tfHint,
-                focusNode: focusNode,
-                onSubmitted: (value) {
-                  onDone(value);
-                  focusNode.requestFocus();
-                },
-              ),
-              gapH20,
-              CustomButton(
-                title: buttonTitle,
-                onPressed: () {
-                  onDone(controller.text);
-                  controller.clear();
-                  focusNode.requestFocus();
-                },
-              ),
-              gapH10,
-              CustomButton(
-                title: "Close",
-                onPressed: () {
-                  NavigationService.back();
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

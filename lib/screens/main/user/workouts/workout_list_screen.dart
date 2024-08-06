@@ -14,6 +14,7 @@ import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/workouts/workout_exercises_screen.dart';
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
+import 'package:balanced_workout/utils/dialogs/loaders.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,21 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
         /// WorkoutBloc
         BlocListener<WorkoutBloc, WorkoutState>(
           listener: (context, state) {
+            if (state is WorkoutStateGetFailue ||
+                state is WorkoutStateGetting ||
+                state is WorkoutStateHGot) {
+              state.isLoading ? Loader().show() : Loader().hide();
+
+              if (state is WorkoutStateHGot) {
+                NavigationService.go(
+                    WorkoutExercisesScreen(workout: state.workout));
+              }
+
+              if (state is WorkoutStateGetFailue) {
+                CustomDialogs().errorBox(message: state.exception.message);
+              }
+            }
+
             if (state is WorkoutStateFetchLastDocSnap) {
               isReachedEnd = state.lasSnapDoc == null;
               lastDocSnap = state.lasSnapDoc;
@@ -177,7 +193,11 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
                           if (workout is WorkoutModel) {
                             NavigationService.go(
                                 WorkoutExercisesScreen(workout: workout));
-                          } else {}
+                          } else {
+                            context
+                                .read<WorkoutBloc>()
+                                .add(WorkoutEventGet(uuid: workout.workoutId));
+                          }
                         },
                         child: Container(
                           height: 193,

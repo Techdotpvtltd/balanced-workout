@@ -41,3 +41,21 @@ class WorkoutStateFetched extends WorkoutState {
 
   WorkoutStateFetched({required this.workouts});
 }
+
+// ===========================Get Workout States================================
+
+class WorkoutStateGetting extends WorkoutState {
+  WorkoutStateGetting({super.isLoading = true});
+}
+
+class WorkoutStateGetFailue extends WorkoutState {
+  final AppException exception;
+
+  WorkoutStateGetFailue({required this.exception});
+}
+
+class WorkoutStateHGot extends WorkoutState {
+  final WorkoutModel workout;
+
+  WorkoutStateHGot({required this.workout});
+}
