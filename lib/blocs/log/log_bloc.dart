@@ -5,6 +5,7 @@
 // Date:        06-08-24 16:55:01 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
@@ -42,6 +43,34 @@ class LogBloc extends Bloc<LogEvent, LogState> {
             name: event.name,
             coverUrl: event.coverUrl ?? "",
             level: event.difficultyLevel);
+      },
+    );
+
+    /// Save Exercie
+    on<LogEventSaveExercise>(
+      (event, emit) async {
+        try {
+          await LogRepo().saveExercise(exercise: event.exercise);
+          emit(LogStateSavedExercise());
+        } on AppException catch (_) {}
+      },
+    );
+
+    /// Fetch AllExercises
+    on<LogEventFetchExercises>(
+      (event, emit) async {
+        try {
+          await LogRepo().fetchExercisesForMonth();
+          emit(LogStateFetchedExercises());
+        } on AppException catch (_) {}
+      },
+    );
+
+    /// Fetch On Specific date
+    on<LogEventFetchExercisesBy>(
+      (event, emit) {
+        final exercises = CacheLogExercise().findAt(event.date);
+        emit(LogStateFetchedExercisesByDate(exercises: exercises));
       },
     );
   }

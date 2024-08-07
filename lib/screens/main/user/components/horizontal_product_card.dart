@@ -6,9 +6,7 @@
 // Description:
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../components/custom_ink_well.dart';
@@ -17,16 +15,10 @@ import '../../../components/custom_paddings.dart';
 
 class HorizontalProductCard extends StatelessWidget {
   const HorizontalProductCard(
-      {super.key,
-      required this.coverUrl,
-      required this.title,
-      required this.timePeriod,
-      required this.celeries,
-      this.onClick});
+      {super.key, required this.coverUrl, required this.title, this.onClick});
   final String coverUrl;
   final String title;
-  final String timePeriod;
-  final String celeries;
+
   final VoidCallback? onClick;
   @override
   Widget build(BuildContext context) {
@@ -48,8 +40,7 @@ class HorizontalProductCard extends StatelessWidget {
                 /// Cover View
                 CustomNetworkImage(
                   imageUrl: coverUrl,
-                  width: SCREEN_WIDTH * 0.44,
-                  height: constraints.maxHeight * 0.7,
+                  height: constraints.maxHeight * 0.8,
                 ),
                 gapH6,
 
@@ -60,7 +51,6 @@ class HorizontalProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: SCREEN_WIDTH * 0.40,
                         child: Text(
                           title,
                           maxLines: 1,
@@ -72,34 +62,6 @@ class HorizontalProductCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      gapH4,
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.clockIcon),
-                          gapW6,
-                          Text(
-                            timePeriod,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Color(0xFF8C8C8C),
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          gapW12,
-                          SvgPicture.asset(AppAssets.fireIcon),
-                          gapW6,
-                          Text(
-                            celeries,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Color(0xFF8C8C8C),
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
                 )

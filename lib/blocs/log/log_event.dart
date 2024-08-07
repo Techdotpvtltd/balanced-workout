@@ -5,6 +5,7 @@
 // Date:        06-08-24 16:50:13 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 
 abstract class LogEvent {}
@@ -32,4 +33,20 @@ class LogEventSaveWorkout extends LogEvent {
       required this.name,
       required this.coverUrl,
       required this.difficultyLevel});
+}
+
+/// Fetch Exercises
+class LogEventFetchExercises extends LogEvent {}
+
+class LogEventFetchExercisesBy extends LogEvent {
+  final DateTime date;
+
+  LogEventFetchExercisesBy({required this.date});
+}
+
+/// Save Exercises
+class LogEventSaveExercise extends LogEvent {
+  final ExerciseLogModel exercise;
+
+  LogEventSaveExercise({required this.exercise});
 }

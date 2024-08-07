@@ -5,9 +5,12 @@
 // Date:        06-05-24 13:09:09 -- Monday
 // Description:
 
+import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
+import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/article_model.dart';
+import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -44,6 +47,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<ExerciseLogModel> logChallenges = [];
+
   late List<ArticleModel> articles =
       context.read<ArticleBloc>().articles.take(5).toList();
 
@@ -55,10 +60,15 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<LogBloc>().add(LogEventFetchAllWorkouts());
   }
 
+  void triggerFetchAllExercisesLogEvent() {
+    context.read<LogBloc>().add(LogEventFetchExercises());
+  }
+
   @override
   void initState() {
     triggerFetchArticlesEvent();
     triggerFetchAllWorkoutsLogEvent();
+    triggerFetchAllExercisesLogEvent();
     super.initState();
   }
 
@@ -66,6 +76,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        /// Log Bloc
+        BlocListener<LogBloc, LogState>(
+          listener: (_, state) {
+            if (state is LogStateFetchedExercises ||
+                state is LogStateSavedExercise) {
+              setState(() {
+                logChallenges = CacheLogExercise()
+                    .findBy(PlanType.challenge)
+                    .take(5)
+                    .toList();
+              });
+            }
+          },
+        ),
+
+        /// ArticleBloc
         BlocListener<ArticleBloc, ArticleState>(listener: (context, state) {
           if (state is ArticleStateFetched ||
               state is ArticleStateFetching ||
@@ -95,8 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: const BoxDecoration(
                   color: AppTheme.darkButtonColor,
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(167),
-                      bottomRight: Radius.circular(167)),
+                    topRight: Radius.circular(167),
+                    bottomRight: Radius.circular(167),
+                  ),
                 ),
 
                 /// Avatar Widget
@@ -263,61 +290,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 gapH26,
 
                 /// Recent Challenges
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Recent Challenges",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        NavigationService.go(const ChallengeExerciseScreen());
-                      },
-                      style: const ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      child: const Text(
-                        "View All",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                gapH14,
-                SizedBox(
-                  height: 160,
-                  child: ListView.builder(
-                    itemCount: 4,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(bottom: 7),
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: HorizontalProductCard(
-                            coverUrl:
-                                'https://www.bodybuilding.com/images/2016/july/build-your-best-chest-5-must-do-pec-exercises-header-v2-960x540.jpg',
-                            timePeriod: '4 Weeks',
-                            title: 'Full Body stretching',
-                            celeries: '130 Kcal',
-                            onClick: () {
+                if (logChallenges.isNotEmpty)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Recent Challenges",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
                               NavigationService.go(
                                   const ChallengeExerciseScreen());
                             },
+                            style: const ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            child: const Text(
+                              "View All",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
+                        ],
+                      ),
+                      gapH14,
+                      SizedBox(
+                        height: 160,
+                        child: ListView.builder(
+                          itemCount: logChallenges.length,
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.only(bottom: 7),
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 15),
+                                child: HorizontalProductCard(
+                                  coverUrl: logChallenges[index].coverUrl,
+                                  title: logChallenges[index].title,
+                                  onClick: () {
+                                    NavigationService.go(
+                                        const ChallengeExerciseScreen());
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
 
                 gapH24,
                 // ===========================Communities================================

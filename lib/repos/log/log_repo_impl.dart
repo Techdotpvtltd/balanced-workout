@@ -108,6 +108,7 @@ class LogRepo implements LogRepoInterface {
           time: DateTime.now(),
           error: e,
           name: "WorkoutLog fetchExercisesForMonth");
+      throw throwAppException(e: e);
     }
   }
 
@@ -120,7 +121,7 @@ class LogRepo implements LogRepoInterface {
             time: DateTime.now(),
             error: Exception(),
             name: "WorkoutLog saveExercise");
-        return;
+        throw throwAppException(e: Exception());
       }
 
       final Map<String, dynamic> map = await FirestoreService()
@@ -132,6 +133,7 @@ class LogRepo implements LogRepoInterface {
       CacheLogExercise().add(ExerciseLogModel.fromMap(map));
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "WorkoutLog saveExercise");
+      throw throwAppException(e: e);
     }
   }
 }

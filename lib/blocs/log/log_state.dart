@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
 
+import '../../models/logs/exercise_log_model.dart';
 import '../../models/logs/workout_log_model.dart';
 
 abstract class LogState {
@@ -37,4 +38,16 @@ class LogStateWorkoutsFetched extends LogState {
   final List<WorkoutLogModel> workouts;
 
   LogStateWorkoutsFetched({required this.workouts});
+}
+
+// ===========================Save Exercise States================================
+class LogStateSavedExercise extends LogState {}
+
+// ===========================Fetch Exercises States================================
+class LogStateFetchedExercises extends LogState {}
+
+class LogStateFetchedExercisesByDate extends LogState {
+  final List<ExerciseLogModel> exercises;
+
+  LogStateFetchedExercisesByDate({required this.exercises});
 }
