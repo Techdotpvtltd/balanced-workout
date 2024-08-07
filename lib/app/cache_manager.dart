@@ -5,9 +5,11 @@
 // Date:        05-07-24 15:59:45 -- Friday
 // Description:
 
+import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
+import 'package:balanced_workout/utils/extensions/date_extension.dart';
 
 import '../models/plan_model.dart';
 
@@ -104,4 +106,31 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
       !find(workoutId: workout.uuid) ? _item?.add(workout) : {};
   List<WorkoutLogModel> getItemsBy({required Level level}) =>
       _item?.where((e) => e.difficultyLevel == level).toList() ?? [];
+}
+
+class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
+  static final _instance = CacheLogExercise._internal();
+  CacheLogExercise._internal();
+  factory CacheLogExercise() => _instance;
+
+  @override
+  List<ExerciseLogModel>? _item;
+
+  @override
+  late List<ExerciseLogModel>? getItem = _item;
+
+  @override
+  set set(List<ExerciseLogModel> item) => _item = item;
+
+  void add(ExerciseLogModel log) => _item?.add(log);
+
+  List<ExerciseLogModel> findAt(DateTime date) =>
+      _item?.where((e) => e.startDate.onlyDate() == date.onlyDate()).toList() ??
+      [];
+  List<ExerciseLogModel> findBy(PlanType type) =>
+      _item?.where((e) => e.type == type).toList() ?? [];
+
+  bool checkExistedBy({required String exerciseId, required PlanType type}) =>
+      (_item?.indexWhere((e) => e.uuid == exerciseId && e.type == type) ?? -1) >
+      -1;
 }

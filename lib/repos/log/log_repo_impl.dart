@@ -10,6 +10,7 @@ import 'dart:developer';
 import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/exceptions/exception_parsing.dart';
+import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/repos/log/log_repo_interface.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -87,6 +88,50 @@ class LogRepo implements LogRepoInterface {
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "WorkoutLog getWorkoutsBy");
       throw throwAppException(e: e);
+    }
+  }
+
+  @override
+  Future<void> fetchExercisesForMonth() async {
+    try {
+      final data = await FirestoreService().fetchWithMultipleConditions(
+        collection: FIREBASE_COLLECTION_LOG_EXERCISES,
+        queries: [],
+      );
+
+      final List<ExerciseLogModel> exercises =
+          data.map((e) => ExerciseLogModel.fromMap(e)).toList();
+
+      CacheLogExercise().set = exercises;
+    } catch (e) {
+      log("",
+          time: DateTime.now(),
+          error: e,
+          name: "WorkoutLog fetchExercisesForMonth");
+    }
+  }
+
+  @override
+  Future<void> saveExercise({required ExerciseLogModel exercise}) async {
+    try {
+      if (CacheLogExercise().checkExistedBy(
+          exerciseId: exercise.exerciseId, type: exercise.type)) {
+        log("Exercise already logged",
+            time: DateTime.now(),
+            error: Exception(),
+            name: "WorkoutLog saveExercise");
+        return;
+      }
+
+      final Map<String, dynamic> map = await FirestoreService()
+          .saveWithSpecificIdFiled(
+              path: FIREBASE_COLLECTION_LOG_EXERCISES,
+              data: exercise.toMap(),
+              docIdFiled: 'uuid');
+
+      CacheLogExercise().add(ExerciseLogModel.fromMap(map));
+    } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "WorkoutLog saveExercise");
     }
   }
 }

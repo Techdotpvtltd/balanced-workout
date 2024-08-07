@@ -1,6 +1,6 @@
 enum ExerciseType { media, article }
 
-enum PlanType { course, cardio, stretches, challenge }
+enum PlanType { course, cardio, stretches, challenge, workout }
 
 enum Level { beginner, intermedate, advance }
 

@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 
+import '../../models/logs/exercise_log_model.dart';
 import '../../utils/constants/enum.dart';
 
 abstract class LogRepoInterface {
@@ -19,4 +20,8 @@ abstract class LogRepoInterface {
 
   Future<void> getWorkouts();
   Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level});
+
+  /// Exercises
+  Future<void> saveExercise({required ExerciseLogModel exercise});
+  Future<void> fetchExercisesForMonth();
 }
