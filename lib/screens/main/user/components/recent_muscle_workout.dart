@@ -52,7 +52,6 @@ class _RecentMuscleWorkoutState extends State<RecentMuscleWorkout> {
       listener: (context, state) {
         if (state is LogStateFetchedExercisesByDate) {
           filteredData(state.exercises);
-          setState(() {});
         }
       },
       child: Column(
