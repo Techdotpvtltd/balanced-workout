@@ -105,6 +105,7 @@ class _MyScreenState extends State<MyScreen> {
             ),
             gapH20,
             const RecentMuscleWorkout(),
+            gapH30,
             const Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Column(
