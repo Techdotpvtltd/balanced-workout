@@ -43,8 +43,8 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
     on<PlanEventFetchChallenge>((event, emit) async {
       try {
         emit(PlanStateChallengeFetching());
-        final PlanModel stretch = await ChallengeRepo().fetch();
-        emit(PlanStateChallengeFetched(challenge: stretch));
+        final PlanModel challenge = await ChallengeRepo().fetch();
+        emit(PlanStateChallengeFetched(challenge: challenge));
       } on AppException catch (e) {
         emit(PlanStateChallengeFetchFailure(exception: e));
       }

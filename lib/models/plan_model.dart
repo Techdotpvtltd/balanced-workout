@@ -6,6 +6,7 @@
 // Date:        21-06-24 14:11:02 -- Friday
 // Description:
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../utils/constants/enum.dart';
 import 'plan_exercise_model.dart';
 
@@ -57,5 +58,29 @@ class PlanModel {
   @override
   String toString() {
     return 'PlanModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, type: $type, period: $period, exercises: $exercises, createdAt: $createdAt, createdBy: $createdBy)';
+  }
+
+  PlanModel copyWith({
+    String? uuid,
+    String? name,
+    String? coverUrl,
+    Level? difficultyLevel,
+    PlanType? type,
+    Period? period,
+    List<PlanExercise>? exercises,
+    DateTime? createdAt,
+    String? createdBy,
+  }) {
+    return PlanModel(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      coverUrl: coverUrl ?? this.coverUrl,
+      difficultyLevel: difficultyLevel ?? this.difficultyLevel,
+      type: type ?? this.type,
+      period: period ?? this.period,
+      exercises: exercises ?? this.exercises,
+      createdAt: createdAt ?? this.createdAt,
+      createdBy: createdBy ?? this.createdBy,
+    );
   }
 }
