@@ -134,22 +134,33 @@ class ExerciseLogModel {
 }
 
 enum ExerciseMuscleType {
-  biceps('Biceps', 'biceps'),
-  anterior('Deltoid(Anterior)', ''),
-  lateral('Deltoid(Lateral)', ''),
-  posterior('Deltoid(Posterior)', ''),
-  chest('Chest', 'chest'),
-  abdominalCore('Abdominal(Core)', ''),
-  externalOblique('External oblique(Side core)', ''),
-  upperTrapezius('Upper trapezius', ''),
-  middleTrapezius('Middle Trapezius', ''),
-  lowerTrapezius('Lower trapezius', ''),
-  latissimusDorsiLats('Latissimus Dorsi(Lats)', ''),
-  legsQuads('Legs(Quads)', ''),
-  legsGlutes('Legs(Glutes)', ''),
-  legsHamstrings('Legs(Hamstrings)', ''),
-  legsCalfs('Legs(Calfs)', ''),
-  triceps('Triceps', 'triceps');
+  triceps('Triceps', 'triceps1'), // Assuming 'triceps1' is the best match
+  biceps('Biceps', 'biceps1'), // Assuming 'biceps1' is the best match
+  deltoidAnterior('Deltoid(Anterior)',
+      'shoulder1'), // Assuming 'shoulder1' is the best match
+  deltoidLateral('Deltoid(Lateral)',
+      'shoulder2'), // Assuming 'shoulder2' is the best match
+  deltoidPosterior('Deltoid(Posterior)',
+      'shoulder3'), // Assuming 'shoulder3' is the best match
+  chest('Chest', 'chest1'), // Assuming 'chest1' is the best match
+  abdominalCore('Abdominal(Core)', 'abs1'), // Assuming 'abs1' is the best match
+  externalOblique('External oblique(Side core)',
+      'obliques1'), // Assuming 'obliques1' is the best match
+  upperTrapezius('Upper trapezius',
+      'trapezius1'), // Assuming 'trapezius1' is the best match
+  middleTrapezius('Middle Trapezius',
+      'trapezius2'), // Assuming 'trapezius2' is the best match
+  lowerTrapezius('Lower trapezius',
+      'trapezius3'), // Assuming 'trapezius3' is the best match
+  latissimusDorsiLats(
+      'Latissimus Dorsi(Lats)', 'lats1'), // Assuming 'lats1' is the best match
+  lowerBack(
+      'Lower back', 'lower_back'), // Assuming 'lower_back' is the best match
+  legsQuads('Legs(Quads)', 'quads1'), // Assuming 'quads1' is the best match
+  legsGlutes('Legs(Glutes)', 'glutes1'), // Assuming 'glutes1' is the best match
+  legsHamstrings('Legs(Hamstrings)',
+      'harmstrings1'), // Assuming 'harmstrings1' is the best match
+  legsCalfs('Legs(Calfs)', 'calves1'); // Assuming 'calves1' is the best match
 
   const ExerciseMuscleType(this.name, this.id);
   final String name, id;
