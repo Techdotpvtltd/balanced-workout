@@ -122,7 +122,7 @@ class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
   @override
   set set(List<ExerciseLogModel> item) => _item = item;
 
-  void add(ExerciseLogModel log) => _item?.add(log);
+  void add(ExerciseLogModel log) => _item?.insert(0, log);
 
   List<ExerciseLogModel> findAt(DateTime date) =>
       _item?.where((e) => e.startDate.onlyDate() == date.onlyDate()).toList() ??
@@ -131,6 +131,7 @@ class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
       _item?.where((e) => e.type == type).toList() ?? [];
 
   bool checkExistedBy({required String exerciseId, required PlanType type}) =>
-      (_item?.indexWhere((e) => e.uuid == exerciseId && e.type == type) ?? -1) >
+      (_item?.indexWhere((e) => e.exerciseId == exerciseId && e.type == type) ??
+          -1) >
       -1;
 }

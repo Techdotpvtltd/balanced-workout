@@ -7,24 +7,34 @@
 
 import 'dart:async';
 
+import 'package:balanced_workout/app/app_manager.dart';
+import 'package:balanced_workout/blocs/log/log_bloc.dart';
+import 'package:balanced_workout/blocs/log/log_event.dart';
+import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
 import 'package:balanced_workout/screens/components/custom_network_image.dart';
 import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../models/plan_exercise_model.dart';
 
 class ExercisePlayScreen extends StatefulWidget {
   const ExercisePlayScreen(
-      {super.key, required this.planExercises, this.currentExercise});
+      {super.key,
+      required this.planExercises,
+      this.currentExercise,
+      required this.type});
   final List<PlanExercise> planExercises;
   final PlanExercise? currentExercise;
+  final PlanType type;
   @override
   State<ExercisePlayScreen> createState() => _ExercisePlayScreenState();
 }
@@ -38,6 +48,27 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
+
+  void triggerSaveExerciseLogEvent() {
+    final List<String> muscles =
+        List.from(currentExercise.exercise.primaryMuscles);
+    muscles.addAll(currentExercise.exercise.secondaryMuscles);
+    muscles.toSet().toList();
+
+    final exer = ExerciseLogModel(
+        uuid: "",
+        exerciseId: currentExercise.exercise.uuid,
+        userId: AppManager().user.uid,
+        title: currentExercise.exercise.name,
+        coverUrl: currentExercise.exercise.coverUrl ?? "",
+        startDate: DateTime.now(),
+        muscles: muscles
+            .map((e) => ExerciseMuscleType.values
+                .firstWhere((m) => m.name.toLowerCase() == e.toLowerCase()))
+            .toList(),
+        type: widget.type);
+    context.read<LogBloc>().add(LogEventSaveExercise(exercise: exer));
+  }
 
   void processNextExercise() {
     final int nextIndex =
@@ -53,6 +84,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       });
 
       prepareVideoController();
+      triggerSaveExerciseLogEvent();
     }
   }
 
@@ -92,6 +124,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
   void initState() {
     executeTime();
     prepareVideoController();
+    triggerSaveExerciseLogEvent();
     super.initState();
   }
 

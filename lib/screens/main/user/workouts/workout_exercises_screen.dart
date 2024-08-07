@@ -9,6 +9,7 @@ import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -204,6 +205,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                   /// Play List Widget
                   ExerciseListWidget(
                     planExercises: workout.exercises,
+                    type: PlanType.workout,
                   ),
                 ],
               ),

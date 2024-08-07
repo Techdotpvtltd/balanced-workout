@@ -25,6 +25,7 @@ class HorizontalProductCard extends StatelessWidget {
     return CustomInkWell(
       onTap: onClick,
       child: Container(
+        width: SCREEN_WIDTH * 0.5,
         padding: const EdgeInsets.only(bottom: 10),
         margin: const EdgeInsets.symmetric(horizontal: 4),
         clipBehavior: Clip.hardEdge,
@@ -40,6 +41,7 @@ class HorizontalProductCard extends StatelessWidget {
                 /// Cover View
                 CustomNetworkImage(
                   imageUrl: coverUrl,
+                  width: SCREEN_WIDTH,
                   height: constraints.maxHeight * 0.8,
                 ),
                 gapH6,

@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
@@ -17,26 +18,37 @@ import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../components/custom_ink_well.dart';
 
-class ExerciseListWidget extends StatelessWidget {
-  const ExerciseListWidget({super.key, required this.planExercises});
+class ExerciseListWidget extends StatefulWidget {
+  const ExerciseListWidget(
+      {super.key, required this.planExercises, required this.type});
   final List<PlanExercise> planExercises;
+  final PlanType type;
+
+  @override
+  State<ExerciseListWidget> createState() => _ExerciseListWidgetState();
+}
+
+class _ExerciseListWidgetState extends State<ExerciseListWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: planExercises.length,
+      itemCount: widget.planExercises.length,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 20),
       shrinkWrap: true,
       itemBuilder: (ctx, index) {
-        final PlanExercise planExercise = planExercises[index];
+        final PlanExercise planExercise = widget.planExercises[index];
 
         return CustomInkWell(
           onTap: () {
-            final exercises = List<PlanExercise>.from(planExercises)
+            final exercises = List<PlanExercise>.from(widget.planExercises)
                 .skipWhile((e) => e.uuid != planExercise.uuid)
                 .toList();
             NavigationService.go(
-              ExercisePlayScreen(planExercises: exercises),
+              ExercisePlayScreen(
+                planExercises: exercises,
+                type: widget.type,
+              ),
             );
           },
           child: Container(

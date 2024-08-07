@@ -94,9 +94,22 @@ class LogRepo implements LogRepoInterface {
   @override
   Future<void> fetchExercisesForMonth() async {
     try {
+      DateTime now = DateTime.now();
+      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+      DateTime currentDayOfMoth = DateTime(now.year, now.month + 1, now.day);
       final data = await FirestoreService().fetchWithMultipleConditions(
         collection: FIREBASE_COLLECTION_LOG_EXERCISES,
-        queries: [],
+        queries: [
+          QueryModel(field: "startDate", value: true, type: QueryType.orderBy),
+          QueryModel(
+              field: "startDate",
+              value: firstDayOfMonth,
+              type: QueryType.isGreaterThanOrEqual),
+          QueryModel(
+              field: "startDate",
+              value: currentDayOfMoth,
+              type: QueryType.isLessThan),
+        ],
       );
 
       final List<ExerciseLogModel> exercises =

@@ -21,7 +21,7 @@ class ExerciseLogModel {
   final String coverUrl;
   final DateTime startDate;
   final DateTime? completeDate;
-  final List<String> muscles;
+  final List<ExerciseMuscleType> muscles;
   final PlanType type;
   ExerciseLogModel({
     required this.uuid,
@@ -43,7 +43,7 @@ class ExerciseLogModel {
     String? coverUrl,
     DateTime? startDate,
     DateTime? completeDate,
-    List<String>? muscles,
+    List<ExerciseMuscleType>? muscles,
     PlanType? type,
   }) {
     return ExerciseLogModel(
@@ -69,7 +69,7 @@ class ExerciseLogModel {
       'startDate': Timestamp.fromDate(startDate),
       'completeDate':
           completeDate != null ? Timestamp.fromDate(completeDate!) : null,
-      'muscles': muscles,
+      'muscles': muscles.map((e) => e.name.toLowerCase()).toList(),
       'type': type.name.toLowerCase(),
     };
   }
@@ -85,7 +85,10 @@ class ExerciseLogModel {
       completeDate: map['completeDate'] != null
           ? (map['completeDate'] as Timestamp).toDate()
           : null,
-      muscles: List<String>.from((map['muscles'] as List<String>)),
+      muscles: ((map['muscles'] as List<dynamic>))
+          .map((e) => ExerciseMuscleType.values.firstWhere(
+              (m) => m.name.toLowerCase() == (e as String).toLowerCase()))
+          .toList(),
       type: PlanType.values.firstWhere(
           (e) => e.name.toLowerCase() == map['type'].toString().toLowerCase()),
     );
@@ -128,4 +131,26 @@ class ExerciseLogModel {
         muscles.hashCode ^
         type.hashCode;
   }
+}
+
+enum ExerciseMuscleType {
+  biceps('Biceps', 'biceps'),
+  anterior('Deltoid(Anterior)', ''),
+  lateral('Deltoid(Lateral)', ''),
+  posterior('Deltoid(Posterior)', ''),
+  chest('Chest', 'chest'),
+  abdominalCore('Abdominal(Core)', ''),
+  externalOblique('External oblique(Side core)', ''),
+  upperTrapezius('Upper trapezius', ''),
+  middleTrapezius('Middle Trapezius', ''),
+  lowerTrapezius('Lower trapezius', ''),
+  latissimusDorsiLats('Latissimus Dorsi(Lats)', ''),
+  legsQuads('Legs(Quads)', ''),
+  legsGlutes('Legs(Glutes)', ''),
+  legsHamstrings('Legs(Hamstrings)', ''),
+  legsCalfs('Legs(Calfs)', ''),
+  triceps('Triceps', 'triceps');
+
+  const ExerciseMuscleType(this.name, this.id);
+  final String name, id;
 }

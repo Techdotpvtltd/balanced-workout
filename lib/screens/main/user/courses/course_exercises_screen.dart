@@ -9,6 +9,7 @@ import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
+import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/plan_exercise_model.dart';
@@ -155,7 +156,10 @@ class _CourseExercisesScreenState extends State<CourseExercisesScreen> {
               ),
             ),
             Expanded(
-              child: ExerciseListWidget(planExercises: planExercises),
+              child: ExerciseListWidget(
+                planExercises: planExercises,
+                type: PlanType.course,
+              ),
             ),
           ],
         ),

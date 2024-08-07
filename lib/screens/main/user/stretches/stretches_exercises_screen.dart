@@ -18,6 +18,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../utils/constants/app_theme.dart';
 import '../../../../../utils/constants/constants.dart';
+import '../../../../utils/constants/enum.dart';
 import '../../../components/custom_network_image.dart';
 
 class StretchesExercisesScreen extends StatefulWidget {
@@ -225,7 +226,9 @@ class _StretchesExercisesScreenState extends State<StretchesExercisesScreen> {
 
                       /// Play List Widget
                       ExerciseListWidget(
-                          planExercises: stretches?.exercises ?? []),
+                        planExercises: stretches?.exercises ?? [],
+                        type: PlanType.stretches,
+                      ),
                     ],
                   ),
                 ),
