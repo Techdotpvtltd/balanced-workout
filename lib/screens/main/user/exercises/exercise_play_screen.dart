@@ -31,10 +31,12 @@ class ExercisePlayScreen extends StatefulWidget {
       {super.key,
       required this.planExercises,
       this.currentExercise,
+      this.onCompleteButton,
       required this.type});
   final List<PlanExercise> planExercises;
   final PlanExercise? currentExercise;
   final PlanType type;
+  final VoidCallback? onCompleteButton;
   @override
   State<ExercisePlayScreen> createState() => _ExercisePlayScreenState();
 }
@@ -48,7 +50,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
-
+  bool isShowCompleteButton = false;
   void triggerSaveExerciseLogEvent() {
     final List<String> muscles =
         List.from(currentExercise.exercise.primaryMuscles);
@@ -85,6 +87,11 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
 
       prepareVideoController();
       triggerSaveExerciseLogEvent();
+    } else {
+      setState(() {
+        isShowCompleteButton = planExercises.length == nextIndex &&
+            widget.type == PlanType.workout;
+      });
     }
   }
 
@@ -142,8 +149,14 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
-          title: "Next Exercise",
+          title:
+              isShowCompleteButton ? "Mark Workout Complete" : "Next Exercise",
           onPressed: () {
+            if (isShowCompleteButton && widget.onCompleteButton != null) {
+              widget.onCompleteButton!();
+              return;
+            }
+
             processNextExercise();
           },
         ),

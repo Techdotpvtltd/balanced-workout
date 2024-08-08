@@ -50,7 +50,7 @@ class LogRepo implements LogRepoInterface {
       required Level level}) async {
     try {
       /// If it already existed
-      if (CacheLogWorkout().find(workoutId: workoutId)) {
+      if (CacheLogWorkout().doesExisted(workoutId: workoutId)) {
         log("Already existed",
             time: DateTime.now(), name: "WorkoutLog markWorkoutAsActive");
         return;
@@ -63,7 +63,6 @@ class LogRepo implements LogRepoInterface {
         name: name,
         difficultyLevel: level,
         startDate: DateTime.now(),
-        isCompleted: false,
       );
 
       final Map<String, dynamic> map = await FirestoreService()
@@ -78,6 +77,36 @@ class LogRepo implements LogRepoInterface {
           time: DateTime.now(),
           error: e,
           name: "WorkoutLog markWorkoutAsActive");
+    }
+  }
+
+  @override
+  Future<void> markWorkoutCompleted({required String workoutId}) async {
+    try {
+      /// If it already existed
+      WorkoutLogModel? workout = CacheLogWorkout().find(workoutId: workoutId);
+      if (workout != null && workout.completeDate == null) {
+        workout = workout.copyWith(completeDate: DateTime.now());
+        await FirestoreService().updateWithDocId(
+            path: FIREBASE_COLLECTION_LOG_WORKOUTS,
+            docId: workoutId,
+            data: workout.toMap());
+        CacheLogWorkout().update(workout: workout);
+      } else {
+        log(
+          "Workout log not found",
+          time: DateTime.now(),
+          name: "WorkoutLog markWorkoutCompleted",
+        );
+
+        throw Exception("Workout log not found");
+      }
+    } catch (e) {
+      log("",
+          time: DateTime.now(),
+          error: e,
+          name: "WorkoutLog markWorkoutCompleted");
+      throw throwAppException(e: e);
     }
   }
 

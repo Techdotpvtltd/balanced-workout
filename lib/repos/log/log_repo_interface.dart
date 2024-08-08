@@ -18,6 +18,8 @@ abstract class LogRepoInterface {
     required Level level,
   });
 
+  Future<void> markWorkoutCompleted({required String workoutId});
+
   Future<void> getWorkouts();
   Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level});
 

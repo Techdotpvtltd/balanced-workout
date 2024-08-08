@@ -99,11 +99,27 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   @override
   set set(List<WorkoutLogModel> item) => _item = item;
 
-  bool find({required String workoutId}) =>
+  bool doesExisted({required String workoutId}) =>
       (_item?.indexWhere((e) => e.workoutId == workoutId) ?? -1) > -1;
 
+  WorkoutLogModel? find({required String workoutId}) {
+    final int index = _item?.indexWhere((e) => e.workoutId == workoutId) ?? -1;
+    if (index > -1) {
+      return _item![index];
+    }
+    return null;
+  }
+
+  void update({required WorkoutLogModel workout}) {
+    final int index =
+        _item?.indexWhere((e) => e.workoutId == workout.uuid) ?? -1;
+    if (index > -1) {
+      _item![index] = workout;
+    }
+  }
+
   void add(WorkoutLogModel workout) =>
-      !find(workoutId: workout.uuid) ? _item?.add(workout) : {};
+      !doesExisted(workoutId: workout.uuid) ? _item?.add(workout) : {};
   List<WorkoutLogModel> getItemsBy({required Level level}) =>
       _item?.where((e) => e.difficultyLevel == level).toList() ?? [];
 }

@@ -25,10 +25,12 @@ class ExerciseListWidget extends StatefulWidget {
     required this.planExercises,
     required this.type,
     this.isFromChallengeLogs = false,
+    this.onCompletePressed,
   });
   final List<PlanExercise> planExercises;
   final PlanType type;
   final bool isFromChallengeLogs;
+  final VoidCallback? onCompletePressed;
   @override
   State<ExerciseListWidget> createState() => _ExerciseListWidgetState();
 }
@@ -69,6 +71,7 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
               ExercisePlayScreen(
                 planExercises: exercises,
                 type: widget.type,
+                onCompleteButton: widget.onCompletePressed,
               ),
             );
           },

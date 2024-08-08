@@ -35,6 +35,12 @@ class LogEventSaveWorkout extends LogEvent {
       required this.difficultyLevel});
 }
 
+class LogEventMarkWorkoutComplete extends LogEvent {
+  final String workoutId;
+
+  LogEventMarkWorkoutComplete({required this.workoutId});
+}
+
 /// Fetch Exercises
 class LogEventFetchExercises extends LogEvent {}
 

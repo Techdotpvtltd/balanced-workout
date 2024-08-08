@@ -51,3 +51,7 @@ class LogStateFetchedExercisesByDate extends LogState {
 
   LogStateFetchedExercisesByDate({required this.exercises});
 }
+
+// ===========================Workout Mark Complete================================
+
+class LogStateMarkCompleted extends LogState {}

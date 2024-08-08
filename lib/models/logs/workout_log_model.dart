@@ -21,7 +21,6 @@ class WorkoutLogModel {
   final Level difficultyLevel;
   final DateTime startDate;
   final DateTime? completeDate;
-  final bool isCompleted;
   WorkoutLogModel({
     required this.uuid,
     required this.workoutId,
@@ -31,7 +30,6 @@ class WorkoutLogModel {
     required this.difficultyLevel,
     required this.startDate,
     this.completeDate,
-    required this.isCompleted,
   });
 
   WorkoutLogModel copyWith({
@@ -54,7 +52,6 @@ class WorkoutLogModel {
       difficultyLevel: difficultyLevel ?? this.difficultyLevel,
       startDate: startDate ?? this.startDate,
       completeDate: completeDate ?? this.completeDate,
-      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -69,7 +66,6 @@ class WorkoutLogModel {
       'startDate': Timestamp.fromDate(startDate),
       'completeDate':
           completeDate != null ? Timestamp.fromDate(completeDate!) : null,
-      'isCompleted': isCompleted,
     };
   }
 
@@ -85,7 +81,6 @@ class WorkoutLogModel {
           e.name.toLowerCase()),
       startDate: (map['startDate'] as Timestamp).toDate(),
       completeDate: (map['completeDate'] as Timestamp?)?.toDate(),
-      isCompleted: map['isCompleted'] as bool,
     );
   }
 
@@ -96,7 +91,7 @@ class WorkoutLogModel {
 
   @override
   String toString() {
-    return 'WorkoutLogModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, startDate: $startDate, isCompleted: $isCompleted, userId: $userId, completeDate: $completeDate, workoutId $workoutId)';
+    return 'WorkoutLogModel(uuid: $uuid, name: $name, coverUrl: $coverUrl, difficultyLevel: $difficultyLevel, startDate: $startDate, userId: $userId, completeDate: $completeDate, workoutId $workoutId)';
   }
 
   @override
@@ -110,8 +105,7 @@ class WorkoutLogModel {
         other.difficultyLevel == difficultyLevel &&
         other.startDate == startDate &&
         other.userId == userId &&
-        other.completeDate == completeDate &&
-        other.isCompleted == isCompleted;
+        other.completeDate == completeDate;
   }
 
   @override
@@ -123,7 +117,6 @@ class WorkoutLogModel {
         difficultyLevel.hashCode ^
         startDate.hashCode ^
         completeDate.hashCode ^
-        userId.hashCode ^
-        isCompleted.hashCode;
+        userId.hashCode;
   }
 }
