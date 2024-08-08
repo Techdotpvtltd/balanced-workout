@@ -111,6 +111,9 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
     return null;
   }
 
+  List<WorkoutLogModel> findCompletedWorkouts() =>
+      _item?.where((e) => e.completeDate != null).toList() ?? [];
+
   void update({required WorkoutLogModel workout}) {
     final int index = _item?.indexWhere((e) => e.uuid == workout.uuid) ?? -1;
 
