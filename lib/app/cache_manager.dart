@@ -10,6 +10,7 @@ import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/date_extension.dart';
+import 'package:flutter/material.dart';
 
 import '../models/plan_model.dart';
 
@@ -111,10 +112,11 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   }
 
   void update({required WorkoutLogModel workout}) {
-    final int index =
-        _item?.indexWhere((e) => e.workoutId == workout.uuid) ?? -1;
+    final int index = _item?.indexWhere((e) => e.uuid == workout.uuid) ?? -1;
+
     if (index > -1) {
       _item![index] = workout;
+      debugPrint("Completed");
     }
   }
 

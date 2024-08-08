@@ -94,7 +94,7 @@ class LogRepo implements LogRepoInterface {
         CacheLogWorkout().update(workout: workout);
       } else {
         log(
-          "Workout log not found",
+          "Workout log not found or already completed",
           time: DateTime.now(),
           name: "WorkoutLog markWorkoutCompleted",
         );

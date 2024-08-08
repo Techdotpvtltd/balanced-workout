@@ -18,6 +18,7 @@ import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
+import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +155,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
           onPressed: () {
             if (isShowCompleteButton && widget.onCompleteButton != null) {
               widget.onCompleteButton!();
+              NavigationService.back();
               return;
             }
 

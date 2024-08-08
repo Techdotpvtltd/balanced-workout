@@ -77,10 +77,8 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     /// Update Workout
     on<LogEventMarkWorkoutComplete>(
       (event, emit) async {
-        try {
-          await LogRepo().markWorkoutCompleted(workoutId: event.workoutId);
-          emit(LogStateMarkCompleted());
-        } on AppException catch (_) {}
+        LogRepo().markWorkoutCompleted(workoutId: event.workoutId);
+        emit(LogStateMarkCompleted());
       },
     );
   }
