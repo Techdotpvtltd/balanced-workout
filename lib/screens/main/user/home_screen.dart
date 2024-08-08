@@ -249,24 +249,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       /// Circle Widget
-                      const SizedBox(
+                      SizedBox(
                         width: 80,
                         height: 80,
                         child: PieChart(
-                          dataMap: {"App": 34},
+                          dataMap: {"App": monthDayPercentage().toDouble()},
                           chartType: ChartType.ring,
                           baseChartColor: AppTheme.darkButtonColor,
                           initialAngleInDegree: 270,
-                          colorList: [AppTheme.primaryColor1],
+                          colorList: const [AppTheme.primaryColor1],
                           totalValue: 100,
                           chartLegendSpacing: 0,
-                          chartValuesOptions: ChartValuesOptions(
+                          chartValuesOptions: const ChartValuesOptions(
                             showChartValueBackground: false,
                             showChartValues: false,
                             showChartValuesInPercentage: false,
                             showChartValuesOutside: false,
                           ),
-                          legendOptions: LegendOptions(
+                          legendOptions: const LegendOptions(
                             showLegends: false,
                             showLegendsInRow: false,
                           ),
