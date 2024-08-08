@@ -128,9 +128,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             child: CustomContainer(
                               onPressed: () {
                                 NavigationService.go(
-                                  GroupChatScreen(
-                                    chat: chats[index],
-                                  ),
+                                  GroupChatScreen(chat: chats[index]),
                                 );
                               },
                               padding: const EdgeInsets.only(

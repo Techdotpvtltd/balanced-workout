@@ -16,7 +16,6 @@ import '../../../utils/constants/constants.dart';
 import '../../../utils/dialogs/dialogs.dart';
 import '../../../utils/extensions/navigation_service.dart';
 import '../../components/avatar_widget.dart';
-import '../../components/chat_widget.dart';
 import '../../components/circle_button.dart';
 import '../../components/custom_ink_well.dart';
 import '../../components/custom_paddings.dart';
@@ -126,17 +125,17 @@ class _CoachHomeScreenState extends State<CoachHomeScreen> {
       ),
 
       /// Content
-      body: CustomPadding(
+      body: const CustomPadding(
         top: 48,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Search TF
-            const CustomTextField(
+            CustomTextField(
               hintText: "Search Communities",
             ),
             gapH20,
-            const Text(
+            Text(
               'Community',
               style: TextStyle(
                 color: Colors.white,
@@ -144,18 +143,18 @@ class _CoachHomeScreenState extends State<CoachHomeScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.only(top: 20),
-                itemCount: 13,
-                itemBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 9),
-                    child: ChatWidget(),
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     padding: const EdgeInsets.only(top: 20),
+            //     itemCount: 13,
+            //     itemBuilder: (context, index) {
+            //       return const Padding(
+            //         padding: EdgeInsets.symmetric(vertical: 9),
+            //         child: ChatWidget(),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

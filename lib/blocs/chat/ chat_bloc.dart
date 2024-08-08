@@ -46,6 +46,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             if (index > -1) {
               chats[index] = chat;
             }
+            chats.sort((a, b) => (b
+                        .lastMessage?.messageTime.millisecondsSinceEpoch ??
+                    0)
+                .compareTo(
+                    a.lastMessage?.messageTime.millisecondsSinceEpoch ?? 0));
             emit(ChatStateUpdates(chats: chats));
           },
           onError: (e) {

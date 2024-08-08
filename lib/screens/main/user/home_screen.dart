@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:balanced_workout/blocs/chat/chat_state.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
@@ -24,6 +25,9 @@ import '../../../app/app_manager.dart';
 import '../../../blocs/article/article_bloc.dart';
 import '../../../blocs/article/article_event.dart';
 import '../../../blocs/article/article_state.dart';
+import '../../../blocs/chat/ chat_bloc.dart';
+import '../../../blocs/chat/chat_event.dart';
+import '../../../models/chat_model.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
@@ -49,12 +53,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<ExerciseLogModel> logChallenges = [];
+  List<ChatModel> chats = [];
 
   late List<ArticleModel> articles =
       context.read<ArticleBloc>().articles.take(5).toList();
 
   void triggerFetchArticlesEvent() {
     context.read<ArticleBloc>().add(ArticleEventFetch());
+  }
+
+  void triggerFetchChatsEvent() {
+    context.read<ChatBloc>().add(ChatEventFetchAll());
   }
 
   void triggerFetchAllWorkoutsLogEvent() {
@@ -70,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     triggerFetchArticlesEvent();
     triggerFetchAllWorkoutsLogEvent();
     triggerFetchAllExercisesLogEvent();
+    triggerFetchChatsEvent();
     super.initState();
   }
 
@@ -77,6 +87,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        /// Chat Bloc
+        BlocListener<ChatBloc, ChatState>(
+          listener: (_, state) {
+            if (state is ChatStateUpdates) {
+              setState(() {
+                chats = state.chats.take(2).toList();
+              });
+            }
+          },
+        ),
+
         /// Log Bloc
         BlocListener<LogBloc, LogState>(
           listener: (_, state) {
@@ -351,47 +372,52 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 gapH24,
                 // ===========================Communities================================
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Communites",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
+                if (chats.isNotEmpty)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Communites",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              NavigationService.go(const CommunityScreen());
+                            },
+                            style: const ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            child: const Text(
+                              "View All",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        NavigationService.go(const CommunityScreen());
-                      },
-                      style: const ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                        visualDensity: VisualDensity.compact,
+                      gapH14,
+                      ListView.builder(
+                        itemCount: chats.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 7),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: ChatWidget(chat: chats[index]),
+                          );
+                        },
                       ),
-                      child: const Text(
-                        "View All",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                gapH14,
-                ListView.builder(
-                  itemCount: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 7),
-                  itemBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: ChatWidget(),
-                    );
-                  },
-                ),
+                    ],
+                  ),
 
                 // ===========================Science and Facts Section================================
                 gapH24,
