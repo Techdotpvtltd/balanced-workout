@@ -16,7 +16,6 @@ class ExerciseModel {
   final String uuid;
   final String name;
   final String description;
-  final int duration;
   final String createdBy;
   final DateTime createdAt;
   final VideoModel? video;
@@ -36,7 +35,6 @@ class ExerciseModel {
     required this.uuid,
     required this.name,
     required this.description,
-    required this.duration,
     required this.createdBy,
     required this.createdAt,
     this.video,
@@ -59,7 +57,6 @@ class ExerciseModel {
       name: map['name'] as String,
       description: map['description'] as String,
       difficulty: map['difficulty'] as String?,
-      duration: map['duration'] as int,
       createdBy: map['createdBy'] as String,
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       video: map['video'] != null
@@ -92,6 +89,6 @@ class ExerciseModel {
 
   @override
   String toString() {
-    return 'ExerciseModel(uuid: $uuid, name: $name, description: $description, duration: $duration, createdBy: $createdBy, createdAt: $createdAt, video: $video, article: $article, coverUrl: $coverUrl, primaryMuscles: $primaryMuscles, secondaryMuscles: $secondaryMuscles, modality: $modality, sets: $sets, equipments: $equipments, steps: $steps, note: $note)';
+    return 'ExerciseModel(uuid: $uuid, name: $name, description: $description, createdBy: $createdBy, createdAt: $createdAt, video: $video, article: $article, coverUrl: $coverUrl, primaryMuscles: $primaryMuscles, secondaryMuscles: $secondaryMuscles, modality: $modality, sets: $sets, equipments: $equipments, steps: $steps, note: $note)';
   }
 }

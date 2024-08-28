@@ -8,7 +8,6 @@
 import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
-import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -111,22 +110,6 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
-                      ),
-
-                      /// Time Zone View
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.clockIcon),
-                          gapW8,
-                          Text(
-                            planExercise.exercise.duration.formatTime(),
-                            style: const TextStyle(
-                              color: Color(0xFF8C8C8C),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),

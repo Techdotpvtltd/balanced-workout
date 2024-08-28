@@ -10,7 +10,6 @@ import 'package:balanced_workout/blocs/plan/plan_state.dart';
 import 'package:balanced_workout/models/plan_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
-import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,42 +165,6 @@ class _StretchesExercisesScreenState extends State<StretchesExercisesScreen> {
                                 const Spacer(),
                                 Text(
                                   (stretches?.exercises.length ?? 0).toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            gapH10,
-
-                            /// Time
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.watch_later_outlined,
-                                  color: Colors.grey,
-                                  size: 24,
-                                ),
-                                gapW10,
-                                const Text(
-                                  "Time (mm:ss)",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  stretches?.exercises
-                                          .map((e) => e.exercise.duration)
-                                          .reduce((a, b) => a + b)
-                                          .formatTime() ??
-                                      "00:00",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,

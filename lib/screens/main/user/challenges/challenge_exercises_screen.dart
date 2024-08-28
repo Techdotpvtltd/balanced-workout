@@ -175,42 +175,6 @@ class _ChallengeExerciseScreenState extends State<ChallengeExerciseScreen> {
                                 ),
                               ],
                             ),
-
-                            gapH10,
-
-                            /// Time
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.watch_later_outlined,
-                                  color: Colors.grey,
-                                  size: 24,
-                                ),
-                                gapW10,
-                                const Text(
-                                  "Time (mm:ss)",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  challenge?.exercises
-                                          .map((e) => e.exercise.duration)
-                                          .reduce((a, b) => a + b)
-                                          .formatTime() ??
-                                      "00:00",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
