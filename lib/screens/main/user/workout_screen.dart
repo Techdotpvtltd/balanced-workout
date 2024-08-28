@@ -5,9 +5,10 @@
 // Date:        06-05-24 15:00:27 -- Monday
 // Description:
 
-import 'package:balanced_workout/screens/main/user/stretches/stretches_exercises_screen.dart';
+import 'package:balanced_workout/screens/main/user/cardio/cardio_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
+import 'package:balanced_workout/screens/main/user/stretches/stretches_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
-import 'cardio/cardio_exercise_screen.dart';
 import 'components/navigation_button.dart';
 import 'period_screen.dart';
 import 'progression_screen.dart';
@@ -83,7 +83,7 @@ class WorkoutScreen extends StatelessWidget {
                     isSVG: true,
                     title: "Cardio Exercise",
                     onPressed: () {
-                      NavigationService.go(const CardioExerciseScreen());
+                      NavigationService.go(const CardioScreen());
                     },
                   ),
                 ),
@@ -98,7 +98,7 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Stretches",
                     isSVG: true,
                     onPressed: () {
-                      NavigationService.go(const StretchesExercisesScreen());
+                      NavigationService.go(const StretchesScreen());
                     },
                   ),
                 ),

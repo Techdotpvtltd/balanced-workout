@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
 import 'package:balanced_workout/models/plan_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class PlanState {
   final bool isLoading;
@@ -16,6 +17,12 @@ abstract class PlanState {
 
 /// initial State
 class PlanStateInitial extends PlanState {}
+
+class PlanStateLastSnapReceived extends PlanState {
+  final DocumentSnapshot? lastSnapDoc;
+
+  PlanStateLastSnapReceived({required this.lastSnapDoc});
+}
 
 // ===========================Fetch Cardio States================================
 
@@ -30,9 +37,9 @@ class PlanStateCardioFetchFailure extends PlanState {
 }
 
 class PlanStateCardioFetched extends PlanState {
-  final PlanModel cardio;
+  final List<PlanModel> cardios;
 
-  PlanStateCardioFetched({required this.cardio});
+  PlanStateCardioFetched({required this.cardios});
 }
 
 // ===========================Fetch Stretches States================================
@@ -48,7 +55,7 @@ class PlanStateStretchesFetchFailure extends PlanState {
 }
 
 class PlanStateStretchesFetched extends PlanState {
-  final PlanModel stretches;
+  final List<PlanModel> stretches;
 
   PlanStateStretchesFetched({required this.stretches});
 }

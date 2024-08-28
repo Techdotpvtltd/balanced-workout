@@ -21,8 +21,13 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
     on<PlanEventFetchCardio>((event, emit) async {
       try {
         emit(PlanStateCardioFetching());
-        final PlanModel cardio = await CardioRepo().fetch();
-        emit(PlanStateCardioFetched(cardio: cardio));
+        final List<PlanModel> cardios = await CardioRepo().fetch(
+          lastSnapDoc: event.lastSnapDoc,
+          onLastSnap: (p0) {
+            emit(PlanStateLastSnapReceived(lastSnapDoc: p0));
+          },
+        );
+        emit(PlanStateCardioFetched(cardios: cardios));
       } on AppException catch (e) {
         emit(PlanStateCardioFetchFailure(exception: e));
       }
@@ -32,8 +37,13 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
     on<PlanEventFetchStretches>((event, emit) async {
       try {
         emit(PlanStateStretchesFetching());
-        final PlanModel stretch = await StretchesRepo().fetch();
-        emit(PlanStateStretchesFetched(stretches: stretch));
+        final List<PlanModel> stretchs = await StretchesRepo().fetch(
+          lastSnapDoc: event.lastSnapDoc,
+          onLastSnap: (p0) {
+            emit(PlanStateLastSnapReceived(lastSnapDoc: p0));
+          },
+        );
+        emit(PlanStateStretchesFetched(stretches: stretchs));
       } on AppException catch (e) {
         emit(PlanStateStretchesFetchFailure(exception: e));
       }

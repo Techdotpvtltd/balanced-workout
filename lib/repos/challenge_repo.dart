@@ -24,10 +24,12 @@ class ChallengeRepo extends PlanRepo {
         return cache.getItem!;
       }
 
-      final PlanModel challenge =
-          await super.fetchFor(type: PlanType.challenge);
-      cache.set = challenge;
-      return challenge;
+      final List<PlanModel> challenge = await super.fetchFor(
+        type: PlanType.challenge,
+        onLastSnap: (p0) {},
+      );
+      cache.set = challenge.first;
+      return challenge.first;
     } catch (e) {
       log("Error: Fetch Challenge => $e");
       throw throwAppException(e: e);

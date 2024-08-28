@@ -8,27 +8,34 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/exceptions/exception_parsing.dart';
 import 'package:balanced_workout/repos/plan_repo.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/plan_model.dart';
 
 /// Cardio Impl
 class CardioRepo extends PlanRepo {
   /// Fetch Cardio
-  Future<PlanModel> fetch() async {
+  Future<List<PlanModel>> fetch({
+    DocumentSnapshot? lastSnapDoc,
+    required Function(DocumentSnapshot?) onLastSnap,
+  }) async {
     try {
-      final CacheCardio cache = CacheCardio();
-      if (cache.getItem != null) {
-        log("Getting from cache: ${cache.getItem?.name}");
-        return cache.getItem!;
-      }
+      // final CacheCardio cache = CacheCardio();
+      // if (cache.getItem != null) {
+      //   log("Getting from cache: ${cache.getItem?.name}");
+      //   return cache.getItem!;
+      // }
 
-      final PlanModel cardio = await super.fetchFor(type: PlanType.cardio);
-      cache.set = cardio;
-      return cardio;
+      final List<PlanModel> cardios = await super.fetchFor(
+        type: PlanType.cardio,
+        lastSnapDoc: lastSnapDoc,
+        onLastSnap: (p0) => onLastSnap(p0),
+      );
+      // cache.set = cardio;
+      return cardios;
     } catch (e) {
       log("Error: Fetch Cardio => $e");
       throw throwAppException(e: e);
