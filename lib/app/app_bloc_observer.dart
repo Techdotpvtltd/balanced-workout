@@ -1,5 +1,11 @@
-import 'dart:developer';
+// Project: 	   balanced_workout
+// File:    	   app_bloc_observer
+// Path:    	   lib/app/app_bloc_observer.dart
+// Author:       Ali Akbar
+// Date:        08-08-24 15:04:28 -- Thursday
+// Description:
 
+import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppBlocObserver extends BlocObserver {

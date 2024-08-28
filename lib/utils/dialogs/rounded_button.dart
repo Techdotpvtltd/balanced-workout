@@ -16,6 +16,7 @@ class RoundedButton extends StatelessWidget {
     this.isLoading = false,
     this.loadingText,
     this.buttonColor,
+    this.textColor,
   });
 
   final double? width;
@@ -27,6 +28,7 @@ class RoundedButton extends StatelessWidget {
   final bool isLoading;
   final String? loadingText;
   final Color? buttonColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +43,9 @@ class RoundedButton extends StatelessWidget {
         ),
         shadowColor: const WidgetStatePropertyAll(Colors.transparent),
         surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
-        side: const WidgetStatePropertyAll(
+        side: WidgetStatePropertyAll(
           BorderSide(
-            color: Colors.white,
+            color: buttonColor ?? Colors.white,
           ),
         ),
         backgroundColor: WidgetStatePropertyAll(
@@ -63,9 +65,10 @@ class RoundedButton extends StatelessWidget {
                   style: GoogleFonts.plusJakartaSans(
                     fontWeight: FontWeight.w700,
                     fontSize: textSize ?? 16,
-                    color: withBorderOnly
-                        ? buttonColor ?? AppTheme.primaryColor1
-                        : Colors.white,
+                    color: textColor ??
+                        (withBorderOnly
+                            ? buttonColor ?? AppTheme.primaryColor1
+                            : Colors.white),
                   ),
                 )
               ],
@@ -75,8 +78,10 @@ class RoundedButton extends StatelessWidget {
               style: GoogleFonts.plusJakartaSans(
                 fontWeight: FontWeight.w700,
                 fontSize: textSize ?? 16,
-                color:
-                    withBorderOnly ? buttonColor ?? Colors.white : Colors.black,
+                color: textColor ??
+                    (withBorderOnly
+                        ? buttonColor ?? Colors.white
+                        : Colors.black),
               ),
             ),
     );

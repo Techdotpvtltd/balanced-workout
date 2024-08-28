@@ -14,6 +14,7 @@ import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
 import 'package:balanced_workout/screens/components/custom_network_image.dart';
+import 'package:balanced_workout/screens/main/user/exercises/rest_screen.dart';
 import 'package:balanced_workout/utils/constants/app_theme.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -46,12 +47,14 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
   late PlanExercise currentExercise =
       widget.currentExercise ?? widget.planExercises.first;
   late List<PlanExercise> planExercises = List.from(widget.planExercises);
+  PlanExercise? nextExercise;
 
   int seconds = 0;
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
   bool isShowCompleteButton = false;
+
   void triggerSaveExerciseLogEvent() {
     final List<String> muscles =
         List.from(currentExercise.exercise.primaryMuscles);
@@ -73,6 +76,18 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
     context.read<LogBloc>().add(LogEventSaveExercise(exercise: exer));
   }
 
+  void getNextExercise() {
+    final int nextExerIndex =
+        planExercises.indexWhere((e) => e.uuid == currentExercise.uuid) + 1;
+    if (nextExerIndex < planExercises.length) {
+      nextExercise = planExercises[nextExerIndex];
+    } else {
+      nextExercise = null;
+    }
+
+    debugPrint(nextExercise.toString());
+  }
+
   void processNextExercise() {
     final int nextIndex =
         planExercises.indexWhere((e) => e.uuid == currentExercise.uuid) + 1;
@@ -88,6 +103,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
 
       prepareVideoController();
       triggerSaveExerciseLogEvent();
+      getNextExercise();
     } else {
       setState(() {
         isShowCompleteButton = planExercises.length == nextIndex &&
@@ -133,6 +149,8 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
     executeTime();
     prepareVideoController();
     triggerSaveExerciseLogEvent();
+    getNextExercise();
+
     super.initState();
   }
 
@@ -151,14 +169,17 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
           title:
-              isShowCompleteButton ? "Mark Workout Complete" : "Next Exercise",
-          onPressed: () {
-            if (isShowCompleteButton && widget.onCompleteButton != null) {
+              nextExercise == null ? "Mark Workout Complete" : "Next Exercise",
+          subTitle: nextExercise?.exercise.name,
+          onPressed: () async {
+            if (nextExercise == null && widget.onCompleteButton != null) {
               widget.onCompleteButton!();
               NavigationService.back();
               return;
             }
 
+            await NavigationService.present(RestScreen(
+                currentExercise: currentExercise, nextExercise: nextExercise!));
             processNextExercise();
           },
         ),
@@ -240,32 +261,9 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                             ),
                           ),
                         ),
-                        gapH20,
-
-                        /// Durations
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "DURATION",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            gapH6,
-                            Text(
-                              currentExercise.exercise.duration.formatTime(),
-                              style: const TextStyle(
-                                color: AppTheme.titleColor1,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
                         if (currentExercise.setsValue.isNotEmpty) gapH20,
+
+                        /// Steps
                         if (currentExercise.setsValue.isNotEmpty)
                           DataTable(
                             decoration: BoxDecoration(
@@ -361,7 +359,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                         children: [
                           gapH20,
                           const Text(
-                            "STEPS",
+                            "STEPS:  HOW TO",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,

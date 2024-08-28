@@ -16,6 +16,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.backgroundColor,
     this.isSmallText = false,
+    this.subTitle,
   });
   final String title;
   final VoidCallback onPressed;
@@ -27,6 +28,8 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final Color? backgroundColor;
   final bool isSmallText;
+  final String? subTitle;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,8 +63,21 @@ class CustomButton extends StatelessWidget {
                       : AppTheme.titleDarkColor1,
                 ),
               )
-            : Text(
-                title,
+            : Text.rich(
+                TextSpan(
+                  text: title,
+                  children: [
+                    if (subTitle != null && subTitle != "")
+                      TextSpan(
+                        text: "\n$subTitle",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                  ],
+                ),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: !isEnabled && onlyBorder
                       ? Colors.grey[400]

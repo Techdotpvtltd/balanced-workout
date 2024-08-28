@@ -27,7 +27,7 @@ PreferredSizeWidget customAppBar({
           top: topPadding, right: rightPadding, left: leftPadding),
       child: AppBar(
         backgroundColor: background ?? Colors.transparent,
-        leadingWidth: showBack ? 90 : 0,
+        leadingWidth: showBack ? 90 : 30,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         leading: showBack
