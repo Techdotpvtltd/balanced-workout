@@ -73,7 +73,7 @@ class PlanStateChallengeFetchFailure extends PlanState {
 }
 
 class PlanStateChallengeFetched extends PlanState {
-  final PlanModel challenge;
+  final List<PlanModel> challenges;
 
-  PlanStateChallengeFetched({required this.challenge});
+  PlanStateChallengeFetched({required this.challenges});
 }

@@ -13,7 +13,7 @@ import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/article_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
-import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
+import 'package:balanced_workout/screens/main/user/challenges/challenge_screen.dart';
 import 'package:balanced_workout/screens/main/user/log/challenge_log_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/date_extension.dart';
@@ -303,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: AppAssets.challengeIcon,
                         isSVG: true,
                         onPressed: () {
-                          NavigationService.go(const ChallengeExerciseScreen());
+                          NavigationService.go(const ChallengeScreen());
                         },
                       ),
                     ),

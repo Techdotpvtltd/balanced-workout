@@ -7,7 +7,7 @@
 
 import 'package:balanced_workout/screens/main/user/cardio/cardio_screen.dart';
 import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
-import 'package:balanced_workout/screens/main/user/challenges/challenge_exercises_screen.dart';
+import 'package:balanced_workout/screens/main/user/challenges/challenge_screen.dart';
 import 'package:balanced_workout/screens/main/user/stretches/stretches_screen.dart';
 import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -109,7 +109,7 @@ class WorkoutScreen extends StatelessWidget {
                     title: "Challenges",
                     isSVG: true,
                     onPressed: () {
-                      NavigationService.go(const ChallengeExerciseScreen());
+                      NavigationService.go(const ChallengeScreen());
                     },
                   ),
                 ),

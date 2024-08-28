@@ -7,7 +7,7 @@
 
 import 'dart:developer';
 
-import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../exceptions/exception_parsing.dart';
 import '../models/plan_model.dart';
@@ -16,20 +16,24 @@ import 'plan_repo.dart';
 
 class ChallengeRepo extends PlanRepo {
   /// Fetch Cardio
-  Future<PlanModel> fetch() async {
+  Future<List<PlanModel>> fetch({
+    DocumentSnapshot? lastSnapDoc,
+    required Function(DocumentSnapshot?) onLastSnap,
+  }) async {
     try {
-      final CacheChallenege cache = CacheChallenege();
-      if (cache.getItem != null) {
-        log("Getting from cache: ${cache.getItem?.name}");
-        return cache.getItem!;
-      }
+      // final CacheChallenege cache = CacheChallenege();
+      // if (cache.getItem != null) {
+      //   log("Getting from cache: ${cache.getItem?.name}");
+      //   return cache.getItem!;
+      // }
 
-      final List<PlanModel> challenge = await super.fetchFor(
+      final List<PlanModel> challenges = await super.fetchFor(
         type: PlanType.challenge,
-        onLastSnap: (p0) {},
+        onLastSnap: (p0) => onLastSnap(p0),
+        lastSnapDoc: lastSnapDoc,
       );
-      cache.set = challenge.first;
-      return challenge.first;
+      // cache.set = challenge.first;
+      return challenges;
     } catch (e) {
       log("Error: Fetch Challenge => $e");
       throw throwAppException(e: e);

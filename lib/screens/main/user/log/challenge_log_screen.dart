@@ -56,7 +56,7 @@ class _ChallengeLogScreenState extends State<ChallengeLogScreen> {
           }
           if (state is PlanStateChallengeFetched) {
             setState(() {
-              challenge = state.challenge;
+              challenge = state.challenges.first;
             });
           }
         }
