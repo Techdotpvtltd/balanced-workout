@@ -33,8 +33,10 @@ class RestScreen extends StatefulWidget {
 }
 
 class _RestScreenState extends State<RestScreen> {
-  int seconds = 4;
+  int seconds = 59;
   Timer? _timer;
+  bool isDualSound = false;
+
   final AudioPlayer audioPlayer = AudioPlayer();
 
   void setupAudioPlayer() async {
@@ -43,9 +45,20 @@ class _RestScreenState extends State<RestScreen> {
 
   void playAudio() async {
     audioPlayer.resume();
-    audioPlayer.onSeekComplete.listen(
-      (_) {},
+    audioPlayer.onPlayerComplete.listen(
+      (_) {
+        NavigationService.back();
+        // if (isDualSound) {
+        //   audioPlayer.resume();
+        //   isDualSound = false;
+        // }
+      },
     );
+  }
+
+  void checkAdditionalTime() {
+    final setOfSets = widget.currentExercise.exercise.sets;
+    debugPrint(setOfSets.toString());
   }
 
   void calculateTime() {
@@ -86,6 +99,7 @@ class _RestScreenState extends State<RestScreen> {
   @override
   void initState() {
     calculateTime();
+    checkAdditionalTime();
     setupAudioPlayer();
     super.initState();
   }
