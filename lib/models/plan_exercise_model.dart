@@ -8,7 +8,7 @@ class PlanExercise {
   final ExerciseModel exercise;
   final List<List<SetValueModel>> setsValue;
   final String? note;
-  final String? tempo;
+  final int? rest;
   final List<PlanExercise> supersets;
   final DateTime addedAt;
   PlanExercise({
@@ -16,7 +16,7 @@ class PlanExercise {
     required this.exercise,
     required this.setsValue,
     this.note,
-    this.tempo,
+    this.rest,
     required this.supersets,
     required this.addedAt,
   });
@@ -29,7 +29,7 @@ class PlanExercise {
           ? _convertListMapToNestedListOfSetValue(map['setsValue'])
           : [],
       note: map['note'] != null ? map['note'] as String : null,
-      tempo: map['tempo'] != null ? map['tempo'] as String : null,
+      rest: map['rest'] != null ? map['rest'] as int : null,
       supersets: (map['supersets'] as List<dynamic>)
           .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
           .toList(),
@@ -39,7 +39,7 @@ class PlanExercise {
 
   @override
   String toString() {
-    return 'PlanExercise(uuid: $uuid, exercise: $exercise, sets: $setsValue, note: $note, tempo: $tempo, supersets: $supersets, addedAt: $addedAt)';
+    return 'PlanExercise(uuid: $uuid, exercise: $exercise, sets: $setsValue, note: $note, tempo: $rest, supersets: $supersets, addedAt: $addedAt)';
   }
 }
 

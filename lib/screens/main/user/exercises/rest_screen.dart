@@ -36,7 +36,7 @@ class RestScreen extends StatefulWidget {
 }
 
 class _RestScreenState extends State<RestScreen> {
-  int seconds = 59;
+  late int seconds = widget.currentExercise.rest ?? 1;
   Timer? _timer;
   bool isDualSound = false;
 

@@ -10,10 +10,8 @@ import 'package:balanced_workout/screens/main/user/exercises/exercise_play_scree
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../models/plan_exercise_model.dart';
-import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../components/custom_ink_well.dart';
