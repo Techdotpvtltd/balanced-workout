@@ -6,8 +6,6 @@
 // Description:
 
 import 'package:flutter/material.dart';
-
-import '../../../../utils/constants/constants.dart';
 import '../../../components/custom_container.dart';
 import '../../../components/custom_ink_well.dart';
 
@@ -24,42 +22,41 @@ class _CustomTabBarState extends State<CustomTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
-      width: SCREEN_WIDTH,
-      child: ListView.builder(
-        physics: const ScrollPhysics(),
-        itemCount: widget.items.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          final bool isSelected = selectedIndex == index;
-          return CustomInkWell(
-            onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-              widget.onPressed(index);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              child: CustomContainer(
-                color: Colors.white.withOpacity(isSelected ? 1 : 0.31),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                borderRadius: const BorderRadius.all(Radius.circular(52)),
-                child: Text(
-                  widget.items[index],
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: isSelected ? Colors.black : Colors.white,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        for (int index = 0; index < widget.items.length; index++)
+          Builder(
+            builder: (ctx) {
+              final bool isSelected = selectedIndex == index;
+              return CustomInkWell(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                  widget.onPressed(index);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: CustomContainer(
+                    color: Colors.white.withOpacity(isSelected ? 1 : 0.31),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 26, vertical: 12),
+                    borderRadius: const BorderRadius.all(Radius.circular(52)),
+                    child: Text(
+                      widget.items[index],
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: isSelected ? Colors.black : Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          )
+      ],
     );
   }
 }

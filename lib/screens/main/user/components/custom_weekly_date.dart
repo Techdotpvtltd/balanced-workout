@@ -55,10 +55,11 @@ class _CustomWeeklyDateState extends State<CustomWeeklyDate> {
         element.year == selectedDate?.year &&
         selectedDate?.month == element.month);
     await Future.delayed(const Duration(milliseconds: 500));
-    final int moveToIndex = selectedDateIndex - 4;
-    if (selectedDateIndex < dates.length) {
-      return;
+    int moveToIndex = selectedDateIndex - 4;
+    if (moveToIndex > dates.length || moveToIndex < 0) {
+      moveToIndex = selectedDateIndex;
     }
+
     if (controller.isAttached) {
       controller.scrollTo(
         index: moveToIndex,

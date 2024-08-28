@@ -111,11 +111,11 @@ class SmallNavigationButton extends StatelessWidget {
               child: Center(
                 child: Text(
                   title,
-                  maxLines: 2,
+                  maxLines: 3,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Color(0xFFD4D4D4),
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ),

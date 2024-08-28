@@ -66,14 +66,15 @@ class _CompletedScreenState extends State<CompletedScreen> {
       ],
       child: Scaffold(
         appBar: customAppBar(
-            title: 'Completed ${isWorkoutSelected ? 'Workout' : 'Challenges'}'),
+            title:
+                'Completed ${isWorkoutSelected ? 'Workouts' : 'Challenges'}'),
         body: CustomPadding(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Tab bar
               CustomTabBar(
-                items: const ['Completed Workout', ' Completed Challenges'],
+                items: const ['Completed Workouts', ' Completed Challenges'],
                 onPressed: (index) {
                   setState(() {
                     isWorkoutSelected = index == 0;
@@ -92,7 +93,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${isWorkoutSelected ? 'Workout' : 'Challenges'} Completed',
+                      '${isWorkoutSelected ? 'Workouts' : 'Challenges'} Completed',
                       style: const TextStyle(
                         color: AppTheme.primaryColor1,
                         fontSize: 16,

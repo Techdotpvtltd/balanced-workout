@@ -26,25 +26,6 @@ class MyScreen extends StatefulWidget {
 }
 
 class _MyScreenState extends State<MyScreen> {
-  final List<Map<String, String>> data = [
-    {
-      "title": "Completed Workout\nand Challenges",
-      "icon": AppAssets.backgroundDumbbellIcon,
-    },
-    {
-      "title": "Recently Worked\nMuscles",
-      "icon": AppAssets.backgroundMusclesIcon,
-    },
-    {
-      "title": "My Data",
-      "icon": AppAssets.backgroundProfileIcon,
-    },
-    {
-      "title": "Max Stats",
-      "icon": AppAssets.backgroundDatabaseIcon,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -71,7 +52,7 @@ class _MyScreenState extends State<MyScreen> {
                     children: [
                       Expanded(
                         child: SmallNavigationButton(
-                          title: "Completed Workout and Challenges",
+                          title: "Completed Workouts\nand Challenges",
                           icon: AppAssets.backgroundDumbbellIcon,
                           onPressed: () {
                             NavigationService.go(const CompletedScreen());
