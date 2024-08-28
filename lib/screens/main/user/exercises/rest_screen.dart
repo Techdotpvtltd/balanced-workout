@@ -17,7 +17,10 @@ import 'package:balanced_workout/utils/constants/constants.dart';
 import 'package:balanced_workout/utils/dialogs/rounded_button.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
+import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/constants/app_theme.dart';
 
 class RestScreen extends StatefulWidget {
   const RestScreen({
@@ -196,6 +199,116 @@ class _RestScreenState extends State<RestScreen> {
                       ),
                     ],
                   ),
+                  if (widget.nextExercise.exercise.difficulty != null) gapH16,
+                  if (widget.nextExercise.exercise.difficulty != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "DIFFICULTY:",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          widget.nextExercise.exercise.difficulty
+                                  ?.firstCapitalize() ??
+                              "",
+                          style: const TextStyle(
+                            color: AppTheme.titleColor3,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (widget.nextExercise.exercise.equipments.isNotEmpty)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        gapH20,
+                        const Text(
+                          "EQUIPMENTS",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        gapH6,
+                        Text(
+                          widget.nextExercise.exercise.equipments.join(', '),
+                          style: const TextStyle(
+                            color: AppTheme.titleColor3,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (widget
+                          .nextExercise.exercise.primaryMuscles.isNotEmpty)
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              gapH20,
+                              const Text(
+                                "PRIMARY MUSCLES",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              gapH6,
+                              Text(
+                                widget.nextExercise.exercise.primaryMuscles
+                                    .join('\n'),
+                                style: const TextStyle(
+                                  color: AppTheme.titleColor3,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (widget
+                          .nextExercise.exercise.primaryMuscles.isNotEmpty)
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              gapH20,
+                              const Text(
+                                "SECONDARY MUSCLES",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              gapH6,
+                              Text(
+                                widget.nextExercise.exercise.primaryMuscles
+                                    .join('\n'),
+                                style: const TextStyle(
+                                  color: AppTheme.titleColor3,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  )
                 ],
               ),
             ),
