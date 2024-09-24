@@ -17,9 +17,11 @@ class ActionsButton extends StatelessWidget {
       {super.key,
       required this.onPressedNext,
       this.isShowBack = true,
+      this.isLoading = false,
       this.rightButtonTitle});
   final VoidCallback onPressedNext;
   final bool isShowBack;
+  final bool isLoading;
   final String? rightButtonTitle;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class ActionsButton extends StatelessWidget {
 
         /// forward
         CustomInkWell(
-          onTap: onPressedNext,
+          onTap: isLoading ? null : onPressedNext,
           child: Container(
             width: 140,
             height: 59,
@@ -71,24 +73,30 @@ class ActionsButton extends StatelessWidget {
               color: AppTheme.primaryColor1,
               borderRadius: BorderRadius.all(Radius.circular(40)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  rightButtonTitle ?? "Next",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        rightButtonTitle ?? "Next",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      gapW8,
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.black,
+                      ),
+                    ],
                   ),
-                ),
-                gapW8,
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.black,
-                ),
-              ],
-            ),
           ),
         ),
       ],

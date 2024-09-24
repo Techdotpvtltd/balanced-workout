@@ -8,21 +8,45 @@ import 'custom_back_button.dart';
 // Date:        04-05-24 13:32:15 -- Saturday
 // Description:
 
-PreferredSizeWidget customAppBar({Color? background, String? title}) {
+PreferredSizeWidget customAppBar({
+  Color? background,
+  String? title,
+  bool showBack = true,
+  double topPadding = 0,
+  double rightPadding = 0,
+  double leftPadding = 0,
+  double appBarSize = 60,
+  List<Widget>? actions,
+  Widget? titleWidget,
+  bool centerTitle = false,
+}) {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(60),
-    child: AppBar(
-      backgroundColor: background ?? Colors.transparent,
-      automaticallyImplyLeading: false,
-      leadingWidth: 120,
-      leading: const Center(child: CustomBackButton()),
-      centerTitle: false,
-      title: Text(
-        title ?? "",
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-        ),
+    preferredSize: Size.fromHeight(topPadding + appBarSize),
+    child: Padding(
+      padding: EdgeInsets.only(
+          top: topPadding, right: rightPadding, left: leftPadding),
+      child: AppBar(
+        backgroundColor: background ?? Colors.transparent,
+        leadingWidth: showBack ? 90 : 30,
+        surfaceTintColor: Colors.transparent,
+        titleSpacing: 0,
+        leading: showBack
+            ? const Center(
+                child: CustomBackButton(
+                  backgroundColor: Color(0xFF2E2E2E),
+                ),
+              )
+            : null,
+        centerTitle: centerTitle,
+        title: titleWidget ??
+            Text(
+              title ?? "",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+        actions: actions,
       ),
     ),
   );

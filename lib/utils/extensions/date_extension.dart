@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 
 extension DateTimeExt on DateTime {
@@ -23,4 +25,16 @@ extension DateTimeExt on DateTime {
     }
     return dateToString("dd-MMM-yyyy");
   }
+}
+
+DateTime startOfMonthDate() {
+  final now = DateTime.now();
+  log(DateTime(now.year, now.month, 1).toString());
+  return DateTime(now.year, now.month, 1);
+}
+
+double monthDayPercentage() {
+  final now = DateTime.now();
+  final totalCurrentMonthDays = DateTime(now.year, now.month, 0).day;
+  return (now.day / totalCurrentMonthDays) * 100;
 }

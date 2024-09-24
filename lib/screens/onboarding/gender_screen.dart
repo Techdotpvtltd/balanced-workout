@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../app/app_manager.dart';
 import '../../utils/constants/app_assets.dart';
 import '../../utils/constants/app_theme.dart';
 import '../../utils/constants/constants.dart';
@@ -23,7 +24,8 @@ class GenderScreen extends StatefulWidget {
   State<GenderScreen> createState() => _GenderScreenState();
 }
 
-class _GenderScreenState extends State<GenderScreen> {
+class _GenderScreenState extends State<GenderScreen>
+    with WidgetsBindingObserver {
   int selectedIndex = 0;
 
   @override
@@ -85,6 +87,9 @@ class _GenderScreenState extends State<GenderScreen> {
         ],
       ),
       onPressedNext: () {
+        AppManager().user = AppManager()
+            .user
+            .copyWith(gender: selectedIndex == 0 ? "male" : "female");
         NavigationService.go(const AgeScreen());
       },
     );

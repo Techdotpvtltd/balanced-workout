@@ -18,7 +18,7 @@ class SocialIconButton extends StatelessWidget {
       constraints: const BoxConstraints.expand(width: 47, height: 47),
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(
           backgroundColor ?? const Color(0xFFF6F6F6),
         ),
       ),

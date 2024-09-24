@@ -15,6 +15,8 @@ class CustomButton extends StatelessWidget {
     this.onlyBorder = false,
     this.textColor,
     this.backgroundColor,
+    this.isSmallText = false,
+    this.subTitle,
   });
   final String title;
   final VoidCallback onPressed;
@@ -25,6 +27,8 @@ class CustomButton extends StatelessWidget {
   final bool onlyBorder;
   final Color? textColor;
   final Color? backgroundColor;
+  final bool isSmallText;
+  final String? subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +40,20 @@ class CustomButton extends StatelessWidget {
             ? Colors.transparent
             : !isEnabled
                 ? Colors.grey[400]
-                : AppTheme.primaryColor1,
+                : backgroundColor ?? AppTheme.primaryColor1,
         borderRadius: const BorderRadius.all(Radius.circular(24)),
         border: Border.all(
           color: onlyBorder && isEnabled
               ? AppTheme.primaryColor1
-              : Colors.grey[400]!,
+              : backgroundColor ?? Colors.grey[400]!,
         ),
       ),
       child: ElevatedButton(
         onPressed: !isLoading && isEnabled ? onPressed : null,
         style: const ButtonStyle(
-          surfaceTintColor: MaterialStatePropertyAll(Colors.transparent),
-          shadowColor: MaterialStatePropertyAll(Colors.transparent),
-          backgroundColor: MaterialStatePropertyAll(Colors.transparent),
+          surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
+          shadowColor: WidgetStatePropertyAll(Colors.transparent),
+          backgroundColor: WidgetStatePropertyAll(Colors.transparent),
         ),
         child: isLoading
             ? Center(
@@ -59,16 +63,29 @@ class CustomButton extends StatelessWidget {
                       : AppTheme.titleDarkColor1,
                 ),
               )
-            : Text(
-                title,
+            : Text.rich(
+                TextSpan(
+                  text: title,
+                  children: [
+                    if (subTitle != null && subTitle != "")
+                      TextSpan(
+                        text: "\n$subTitle",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                  ],
+                ),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: !isEnabled && onlyBorder
                       ? Colors.grey[400]
                       : onlyBorder
                           ? AppTheme.primaryColor1
-                          : AppTheme.titleDarkColor1,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                          : textColor ?? AppTheme.titleDarkColor1,
+                  fontSize: isSmallText ? 14 : 16,
+                  fontWeight: isSmallText ? FontWeight.w500 : FontWeight.w700,
                 ),
               ),
       ),

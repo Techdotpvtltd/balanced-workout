@@ -47,3 +47,20 @@ class CustomPadding extends StatelessWidget {
     );
   }
 }
+
+class HVPadding extends StatelessWidget {
+  const HVPadding({super.key, this.child, this.horizontal, this.verticle});
+  final Widget? child;
+  final double? horizontal;
+  final double? verticle;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: verticle ?? 29,
+        horizontal: horizontal ?? 29,
+      ),
+      child: child,
+    );
+  }
+}

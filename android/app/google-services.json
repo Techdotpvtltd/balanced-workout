@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318824026215",
+    "project_id": "balanced-workout",
+    "storage_bucket": "balanced-workout.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318824026215:android:de228d92ce36dae575c4c2",
+        "android_client_info": {
+          "package_name": "com.techdot.balancedWorkout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318824026215-7pvais6603ifmbt80nj4m22f3109ceo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPCKL_avkC8yTpGL15hvKKWPQKHWkWgGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318824026215-7pvais6603ifmbt80nj4m22f3109ceo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

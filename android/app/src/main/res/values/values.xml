@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Balanced Workout</string>
+    <string name="fb_app_id">406317889055561</string>
+    <string name="fb_login_protocol_scheme">fb406317889055561</string>
+    <string name="facebook_client_token">d36b206615912f29dfb7c06878c0e901</string>
+
+
+</resources>

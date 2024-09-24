@@ -19,6 +19,7 @@ class InformationWidget extends StatefulWidget {
     required this.title,
     required this.subTitle,
     this.showBackButton = true,
+    this.isLoading = false,
     required this.onPressedNext,
     required this.middleWidget,
     this.rightButtonTitle,
@@ -26,6 +27,7 @@ class InformationWidget extends StatefulWidget {
   final String title;
   final String subTitle;
   final bool showBackButton;
+  final bool isLoading;
   final VoidCallback onPressedNext;
   final Widget middleWidget;
   final String? rightButtonTitle;
@@ -84,6 +86,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                   onPressedNext: widget.onPressedNext,
                   isShowBack: widget.showBackButton,
                   rightButtonTitle: widget.rightButtonTitle,
+                  isLoading: widget.isLoading,
                 ),
               ],
             ),
