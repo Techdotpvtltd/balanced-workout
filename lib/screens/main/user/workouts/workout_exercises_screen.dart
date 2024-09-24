@@ -9,8 +9,7 @@ import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/workout_model.dart';
-import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
-import 'package:balanced_workout/utils/constants/enum.dart';
+
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +165,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                               ),
                               const Spacer(),
                               Text(
-                                (workout.exercises.length).toString(),
+                                (workout.rounds.length).toString(),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
@@ -190,13 +189,13 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                     gapH14,
 
                     /// Play List Widget
-                    ExerciseListWidget(
-                      planExercises: workout.exercises,
-                      type: PlanType.workout,
-                      onCompletePressed: () {
-                        triggerMarkWorkoutCompleteEvent();
-                      },
-                    ),
+                    // ExerciseListWidget(
+                    //   planExercises: workout.exercises,
+                    //   type: PlanType.workout,
+                    //   onCompletePressed: () {
+                    //     triggerMarkWorkoutCompleteEvent();
+                    //   },
+                    // ),
                   ],
                 ),
               ),

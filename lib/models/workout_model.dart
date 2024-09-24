@@ -8,7 +8,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/constants/enum.dart';
-import 'plan_exercise_model.dart';
+import 'workout_round_model.dart';
 
 class WorkoutModel {
   final String uuid;
@@ -16,7 +16,7 @@ class WorkoutModel {
   final String? coverUrl;
   final Level difficultyLevel;
   final String? description;
-  final List<PlanExercise> exercises;
+  final List<WorkoutRoundModel> rounds;
   final DateTime createdAt;
   final String createdBy;
   WorkoutModel({
@@ -25,7 +25,7 @@ class WorkoutModel {
     required this.difficultyLevel,
     this.description,
     this.coverUrl,
-    required this.exercises,
+    required this.rounds,
     required this.createdAt,
     required this.createdBy,
   });
@@ -40,8 +40,8 @@ class WorkoutModel {
       description:
           map['description'] != null ? map['description'] as String : null,
       coverUrl: map['coverUrl'] != null ? map['coverUrl'] as String : null,
-      exercises: (map['exercises'] as List<dynamic>)
-          .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
+      rounds: (map['rounds'] as List<dynamic>? ?? [])
+          .map((e) => WorkoutRoundModel.fromMap(e as Map<String, dynamic>))
           .toList(),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       createdBy: map['createdBy'] as String,
@@ -50,6 +50,6 @@ class WorkoutModel {
 
   @override
   String toString() {
-    return 'WorkoutModel(uuid: $uuid, name: $name coverUrl, $coverUrl, difficultyLevel: $difficultyLevel, description: $description, exercises: $exercises, createdAt: $createdAt, createdBy: $createdBy)';
+    return 'WorkoutModel(uuid: $uuid, name: $name coverUrl, $coverUrl, difficultyLevel: $difficultyLevel, description: $description,rounds: $rounds, createdAt: $createdAt, createdBy: $createdBy)';
   }
 }
