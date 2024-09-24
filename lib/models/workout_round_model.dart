@@ -8,29 +8,31 @@
 
 import 'package:flutter/foundation.dart';
 
+import 'plan_exercise_model.dart';
+
 class WorkoutRoundModel {
   final int id;
   final int noOfSets;
   final int rest;
-  final List<WorkoutRoundModel> rounds;
+  final List<PlanExercise> exercises;
   WorkoutRoundModel({
     required this.id,
     required this.noOfSets,
     required this.rest,
-    required this.rounds,
+    required this.exercises,
   });
 
   WorkoutRoundModel copyWith({
     int? id,
     int? noOfSets,
     int? rest,
-    List<WorkoutRoundModel>? rounds,
+    List<PlanExercise>? exercises,
   }) {
     return WorkoutRoundModel(
       id: id ?? this.id,
       noOfSets: noOfSets ?? this.noOfSets,
       rest: rest ?? this.rest,
-      rounds: rounds ?? this.rounds,
+      exercises: exercises ?? this.exercises,
     );
   }
 
@@ -39,15 +41,15 @@ class WorkoutRoundModel {
       id: map['id'] as int,
       noOfSets: map['noOfSets'] as int,
       rest: map['rest'] as int,
-      rounds: (map['rounds'] as List<dynamic>? ?? [])
-          .map((e) => WorkoutRoundModel.fromMap(e as Map<String, dynamic>))
+      exercises: (map['exercises'] as List<dynamic>)
+          .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
           .toList(),
     );
   }
 
   @override
   String toString() {
-    return 'WorkoutRoundModel(id: $id, noOfSets: $noOfSets, rest: $rest, rounds: $rounds)';
+    return 'WorkoutRoundModel(id: $id, noOfSets: $noOfSets, rest: $rest, exercises: $exercises)';
   }
 
   @override
@@ -57,11 +59,11 @@ class WorkoutRoundModel {
     return other.id == id &&
         other.noOfSets == noOfSets &&
         other.rest == rest &&
-        listEquals(other.rounds, rounds);
+        listEquals(other.exercises, exercises);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ noOfSets.hashCode ^ rest.hashCode ^ rounds.hashCode;
+    return id.hashCode ^ noOfSets.hashCode ^ rest.hashCode ^ exercises.hashCode;
   }
 }
