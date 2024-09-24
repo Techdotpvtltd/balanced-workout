@@ -7,6 +7,7 @@
 
 import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/screens/main/user/exercises/exercise_play_screen.dart';
+import 'package:balanced_workout/screens/main/user/workouts/workout_play_exercises_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
@@ -65,11 +66,16 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 .toList();
 
             NavigationService.go(
-              ExercisePlayScreen(
-                planExercises: exercises,
-                type: widget.type,
-                onCompleteButton: widget.onCompletePressed,
-              ),
+              widget.type == PlanType.workout
+                  ? WorkoutPlayExercisesScreen(
+                      onCompleteButton: widget.onCompletePressed,
+                      planExercises: exercises,
+                    )
+                  : ExercisePlayScreen(
+                      planExercises: exercises,
+                      type: widget.type,
+                      onCompleteButton: widget.onCompletePressed,
+                    ),
             );
           },
           child: Container(

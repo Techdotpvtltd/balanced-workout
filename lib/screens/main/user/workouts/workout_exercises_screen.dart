@@ -17,8 +17,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/constants/enum.dart';
 import '../../../components/custom_app_bar.dart';
 import '../../../components/custom_network_image.dart';
+import '../components/exercise_list_widget.dart';
 
 class WorkoutExercisesScreen extends StatefulWidget {
   const WorkoutExercisesScreen({super.key, required this.workout});
@@ -156,7 +158,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                               ),
                               gapW10,
                               const Text(
-                                "Exercises",
+                                "Rounds",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
@@ -178,24 +180,29 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                       ),
                     ),
                     gapH20,
-                    const Text(
-                      "Exercises",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                    for (int round = 0; round < workout.rounds.length; round++)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Round ${round + 1}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                          gapH2,
+                          // Play List Widget
+                          ExerciseListWidget(
+                            planExercises: workout.rounds[round].exercises,
+                            type: PlanType.workout,
+                            onCompletePressed: () {
+                              triggerMarkWorkoutCompleteEvent();
+                            },
+                          ),
+                        ],
                       ),
-                    ),
-                    gapH14,
-
-                    /// Play List Widget
-                    // ExerciseListWidget(
-                    //   planExercises: workout.exercises,
-                    //   type: PlanType.workout,
-                    //   onCompletePressed: () {
-                    //     triggerMarkWorkoutCompleteEvent();
-                    //   },
-                    // ),
                   ],
                 ),
               ),
