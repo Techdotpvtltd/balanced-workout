@@ -27,16 +27,17 @@ class RestScreen extends StatefulWidget {
     super.key,
     required this.nextExercise,
     required this.currentExercise,
+    this.restTime = 10,
   });
   final PlanExercise nextExercise;
   final PlanExercise currentExercise;
-
+  final int restTime;
   @override
   State<RestScreen> createState() => _RestScreenState();
 }
 
 class _RestScreenState extends State<RestScreen> {
-  late int seconds = widget.currentExercise.rest ?? 1;
+  late int seconds = widget.restTime;
   Timer? _timer;
   bool isDualSound = false;
 

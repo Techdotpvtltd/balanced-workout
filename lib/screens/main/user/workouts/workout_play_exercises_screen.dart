@@ -51,12 +51,12 @@ class _WorkoutPlayExercisesScreenState
       widget.currentExercise ?? widget.planExercises.first;
   late List<PlanExercise> planExercises = List.from(widget.planExercises);
   PlanExercise? nextExercise;
-  int currentSet = 0;
+  int currentSet = 1;
   int seconds = 0;
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
-  bool isShowCompleteButton = false;
+  bool isRoundCompleted = false;
 
   void triggerSaveExerciseLogEvent() {
     final List<String> muscles =
@@ -108,10 +108,25 @@ class _WorkoutPlayExercisesScreenState
       triggerSaveExerciseLogEvent();
       getNextExercise();
     } else {
-      setState(() {
-        isShowCompleteButton = true;
-      });
+      checkRemainingSets();
     }
+  }
+
+  void checkRemainingSets() async {
+    if (currentSet < widget.round.noOfSets) {
+      currentSet++;
+      currentExercise = planExercises.first;
+      getNextExercise();
+      await NavigationService.present(RestScreen(
+        currentExercise: currentExercise,
+        nextExercise: currentExercise,
+        restTime: widget.round.rest,
+      ));
+    } else {
+      isRoundCompleted = currentSet >= widget.round.noOfSets;
+    }
+
+    setState(() {});
   }
 
   void prepareVideoController() async {
@@ -170,18 +185,18 @@ class _WorkoutPlayExercisesScreenState
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
-          title:
-              nextExercise == null ? "Mark Workout Complete" : "Next Exercise",
+          title: (nextExercise == null && !isRoundCompleted)
+              ? "Complete Set $currentSet"
+              : (isRoundCompleted
+                  ? "Mark Round ${widget.round.id + 1} Completed"
+                  : "Next Exercise (Set $currentSet)"),
           subTitle: nextExercise?.exercise.name,
           onPressed: () async {
-            if (nextExercise == null && widget.onRoundCompleted != null) {
-              widget.onRoundCompleted!();
+            if (isRoundCompleted) {
               NavigationService.back();
+              widget.onRoundCompleted!();
               return;
             }
-
-            await NavigationService.present(RestScreen(
-                currentExercise: currentExercise, nextExercise: nextExercise!));
             processNextExercise();
           },
         ),
@@ -200,7 +215,7 @@ class _WorkoutPlayExercisesScreenState
         ),
         actions: [
           Text(
-            "Set ${currentSet + 1}",
+            "Set $currentSet",
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,

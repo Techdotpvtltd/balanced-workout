@@ -200,7 +200,11 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                           _ExerciseListWidget(
                             round: workout.rounds[round],
                             onCompletePressed: () {
-                              triggerMarkWorkoutCompleteEvent();
+                              // triggerMarkWorkoutCompleteEvent();
+                              CustomDialogs().successBox(
+                                  title: "Great Work!",
+                                  message:
+                                      "You completed the round ${workout.rounds[round].id + 1}.");
                             },
                           ),
                         ],
