@@ -35,7 +35,7 @@ class WorkoutExercisesScreen extends StatefulWidget {
 
 class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
   late final WorkoutModel workout = widget.workout;
-
+  int currentSet = 0;
   void triggerSaveWorkoutLogEvent() {
     context.read<LogBloc>().add(
           LogEventSaveWorkout(
@@ -253,8 +253,9 @@ class _ExerciseListWidgetState extends State<_ExerciseListWidget> {
 
             NavigationService.go(
               WorkoutPlayExercisesScreen(
-                onCompleteButton: widget.onCompletePressed,
+                onRoundCompleted: widget.onCompletePressed,
                 planExercises: exercises,
+                round: widget.round,
               ),
             );
           },

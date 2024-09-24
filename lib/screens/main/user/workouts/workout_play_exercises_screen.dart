@@ -8,6 +8,7 @@
 import 'dart:async';
 
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
+import 'package:balanced_workout/models/workout_round_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
 import 'package:chewie/chewie.dart';
@@ -33,10 +34,12 @@ class WorkoutPlayExercisesScreen extends StatefulWidget {
       {super.key,
       required this.planExercises,
       this.currentExercise,
-      this.onCompleteButton});
+      this.onRoundCompleted,
+      required this.round});
   final List<PlanExercise> planExercises;
   final PlanExercise? currentExercise;
-  final VoidCallback? onCompleteButton;
+  final VoidCallback? onRoundCompleted;
+  final WorkoutRoundModel round;
   @override
   State<WorkoutPlayExercisesScreen> createState() =>
       _WorkoutPlayExercisesScreenState();
@@ -48,7 +51,7 @@ class _WorkoutPlayExercisesScreenState
       widget.currentExercise ?? widget.planExercises.first;
   late List<PlanExercise> planExercises = List.from(widget.planExercises);
   PlanExercise? nextExercise;
-
+  int currentSet = 0;
   int seconds = 0;
   Timer? _timer;
   ChewieController? chewieController;
@@ -171,8 +174,8 @@ class _WorkoutPlayExercisesScreenState
               nextExercise == null ? "Mark Workout Complete" : "Next Exercise",
           subTitle: nextExercise?.exercise.name,
           onPressed: () async {
-            if (nextExercise == null && widget.onCompleteButton != null) {
-              widget.onCompleteButton!();
+            if (nextExercise == null && widget.onRoundCompleted != null) {
+              widget.onRoundCompleted!();
               NavigationService.back();
               return;
             }
@@ -195,6 +198,17 @@ class _WorkoutPlayExercisesScreenState
             fontSize: 32,
           ),
         ),
+        actions: [
+          Text(
+            "Set ${currentSet + 1}",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+            ),
+          ),
+          gapW20,
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
