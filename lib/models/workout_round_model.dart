@@ -6,35 +6,31 @@
 // Date:        24-09-24 15:11:10 -- Tuesday
 // Description:
 
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-
-import 'plan_exercise_model.dart';
 
 class WorkoutRoundModel {
   final int id;
   final int noOfSets;
   final int rest;
-  final List<PlanExercise> exercises;
+  final List<WorkoutRoundModel> rounds;
   WorkoutRoundModel({
     required this.id,
     required this.noOfSets,
     required this.rest,
-    required this.exercises,
+    required this.rounds,
   });
 
   WorkoutRoundModel copyWith({
     int? id,
     int? noOfSets,
     int? rest,
-    List<PlanExercise>? exercises,
+    List<WorkoutRoundModel>? rounds,
   }) {
     return WorkoutRoundModel(
       id: id ?? this.id,
       noOfSets: noOfSets ?? this.noOfSets,
       rest: rest ?? this.rest,
-      exercises: exercises ?? this.exercises,
+      rounds: rounds ?? this.rounds,
     );
   }
 
@@ -43,15 +39,15 @@ class WorkoutRoundModel {
       id: map['id'] as int,
       noOfSets: map['noOfSets'] as int,
       rest: map['rest'] as int,
-      exercises: (map['exercises'] as List<dynamic>)
-          .map((e) => PlanExercise.fromMap(e as Map<String, dynamic>))
+      rounds: (map['rounds'] as List<dynamic>? ?? [])
+          .map((e) => WorkoutRoundModel.fromMap(e as Map<String, dynamic>))
           .toList(),
     );
   }
 
   @override
   String toString() {
-    return 'WorkoutRoundModel(id: $id, noOfSets: $noOfSets, rest: $rest, exercises: $exercises)';
+    return 'WorkoutRoundModel(id: $id, noOfSets: $noOfSets, rest: $rest, rounds: $rounds)';
   }
 
   @override
@@ -61,11 +57,11 @@ class WorkoutRoundModel {
     return other.id == id &&
         other.noOfSets == noOfSets &&
         other.rest == rest &&
-        listEquals(other.exercises, exercises);
+        listEquals(other.rounds, rounds);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ noOfSets.hashCode ^ rest.hashCode ^ exercises.hashCode;
+    return id.hashCode ^ noOfSets.hashCode ^ rest.hashCode ^ rounds.hashCode;
   }
 }
