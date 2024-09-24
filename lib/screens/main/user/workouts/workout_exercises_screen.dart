@@ -15,12 +15,15 @@ import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../models/plan_exercise_model.dart';
+import '../../../../models/workout_round_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
-import '../../../../utils/constants/enum.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
-import '../components/exercise_list_widget.dart';
+import 'workout_play_exercises_screen.dart';
 
 class WorkoutExercisesScreen extends StatefulWidget {
   const WorkoutExercisesScreen({super.key, required this.workout});
@@ -194,9 +197,8 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                           ),
                           gapH2,
                           // Play List Widget
-                          ExerciseListWidget(
-                            planExercises: workout.rounds[round].exercises,
-                            type: PlanType.workout,
+                          _ExerciseListWidget(
+                            round: workout.rounds[round],
                             onCompletePressed: () {
                               triggerMarkWorkoutCompleteEvent();
                             },
@@ -210,6 +212,97 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ExerciseListWidget extends StatefulWidget {
+  const _ExerciseListWidget({
+    this.onCompletePressed,
+    required this.round,
+  });
+  final VoidCallback? onCompletePressed;
+  final WorkoutRoundModel round;
+  @override
+  State<_ExerciseListWidget> createState() => _ExerciseListWidgetState();
+}
+
+class _ExerciseListWidgetState extends State<_ExerciseListWidget> {
+  late List<PlanExercise> planExercises = widget.round.exercises;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: planExercises.length,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      shrinkWrap: true,
+      itemBuilder: (ctx, index) {
+        final PlanExercise planExercise = planExercises[index];
+
+        return CustomInkWell(
+          onTap: () {
+            final exercises = List<PlanExercise>.from(planExercises)
+                .skipWhile((e) => e.uuid != planExercise.uuid)
+                .toList();
+
+            NavigationService.go(
+              WorkoutPlayExercisesScreen(
+                onCompleteButton: widget.onCompletePressed,
+                planExercises: exercises,
+              ),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: const BoxDecoration(
+              color: Color(0xFF303030),
+              borderRadius: BorderRadius.all(Radius.circular(36)),
+            ),
+            child: Row(
+              children: [
+                /// Play Button
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    color: AppTheme.primaryColor1,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.play_arrow,
+                    color: Colors.black,
+                    size: 26,
+                  ),
+                ),
+                gapW16,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        planExercise.exercise.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
