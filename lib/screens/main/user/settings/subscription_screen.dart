@@ -5,7 +5,9 @@
 // Date:        09-05-24 13:10:15 -- Thursday
 // Description:
 
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -16,8 +18,16 @@ import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 
-class SubscriptionScreen extends StatelessWidget {
+class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
+
+  @override
+  State<SubscriptionScreen> createState() => _SubscriptionScreenState();
+}
+
+class _SubscriptionScreenState extends State<SubscriptionScreen> {
+  Package? selectedPackage;
+  bool isPurchasingSubscription = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +61,30 @@ class SubscriptionScreen extends StatelessWidget {
             gapH50,
 
             /// Plan List
-            const _PlanList(),
+            _PlanList(
+              selectedPackage: selectedPackage,
+              onSelectPackage: (package) {
+                setState(() {
+                  selectedPackage = package;
+                });
+              },
+            ),
             gapH50,
 
             /// Subscribe Now Button
             CustomButton(
-              onPressed: () {},
+              isEnabled: selectedPackage != null,
+              isLoading: isPurchasingSubscription,
+              onPressed: () async {
+                setState(() {
+                  isPurchasingSubscription = true;
+                });
+
+                await storeManager.purchase(selectedPackage!);
+                setState(() {
+                  isPurchasingSubscription = false;
+                });
+              },
               title: "Subscribe Now",
             )
           ],
@@ -68,28 +96,32 @@ class SubscriptionScreen extends StatelessWidget {
 
 // ===========================Plan List================================
 class _PlanList extends StatefulWidget {
-  const _PlanList();
+  const _PlanList({this.selectedPackage, required this.onSelectPackage});
+  final Package? selectedPackage;
+  final Function(Package) onSelectPackage;
 
   @override
   State<_PlanList> createState() => _PlanListState();
 }
 
 class _PlanListState extends State<_PlanList> {
-  int selectedIndex = 0;
-
+  late Package? selectedPackage = widget.selectedPackage;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (int index = 0; index < 2; index++)
+        for (int index = 0;
+            index < storeManager.availablePackages.length;
+            index++)
           Builder(
             builder: (context) {
-              bool isSelected = selectedIndex == index;
+              final Package package = storeManager.availablePackages[index];
+              final bool isSelected = selectedPackage == package;
+
               return CustomInkWell(
                 onTap: () {
-                  setState(() {
-                    selectedIndex = index;
-                  });
+                  selectedPackage = package;
+                  widget.onSelectPackage(package);
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 9),
@@ -108,9 +140,12 @@ class _PlanListState extends State<_PlanList> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       /// Round Widget
                       Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             width: 23,
@@ -127,9 +162,9 @@ class _PlanListState extends State<_PlanList> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Monthly",
-                                style: TextStyle(
+                              Text(
+                                package.storeProduct.title,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
@@ -137,7 +172,7 @@ class _PlanListState extends State<_PlanList> {
                               ),
                               gapH4,
                               Text(
-                                "Pay monthly, cancel any time",
+                                package.storeProduct.description,
                                 style: TextStyle(
                                   color: isSelected
                                       ? AppTheme.primaryColor1
@@ -150,40 +185,20 @@ class _PlanListState extends State<_PlanList> {
                           ),
                         ],
                       ),
+                      gapW10,
 
                       /// Price Label
-                      const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "\$",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
+                      Flexible(
+                        child: Text(
+                          package.storeProduct.priceString,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Text.rich(
-                            TextSpan(
-                              text: "18",
-                              children: [
-                                TextSpan(
-                                  text: "/m",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 23,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
                 ),

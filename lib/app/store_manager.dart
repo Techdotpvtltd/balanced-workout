@@ -7,8 +7,10 @@
 
 import 'dart:developer';
 
-import 'package:balanced_workout/app_secret.dart';
+import 'package:balanced_workout/secrets/app_secret.dart';
+import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'dart:io' show Platform;
 
@@ -73,8 +75,16 @@ class StoreManager {
 
   /// Perchase Susbcription
   Future<void> purchase(Package packageToPurchase) async {
-    await Purchases.purchasePackage(packageToPurchase);
-    await _checkActiveSubscription();
+    try {
+      await Purchases.purchasePackage(packageToPurchase);
+      await _checkActiveSubscription();
+    } on PlatformException catch (e) {
+      log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
+      CustomDialogs().errorBox(message: e.message);
+    } catch (e) {
+      log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
+      CustomDialogs().errorBox(message: "Subscription failed");
+    }
   }
 }
 
