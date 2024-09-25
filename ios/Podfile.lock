@@ -149,9 +149,15 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.4.0)
+  - purchases_flutter (8.1.2):
+    - Flutter
+    - PurchasesHybridCommon (= 13.2.1)
+  - PurchasesHybridCommon (13.2.1):
+    - RevenueCat (= 5.3.3)
   - quill_native_bridge (0.0.1):
     - Flutter
   - RecaptchaInterop (100.0.0)
+  - RevenueCat (5.3.3)
   - sign_in_with_apple (0.0.1):
     - Flutter
   - sqflite (0.0.3):
@@ -180,6 +186,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - quill_native_bridge (from `.symlinks/plugins/quill_native_bridge/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
@@ -216,7 +223,9 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - PurchasesHybridCommon
     - RecaptchaInterop
+    - RevenueCat
 
 EXTERNAL SOURCES:
   audioplayers_darwin:
@@ -248,6 +257,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  purchases_flutter:
+    :path: ".symlinks/plugins/purchases_flutter/ios"
   quill_native_bridge:
     :path: ".symlinks/plugins/quill_native_bridge/ios"
   sign_in_with_apple:
@@ -308,8 +319,11 @@ SPEC CHECKSUMS:
   package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  purchases_flutter: f3260cb3ab38c087e4d3dae2b71cd1a0c79fbb32
+  PurchasesHybridCommon: 7955b21cc5a8be78cea6dcf92f3906f3e5cec972
   quill_native_bridge: e5afa7d49c08cf68c52a5e23bc272eba6925c622
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  RevenueCat: d9e8b1b56bf81483cf8bb902a952a2da8749b964
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
