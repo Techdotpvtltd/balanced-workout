@@ -1,3 +1,4 @@
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/article/article_bloc.dart';
 import 'package:balanced_workout/blocs/chat/%20chat_bloc.dart';
 import 'package:balanced_workout/blocs/course/course_bloc.dart';
@@ -31,9 +32,9 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
   //  1 - Ensure firebase app is initialized if starting from background/terminated state
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await storeManager.initialize();
+
   runApp(const MainApp());
 }
 

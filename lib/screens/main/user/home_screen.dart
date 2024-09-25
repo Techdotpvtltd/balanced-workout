@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/chat/chat_state.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
@@ -80,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     triggerFetchAllWorkoutsLogEvent();
     triggerFetchAllExercisesLogEvent();
     triggerFetchChatsEvent();
+    debugPrint("Check Subscription From Home: ${storeManager.isActive}");
     super.initState();
   }
 
