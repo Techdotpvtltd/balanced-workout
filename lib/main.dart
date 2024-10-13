@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app/app_bloc_observer.dart';
 import 'blocs/auth/auth_bloc.dart';
+import 'blocs/subscription/subsription_bloc.dart';
 import 'blocs/user/user_bloc.dart';
 import 'firebase_options.dart';
 import 'screens/onboarding/splash_screen.dart';
@@ -54,6 +55,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => MessageBloc()),
         BlocProvider(create: (context) => ArticleBloc()),
         BlocProvider(create: (context) => LogBloc()),
+        BlocProvider(create: (context) => SubscriptionBloc()),
       ],
       child: MaterialApp(
         navigatorKey: navKey,

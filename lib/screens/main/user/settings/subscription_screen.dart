@@ -6,7 +6,10 @@
 // Description:
 
 import 'package:balanced_workout/app/store_manager.dart';
+import 'package:balanced_workout/blocs/subscription/subscription_event.dart';
+import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../utils/constants/app_assets.dart';
@@ -82,6 +85,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   });
 
                   await storeManager.purchase(selectedPackage!);
+
+                  if (context.mounted) {
+                    context
+                        .read<SubscriptionBloc>()
+                        .add(SubscriptionEventUpdate());
+                  }
                   setState(() {
                     isPurchasingSubscription = false;
                   });

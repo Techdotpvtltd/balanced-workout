@@ -5,6 +5,9 @@
 // Date:        09-05-24 11:04:48 -- Thursday
 // Description:
 
+import 'package:balanced_workout/blocs/subscription/subscription_state.dart';
+import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
+import 'package:balanced_workout/models/subscription_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,6 +44,15 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  late final SubscriptionBloc subscriptionBloc;
+  late SubscriptionModel activeSub = subscriptionBloc.getActiveSubscription();
+
+  @override
+  void initState() {
+    subscriptionBloc = context.read<SubscriptionBloc>();
+    super.initState();
+  }
+
   void trigegrLogoutEvent(AuthBloc bloc) {
     CustomDialogs().alertBox(
       title: "Logout Action",
@@ -57,6 +69,15 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<SubscriptionBloc, SubscriptionState>(
+          listener: (_, state) {
+            if (state is SubscriptionStateUpdated) {
+              setState(() {
+                activeSub = subscriptionBloc.getActiveSubscription();
+              });
+            }
+          },
+        ),
         BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthStateLogout) {
@@ -255,7 +276,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   color: AppTheme.primaryColor1,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   /// Title Row
@@ -263,39 +284,41 @@ class _SettingScreenState extends State<SettingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Gold",
-                        style: TextStyle(
+                        activeSub.title,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      gapH4,
-                      Text(
-                        "26 March, 2024",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.27,
+                      if (activeSub.latestPurchaseDate != "") gapH4,
+                      if (activeSub.latestPurchaseDate != "")
+                        Text(
+                          activeSub.latestPurchaseDate,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.27,
+                          ),
                         ),
-                      ),
                     ],
                   ),
 
                   /// Price Widget
                   Text.rich(
                     TextSpan(
-                      text: "\$18",
+                      text: activeSub.storeProduct?.priceString ?? "0",
                       children: [
-                        TextSpan(
-                          text: '/mo',
-                          style: TextStyle(
-                            fontSize: 14.27,
-                            fontWeight: FontWeight.w400,
+                        if (activeSub.storeProduct != null)
+                          const TextSpan(
+                            text: '/mo',
+                            style: TextStyle(
+                              fontSize: 14.27,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
                       ],
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w700,

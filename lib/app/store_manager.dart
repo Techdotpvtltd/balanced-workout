@@ -28,15 +28,15 @@ class StoreManager {
       Platform.isIOS ? AppSecret.appleApiKey : AppSecret.googleApiKey;
   Offerings? _offerings;
   List<Package> availablePackages = [];
-  List<String> activeSubscriptions = [];
+  EntitlementInfo? active;
 
   Future<void> _performTasks() async {
     await _fetchOffers();
-    await _checkActiveSubscription();
+    await checkActiveSubscription();
   }
 
   void clearActiveSubscription() {
-    activeSubscriptions = [];
+    active = null;
   }
 
   Future<void> initialize() async {
@@ -71,23 +71,25 @@ class StoreManager {
     availablePackages = _offerings?.current?.availablePackages ?? [];
   }
 
-  Future<void> _checkActiveSubscription() async {
+  Future<void> checkActiveSubscription() async {
     final CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-    activeSubscriptions = customerInfo.activeSubscriptions;
-    debugPrint("Check Subscription: $activeSubscriptions");
+    final id = customerInfo.activeSubscriptions.firstOrNull;
+    active = customerInfo.entitlements.all[id];
+    debugPrint(active?.toString());
   }
 
-  Future<List<String>> restoreSubscription() async {
+  Future<EntitlementInfo?> restoreSubscription() async {
     final info = await Purchases.restorePurchases();
-    activeSubscriptions = info.activeSubscriptions;
-    return activeSubscriptions;
+    final id = info.activeSubscriptions.firstOrNull;
+    active = info.entitlements.active[id];
+    return active;
   }
 
   /// Perchase Susbcription
   Future<void> purchase(Package packageToPurchase) async {
     try {
       await Purchases.purchasePackage(packageToPurchase);
-      await _checkActiveSubscription();
+      await checkActiveSubscription();
     } on PlatformException catch (e) {
       log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
       CustomDialogs().errorBox(message: e.message);
