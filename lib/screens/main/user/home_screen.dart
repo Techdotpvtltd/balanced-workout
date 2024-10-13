@@ -81,7 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
     triggerFetchAllWorkoutsLogEvent();
     triggerFetchAllExercisesLogEvent();
     triggerFetchChatsEvent();
-    debugPrint("Check Subscription From Home: ${storeManager.isActive}");
+    debugPrint(
+        "Check Subscription From Home: ${storeManager.activeSubscriptions.isEmpty}");
     super.initState();
   }
 

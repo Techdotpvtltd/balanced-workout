@@ -96,41 +96,46 @@ class _SettingScreenState extends State<SettingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   /// AvatarWidget
-                  Row(
-                    children: [
-                      AvatarWidget(
-                        avatarUrl: AppManager().user.avatar,
-                        placeholderChar:
-                            AppManager().user.name.characters.firstOrNull,
-                        backgroundColor: Colors.black,
-                        width: 79,
-                        height: 79,
-                      ),
-                      gapW12,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        AvatarWidget(
+                          avatarUrl: AppManager().user.avatar,
+                          placeholderChar:
+                              AppManager().user.name.characters.firstOrNull,
+                          backgroundColor: Colors.black,
+                          width: 79,
+                          height: 79,
+                        ),
+                        gapW12,
 
-                      /// Text Widgets
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppManager().user.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14,
-                              color: AppTheme.titleDarkColor1,
-                            ),
+                        /// Text Widgets
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppManager().user.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: AppTheme.titleDarkColor1,
+                                ),
+                              ),
+                              Text(
+                                AppManager().user.email,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: AppTheme.titleDarkColor1,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            AppManager().user.email,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: AppTheme.titleDarkColor1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
 
                   /// Edit Button

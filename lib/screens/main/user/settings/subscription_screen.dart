@@ -34,60 +34,62 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return CustomScaffold(
       backgroundImagePath: AppAssets.cover1,
       appBar: customAppBar(),
-      body: CustomPadding(
-        bottom: 82,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            /// Title
-            const Text(
-              "Be Premium\nGet unlimited access",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
+      body: SingleChildScrollView(
+        child: CustomPadding(
+          bottom: 82,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              /// Title
+              const Text(
+                "Be Premium\nGet unlimited access",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            const Text(
-              "When you subscribe, you’ll get instant unlimited access",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+              const Text(
+                "When you subscribe, you’ll get instant unlimited access",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
-            ),
-            gapH50,
-            gapH50,
+              gapH50,
+              gapH50,
 
-            /// Plan List
-            _PlanList(
-              selectedPackage: selectedPackage,
-              onSelectPackage: (package) {
-                setState(() {
-                  selectedPackage = package;
-                });
-              },
-            ),
-            gapH50,
+              /// Plan List
+              _PlanList(
+                selectedPackage: selectedPackage,
+                onSelectPackage: (package) {
+                  setState(() {
+                    selectedPackage = package;
+                  });
+                },
+              ),
+              gapH50,
 
-            /// Subscribe Now Button
-            CustomButton(
-              isEnabled: selectedPackage != null,
-              isLoading: isPurchasingSubscription,
-              onPressed: () async {
-                setState(() {
-                  isPurchasingSubscription = true;
-                });
+              /// Subscribe Now Button
+              CustomButton(
+                isEnabled: selectedPackage != null,
+                isLoading: isPurchasingSubscription,
+                onPressed: () async {
+                  setState(() {
+                    isPurchasingSubscription = true;
+                  });
 
-                await storeManager.purchase(selectedPackage!);
-                setState(() {
-                  isPurchasingSubscription = false;
-                });
-              },
-              title: "Subscribe Now",
-            )
-          ],
+                  await storeManager.purchase(selectedPackage!);
+                  setState(() {
+                    isPurchasingSubscription = false;
+                  });
+                },
+                title: "Subscribe Now",
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -171,14 +173,17 @@ class _PlanListState extends State<_PlanList> {
                                 ),
                               ),
                               gapH4,
-                              Text(
-                                package.storeProduct.description,
-                                style: TextStyle(
-                                  color: isSelected
-                                      ? AppTheme.primaryColor1
-                                      : Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
+                              SizedBox(
+                                width: 130,
+                                child: Text(
+                                  package.storeProduct.description,
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? AppTheme.primaryColor1
+                                        : Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
                             ],

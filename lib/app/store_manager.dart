@@ -7,12 +7,14 @@
 
 import 'dart:developer';
 
-import 'package:balanced_workout/secrets/app_secret.dart';
-import 'package:balanced_workout/utils/dialogs/dialogs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'dart:io' show Platform;
+
+import '../secrets/app_secret.dart';
+import '../utils/dialogs/dialogs.dart';
 
 class StoreManager {
   static final StoreManager _instance = StoreManager._internal();
@@ -26,20 +28,24 @@ class StoreManager {
       Platform.isIOS ? AppSecret.appleApiKey : AppSecret.googleApiKey;
   Offerings? _offerings;
   List<Package> availablePackages = [];
-  bool isActive = false;
+  List<String> activeSubscriptions = [];
 
   Future<void> _performTasks() async {
-    _fetchOffers();
+    await _fetchOffers();
     await _checkActiveSubscription();
+  }
+
+  void clearActiveSubscription() {
+    activeSubscriptions = [];
   }
 
   Future<void> initialize() async {
     try {
       log("Initializing....", name: "Store SDK", time: DateTime.now());
-      await Purchases.setLogLevel(LogLevel.debug);
+      Purchases.setLogLevel(LogLevel.debug);
       final PurchasesConfiguration configuration =
           PurchasesConfiguration(_apiKey)
-            ..appUserID = null
+            ..appUserID = FirebaseAuth.instance.currentUser?.uid
             ..purchasesAreCompletedBy =
                 const PurchasesAreCompletedByRevenueCat();
       await Purchases.configure(configuration);
@@ -67,10 +73,14 @@ class StoreManager {
 
   Future<void> _checkActiveSubscription() async {
     final CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-    EntitlementInfo? entitlement =
-        customerInfo.entitlements.all[AppSecret.entitlementID];
-    isActive = entitlement?.isActive ?? false;
-    debugPrint("Check Subscription: $isActive");
+    activeSubscriptions = customerInfo.activeSubscriptions;
+    debugPrint("Check Subscription: $activeSubscriptions");
+  }
+
+  Future<List<String>> restoreSubscription() async {
+    final info = await Purchases.restorePurchases();
+    activeSubscriptions = info.activeSubscriptions;
+    return activeSubscriptions;
   }
 
   /// Perchase Susbcription
@@ -81,9 +91,11 @@ class StoreManager {
     } on PlatformException catch (e) {
       log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
       CustomDialogs().errorBox(message: e.message);
+      rethrow;
     } catch (e) {
       log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
       CustomDialogs().errorBox(message: "Subscription failed");
+      rethrow;
     }
   }
 }
