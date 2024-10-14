@@ -8,6 +8,9 @@
 import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/subscription/subscription_event.dart';
 import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
+import 'package:balanced_workout/screens/onboarding/splash_screen.dart';
+import 'package:balanced_workout/utils/dialogs/dialogs.dart';
+import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -29,7 +32,11 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  Package? selectedPackage;
+  late Package? activedPackage = storeManager.availablePackages
+      .firstWhereOrNull((e) =>
+          e.storeProduct.identifier == storeManager.active?.productIdentifier);
+  late Package? selectedPackage = activedPackage;
+
   bool isPurchasingSubscription = false;
 
   @override
@@ -77,7 +84,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
               /// Subscribe Now Button
               CustomButton(
-                isEnabled: selectedPackage != null,
+                isEnabled: selectedPackage != null &&
+                    selectedPackage != activedPackage,
                 isLoading: isPurchasingSubscription,
                 onPressed: () async {
                   setState(() {
@@ -90,6 +98,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     context
                         .read<SubscriptionBloc>()
                         .add(SubscriptionEventUpdate());
+                    CustomDialogs().successBox(
+                      title: "Subscription Active",
+                      message:
+                          "Thank you for the subscription. Now you can access all the feature of this app. Please restart the app once for proper use.",
+                      onPositivePressed: () {
+                        NavigationService.offAll(const SplashScreen());
+                      },
+                      positiveTitle: "Restart",
+                      barrierDismissible: false,
+                    );
                   }
                   setState(() {
                     isPurchasingSubscription = false;

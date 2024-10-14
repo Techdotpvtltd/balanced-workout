@@ -73,14 +73,21 @@ class StoreManager {
 
   Future<void> _checkActiveSubscription() async {
     final CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-    active = customerInfo.entitlements.all['pro'];
-    debugPrint(active?.toString());
+
+    final sub = customerInfo.entitlements.all['pro'];
+    if (sub?.isActive ?? false) {
+      active = sub;
+    }
   }
 
   Future<EntitlementInfo?> restoreSubscription() async {
     final info = await Purchases.restorePurchases();
-    active = info.entitlements.active['pro'];
-    return active;
+    final sub = info.entitlements.active['pro'];
+    if (sub?.isActive ?? false) {
+      active = sub;
+      return active;
+    }
+    return null;
   }
 
   /// Perchase Susbcription
