@@ -7,10 +7,12 @@
 
 import 'package:balanced_workout/models/chat_model.dart';
 import 'package:balanced_workout/screens/main/user/community/bubble_widget.dart';
+import 'package:balanced_workout/screens/main/user/settings/subscription_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../app/store_manager.dart';
 import '../../../../blocs/message/mesaage_bloc.dart';
 import '../../../../blocs/message/message_event.dart';
 import '../../../../models/message_model.dart';
@@ -36,6 +38,8 @@ class GroupChatScreen extends StatefulWidget {
 
 class _GroupChatScreenState extends State<GroupChatScreen> {
   late final ChatModel chat = widget.chat;
+  late final isAllowContent = storeManager.hasSubscription;
+
   TextEditingController messageController = TextEditingController();
 
   void triggerSenderMediaMessageEvent(
@@ -78,9 +82,9 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
         /// Title Widget
         titleWidget: CustomInkWell(
           onTap: () {
-            NavigationService.go(
-              CommunityInfoScreen(chat: chat),
-            );
+            if (isAllowContent) {
+              NavigationService.go(CommunityInfoScreen(chat: chat));
+            }
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,37 +148,55 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
           /// TextField
           Padding(
             padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
-            child: CustomTextField(
-              controller: messageController,
-              hintText: "Message",
-              maxLines: 5,
-              minLines: 1,
-              prefixWidget: SizedBox(
-                width: 20,
-                height: 20,
-                child: Center(
-                  child: CircleButton(
-                    onPressed: () {
-                      onMediaPressed();
+            child: isAllowContent
+                ? CustomTextField(
+                    controller: messageController,
+                    hintText: "Message",
+                    maxLines: 5,
+                    minLines: 1,
+                    prefixWidget: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: Center(
+                        child: CircleButton(
+                          onPressed: () {
+                            onMediaPressed();
+                          },
+                          icon: AppAssets.plusIcon,
+                          backgroundColor: AppTheme.primaryColor1,
+                        ),
+                      ),
+                    ),
+                    suffixWidget: CustomInkWell(
+                      onTap: () {
+                        if (messageController.text != "") {
+                          triggerSenderMessageEvent();
+                          messageController.clear();
+                        }
+                      },
+                      child: const Icon(
+                        Icons.send,
+                        color: AppTheme.primaryColor1,
+                      ),
+                    ),
+                  )
+                : CustomInkWell(
+                    onTap: () {
+                      NavigationService.go(const SubscriptionScreen());
                     },
-                    icon: AppAssets.plusIcon,
-                    backgroundColor: AppTheme.primaryColor1,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[350],
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        "You're not allow to send texts and media in this community. To send texts and media, please subscribe one of our plans.",
+                        style:
+                            TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              suffixWidget: CustomInkWell(
-                onTap: () {
-                  if (messageController.text != "") {
-                    triggerSenderMessageEvent();
-                    messageController.clear();
-                  }
-                },
-                child: const Icon(
-                  Icons.send,
-                  color: AppTheme.primaryColor1,
-                ),
-              ),
-            ),
           ),
         ],
       ),

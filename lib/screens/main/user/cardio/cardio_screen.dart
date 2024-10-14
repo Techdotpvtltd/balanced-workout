@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../app/store_manager.dart';
 import '../../../../blocs/plan/plan_bloc.dart';
 import '../../../../blocs/plan/plan_event.dart';
 import '../../../../blocs/plan/plan_state.dart';
@@ -22,6 +23,7 @@ import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
+import '../settings/subscription_screen.dart';
 
 class CardioScreen extends StatefulWidget {
   const CardioScreen({super.key});
@@ -36,6 +38,7 @@ class _CardioScreenState extends State<CardioScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
+  late final isAllowContent = storeManager.hasSubscription;
 
   void triggerFetchCardioEvent() {
     context
@@ -117,8 +120,9 @@ class _CardioScreenState extends State<CardioScreen> {
                       final cardio = cardios[index];
                       return CustomInkWell(
                         onTap: () {
-                          NavigationService.go(
-                              CardioExerciseScreen(cardio: cardio));
+                          NavigationService.go(isAllowContent
+                              ? CardioExerciseScreen(cardio: cardio)
+                              : const SubscriptionScreen());
                         },
                         child: Container(
                           height: 193,
@@ -162,7 +166,17 @@ class _CardioScreenState extends State<CardioScreen> {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
+                              if (!isAllowContent)
+                                const Positioned(
+                                  right: 10,
+                                  top: 10,
+                                  child: Icon(
+                                    Icons.lock,
+                                    size: 24,
+                                    color: AppTheme.primaryColor1,
+                                  ),
+                                ),
                             ],
                           ),
                         ),

@@ -13,6 +13,7 @@ import 'package:balanced_workout/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/store_manager.dart';
 import '../../../../models/chat_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -40,6 +41,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
   List<ChatModel> chats = [];
   List<ChatModel> filteredChats = [];
   bool isLoading = false;
+  late final isAllowContent = storeManager.hasSubscription;
 
   void triggerFetchChatsEvent() {
     context.read<ChatBloc>().add(ChatEventFetchAll());
@@ -89,13 +91,15 @@ class _CommunityScreenState extends State<CommunityScreen> {
         }
       },
       child: CustomScaffold(
-        floatingActionButton: CircleButton(
-          onPressed: () {
-            NavigationService.go(const CreateCommunityScreen());
-          },
-          icon: AppAssets.plusIcon,
-          backgroundColor: AppTheme.primaryColor1,
-        ),
+        floatingActionButton: isAllowContent
+            ? CircleButton(
+                onPressed: () {
+                  NavigationService.go(const CreateCommunityScreen());
+                },
+                icon: AppAssets.plusIcon,
+                backgroundColor: AppTheme.primaryColor1,
+              )
+            : const SizedBox(),
         appBar: customAppBar(title: "Community"),
         body: CustomPadding(
           top: 30,

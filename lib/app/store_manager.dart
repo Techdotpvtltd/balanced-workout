@@ -29,6 +29,7 @@ class StoreManager {
   Offerings? _offerings;
   List<Package> availablePackages = [];
   EntitlementInfo? active;
+  bool hasSubscription = false;
 
   Future<void> _performTasks() async {
     await _fetchOffers();
@@ -77,6 +78,7 @@ class StoreManager {
     final sub = customerInfo.entitlements.all['pro'];
     if (sub?.isActive ?? false) {
       active = sub;
+      hasSubscription = true;
     }
   }
 
@@ -85,6 +87,7 @@ class StoreManager {
     final sub = info.entitlements.active['pro'];
     if (sub?.isActive ?? false) {
       active = sub;
+      hasSubscription = true;
       return active;
     }
     return null;
