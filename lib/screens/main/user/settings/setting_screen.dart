@@ -309,9 +309,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       text: activeSub.storeProduct?.priceString ?? "0",
                       children: [
                         if (activeSub.storeProduct != null)
-                          const TextSpan(
-                            text: '/mo',
-                            style: TextStyle(
+                          TextSpan(
+                            text: "/${activeSub.period}",
+                            style: const TextStyle(
                               fontSize: 14.27,
                               fontWeight: FontWeight.w400,
                             ),

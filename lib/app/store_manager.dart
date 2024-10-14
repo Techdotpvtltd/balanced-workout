@@ -32,7 +32,7 @@ class StoreManager {
 
   Future<void> _performTasks() async {
     await _fetchOffers();
-    await checkActiveSubscription();
+    await _checkActiveSubscription();
   }
 
   void clearActiveSubscription() {
@@ -71,17 +71,15 @@ class StoreManager {
     availablePackages = _offerings?.current?.availablePackages ?? [];
   }
 
-  Future<void> checkActiveSubscription() async {
+  Future<void> _checkActiveSubscription() async {
     final CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-    final id = customerInfo.activeSubscriptions.firstOrNull;
-    active = customerInfo.entitlements.all[id];
+    active = customerInfo.entitlements.all['pro'];
     debugPrint(active?.toString());
   }
 
   Future<EntitlementInfo?> restoreSubscription() async {
     final info = await Purchases.restorePurchases();
-    final id = info.activeSubscriptions.firstOrNull;
-    active = info.entitlements.active[id];
+    active = info.entitlements.active['pro'];
     return active;
   }
 
@@ -89,7 +87,7 @@ class StoreManager {
   Future<void> purchase(Package packageToPurchase) async {
     try {
       await Purchases.purchasePackage(packageToPurchase);
-      await checkActiveSubscription();
+      await _checkActiveSubscription();
     } on PlatformException catch (e) {
       log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
       CustomDialogs().errorBox(message: e.message);

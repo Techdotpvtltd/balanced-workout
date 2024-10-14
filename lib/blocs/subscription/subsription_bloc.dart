@@ -8,6 +8,7 @@
 import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/subscription/subscription_state.dart';
 import 'package:balanced_workout/models/subscription_model.dart';
+import 'package:balanced_workout/utils/extensions/date_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -21,11 +22,10 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   }
 
   SubscriptionModel getActiveSubscription() {
-    storeManager.checkActiveSubscription();
     final EntitlementInfo? active = storeManager.active;
     if (active != null) {
-      final Package? package = storeManager.availablePackages
-          .firstWhereOrNull((e) => e.identifier == active.identifier);
+      final Package? package = storeManager.availablePackages.firstWhereOrNull(
+          (e) => e.storeProduct.identifier == active.productIdentifier);
 
       return SubscriptionModel(
           identifier: active.identifier,
@@ -33,7 +33,8 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
           packageType: package?.packageType,
           storeProduct: package?.storeProduct,
           isActive: active.isActive,
-          latestPurchaseDate: active.latestPurchaseDate,
+          latestPurchaseDate: active.latestPurchaseDate
+              .formatDate("yyyy-MM-ddTHH:mm:ssZ", "dd MMM yyyy hh:mm a"),
           willRenew: active.willRenew,
           period: package?.storeProduct.subscriptionPeriod == "P1M"
               ? "mon"

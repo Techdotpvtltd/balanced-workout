@@ -38,3 +38,14 @@ double monthDayPercentage() {
   final totalCurrentMonthDays = DateTime(now.year, now.month, 0).day;
   return (now.day / totalCurrentMonthDays) * 100;
 }
+
+extension STR on String {
+  String formatDate(String from, String to) {
+    final date = DateFormat(from).parse(this);
+    return date.dateToString(to);
+  }
+
+  DateTime toDate(String pattern) {
+    return DateFormat(pattern).parse(this);
+  }
+}
