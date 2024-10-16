@@ -43,7 +43,7 @@ class WorkoutScreen extends StatelessWidget {
                   child: NavigationButton(
                     icon: AppAssets.whiteboardWorkoutIcon,
                     isSVG: true,
-                    title: "Basic Movement Patterns",
+                    title: "Progression",
                     onPressed: () {
                       NavigationService.go(const ProgressionScreen());
                     },
