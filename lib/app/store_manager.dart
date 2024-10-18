@@ -15,6 +15,7 @@ import 'dart:io' show Platform;
 
 import '../secrets/app_secret.dart';
 import '../utils/dialogs/dialogs.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class StoreManager {
   static final StoreManager _instance = StoreManager._internal();
@@ -29,7 +30,7 @@ class StoreManager {
   Offerings? _offerings;
   List<Package> availablePackages = [];
   EntitlementInfo? active;
-  bool hasSubscription = false;
+  bool hasSubscription = !kReleaseMode;
 
   Future<void> _performTasks() async {
     await _fetchOffers();

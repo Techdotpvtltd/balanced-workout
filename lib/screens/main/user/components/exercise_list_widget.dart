@@ -59,18 +59,20 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
         final PlanExercise planExercise = planExercises[index];
 
         return CustomInkWell(
-          onTap: () {
+          onTap: () async {
             final exercises = List<PlanExercise>.from(planExercises)
                 .skipWhile((e) => e.uuid != planExercise.uuid)
                 .toList();
 
-            NavigationService.go(
+            await NavigationService.go(
               ExercisePlayScreen(
                 planExercises: exercises,
                 type: widget.type,
                 onCompleteButton: widget.onCompletePressed,
               ),
             );
+
+            setState(() {});
           },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
@@ -84,8 +86,12 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 /// Play Button
                 Container(
                   padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    color: AppTheme.primaryColor1,
+                  decoration: BoxDecoration(
+                    color: CacheLogExercise().checkExistedBy(
+                            exerciseId: planExercise.exercise.uuid,
+                            type: widget.type)
+                        ? AppTheme.primaryColor1
+                        : Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

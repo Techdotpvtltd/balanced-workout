@@ -102,7 +102,6 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       });
 
       prepareVideoController();
-      triggerSaveExerciseLogEvent();
       getNextExercise();
     } else {
       setState(() {
@@ -148,7 +147,6 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
   void initState() {
     executeTime();
     prepareVideoController();
-    triggerSaveExerciseLogEvent();
     getNextExercise();
 
     super.initState();
@@ -168,18 +166,22 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
-          title:
-              nextExercise == null ? "Mark Workout Complete" : "Next Exercise",
+          title: nextExercise == null ? "Complete" : "Next Exercise",
           subTitle: nextExercise?.exercise.name,
           onPressed: () async {
-            if (nextExercise == null && widget.onCompleteButton != null) {
-              widget.onCompleteButton!();
+            triggerSaveExerciseLogEvent();
+
+            if (nextExercise == null) {
+              // widget.onCompleteButton!();
               NavigationService.back();
               return;
             }
 
-            await NavigationService.present(RestScreen(
-                currentExercise: currentExercise, nextExercise: nextExercise!));
+            if (nextExercise != null) {
+              await NavigationService.present(RestScreen(
+                  currentExercise: currentExercise,
+                  nextExercise: nextExercise!));
+            }
             processNextExercise();
           },
         ),

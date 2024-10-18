@@ -105,7 +105,6 @@ class _WorkoutPlayExercisesScreenState
       });
 
       prepareVideoController();
-      triggerSaveExerciseLogEvent();
       getNextExercise();
     } else {
       checkRemainingSets();
@@ -165,7 +164,6 @@ class _WorkoutPlayExercisesScreenState
   void initState() {
     executeTime();
     prepareVideoController();
-    triggerSaveExerciseLogEvent();
     getNextExercise();
 
     super.initState();
@@ -192,6 +190,8 @@ class _WorkoutPlayExercisesScreenState
                   : "Next Exercise (Set $currentSet)"),
           subTitle: nextExercise?.exercise.name,
           onPressed: () async {
+            triggerSaveExerciseLogEvent();
+
             if (isRoundCompleted) {
               NavigationService.back();
               widget.onRoundCompleted!();
