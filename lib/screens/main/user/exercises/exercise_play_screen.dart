@@ -284,7 +284,6 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                               fontWeight: FontWeight.w400,
                             ),
                             columns: [
-                              const DataColumn(label: Text("Set")),
                               for (int row = 0;
                                   row < currentExercise.exercise.sets.length;
                                   row++)
@@ -301,14 +300,6 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                                   row++)
                                 DataRow(
                                   cells: [
-                                    DataCell(
-                                      Text(
-                                        "${row + 1}",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
                                     for (int col = 0;
                                         col <
                                             currentExercise

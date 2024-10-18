@@ -68,7 +68,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
           listener: (_, state) {
             if (state is LogStateMarkCompleted) {
               CustomDialogs().successBox(
-                  title: "Great Work!", message: "You completed this workout.");
+                  title: "Great Work!", message: "Get ready for next workout!");
             }
           },
         ),
@@ -203,8 +203,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                               // triggerMarkWorkoutCompleteEvent();
                               CustomDialogs().successBox(
                                   title: "Great Work!",
-                                  message:
-                                      "You completed the round ${workout.rounds[round].id + 1}.");
+                                  message: "Get ready for next round!");
                             },
                           ),
                         ],

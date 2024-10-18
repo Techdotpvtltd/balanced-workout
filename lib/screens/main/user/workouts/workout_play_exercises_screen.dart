@@ -197,6 +197,14 @@ class _WorkoutPlayExercisesScreenState
               widget.onRoundCompleted!();
               return;
             }
+            if (nextExercise != null) {
+              await NavigationService.present(RestScreen(
+                currentExercise: currentExercise,
+                nextExercise: nextExercise!,
+                restTime: currentExercise.rest ?? 60,
+              ));
+            }
+
             processNextExercise();
           },
         ),
@@ -290,6 +298,60 @@ class _WorkoutPlayExercisesScreenState
                         ),
                       ],
                     ),
+
+                    /// Basic Info
+
+                    if (currentExercise.setsValue.isNotEmpty) gapH20,
+
+                    /// Steps
+                    if (currentExercise.setsValue.isNotEmpty)
+                      DataTable(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppTheme.titleColor1,
+                            width: 0.1,
+                          ),
+                        ),
+                        dividerThickness: 0.2,
+                        headingTextStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        dataTextStyle: const TextStyle(
+                          color: AppTheme.titleColor1,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        columns: [
+                          for (int row = 0;
+                              row < currentExercise.exercise.sets.length;
+                              row++)
+                            DataColumn(
+                              label: Text(
+                                currentExercise.exercise.sets[row].name
+                                    .firstCapitalize(),
+                              ),
+                            ),
+                        ],
+                        rows: [
+                          for (int row = 0;
+                              row < currentExercise.setsValue.length;
+                              row++)
+                            DataRow(
+                              cells: [
+                                for (int col = 0;
+                                    col < currentExercise.exercise.sets.length;
+                                    col++)
+                                  DataCell(
+                                    Text(
+                                      "${currentExercise.setsValue[row].isEmpty ? "-" : currentExercise.setsValue[row][col].value ?? "-"} ${currentExercise.setsValue[row][col].value != null ? currentExercise.exercise.sets[col].name.toLowerCase() == "time" ? "s" : currentExercise.exercise.sets[col].name.toLowerCase() == "weights" ? "kg" : "" : ""}",
+                                    ),
+                                  )
+                              ],
+                            )
+                        ],
+                      ),
 
                     /// Equipments
                     if (currentExercise.exercise.equipments.isNotEmpty)
