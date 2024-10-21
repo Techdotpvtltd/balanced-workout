@@ -101,7 +101,10 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   set set(List<WorkoutLogModel> item) => _item = item;
 
   bool doesExisted({required String workoutId}) =>
-      (_item?.indexWhere((e) => e.workoutId == workoutId) ?? -1) > -1;
+      (_item?.indexWhere((e) =>
+              e.workoutId == workoutId && e.startDate.isSame(DateTime.now())) ??
+          -1) >
+      -1;
 
   WorkoutLogModel? find({required String workoutId}) {
     final int index = _item?.indexWhere((e) => e.workoutId == workoutId) ?? -1;
@@ -126,7 +129,11 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   void add(WorkoutLogModel workout) =>
       !doesExisted(workoutId: workout.uuid) ? _item?.add(workout) : {};
   List<WorkoutLogModel> getItemsBy({required Level level}) =>
-      _item?.where((e) => e.difficultyLevel == level).toList() ?? [];
+      _item
+          ?.where((e) =>
+              e.difficultyLevel == level && e.startDate.isSame(DateTime.now()))
+          .toList() ??
+      [];
 }
 
 class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
@@ -152,7 +159,19 @@ class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
       _item?.where((e) => e.type == type).toList() ?? [];
 
   bool checkExistedBy({required String exerciseId, required PlanType type}) =>
-      (_item?.indexWhere((e) => e.exerciseId == exerciseId && e.type == type) ??
+      type == PlanType.workout
+          ? checkWorkoutsExistion(exerciseId: exerciseId)
+          : (_item?.indexWhere(
+                      (e) => e.exerciseId == exerciseId && e.type == type) ??
+                  -1) >
+              -1;
+
+  bool checkWorkoutsExistion({required String exerciseId}) =>
+      (_item?.indexWhere((e) =>
+              e.exerciseId == exerciseId &&
+              e.type == PlanType.workout &&
+              e.completeDate != null &&
+              e.completeDate!.isSame(DateTime.now())) ??
           -1) >
       -1;
 }

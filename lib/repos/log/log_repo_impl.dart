@@ -166,6 +166,7 @@ class LogRepo implements LogRepoInterface {
         throw throwAppException(e: Exception());
       }
 
+      exercise = exercise.copyWith(completeDate: DateTime.now());
       final Map<String, dynamic> map = await FirestoreService()
           .saveWithSpecificIdFiled(
               path: FIREBASE_COLLECTION_LOG_EXERCISES,

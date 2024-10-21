@@ -9,7 +9,6 @@ import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/workout_model.dart';
-import 'package:balanced_workout/utils/constants/enum.dart';
 
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
@@ -285,9 +284,8 @@ class _ExerciseListWidgetState extends State<_ExerciseListWidget> {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: CacheLogExercise().checkExistedBy(
-                              exerciseId: planExercise.exercise.uuid,
-                              type: PlanType.workout)
+                      color: CacheLogExercise().checkWorkoutsExistion(
+                              exerciseId: planExercise.exercise.uuid)
                           ? AppTheme.primaryColor1
                           : Colors.grey,
                       shape: BoxShape.circle,

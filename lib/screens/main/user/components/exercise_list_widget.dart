@@ -64,13 +64,11 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 .skipWhile((e) => e.uuid != planExercise.uuid)
                 .toList();
 
-            await NavigationService.go(
-              ExercisePlayScreen(
-                planExercises: exercises,
-                type: widget.type,
-                onCompleteButton: widget.onCompletePressed,
-              ),
-            );
+            await NavigationService.go(ExercisePlayScreen(
+              planExercises: exercises,
+              type: widget.type,
+              onCompleteButton: widget.onCompletePressed,
+            ));
 
             setState(() {});
           },
