@@ -9,6 +9,7 @@ import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/workout_model.dart';
+import 'package:balanced_workout/screens/components/custom_button.dart';
 
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
@@ -36,6 +37,10 @@ class WorkoutExercisesScreen extends StatefulWidget {
 
 class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
   late final WorkoutModel workout = widget.workout;
+  late List<String> exericeIds = workout.rounds
+      .expand((e) => e.exercises.map((e) => e.exercise.uuid))
+      .toList();
+
   int currentSet = 0;
   void triggerSaveWorkoutLogEvent() {
     context.read<LogBloc>().add(
@@ -69,12 +74,30 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
           listener: (_, state) {
             if (state is LogStateMarkCompleted) {
               CustomDialogs().successBox(
-                  title: "Great Work!", message: "Get ready for next workout!");
+                title: "Great Work!",
+                message: "Get ready for next workout!",
+                onPositivePressed: () {
+                  NavigationService.back();
+                },
+              );
             }
           },
         ),
       ],
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 60),
+          child: CustomButton(
+            isEnabled: !CacheLogWorkout().isCompleted(workoutId: workout.uuid),
+            title: CacheLogWorkout().isCompleted(workoutId: workout.uuid)
+                ? "Completed"
+                : "Mark Complete",
+            onPressed: () {
+              triggerMarkWorkoutCompleteEvent();
+            },
+          ),
+        ),
         body: Column(
           children: [
             Stack(
@@ -104,7 +127,8 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
             /// Contents
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 30, left: 29, right: 29),
+                padding: const EdgeInsets.only(
+                    top: 30, left: 29, right: 29, bottom: 80),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -200,8 +224,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                           // Play List Widget
                           _ExerciseListWidget(
                             round: workout.rounds[round],
-                            onCompletePressed: () {
-                              // triggerMarkWorkoutCompleteEvent();
+                            onCompleteRounds: () {
                               CustomDialogs().successBox(
                                   title: "Great Work!",
                                   message: "Get ready for next round!");
@@ -222,10 +245,10 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
 
 class _ExerciseListWidget extends StatefulWidget {
   const _ExerciseListWidget({
-    this.onCompletePressed,
+    this.onCompleteRounds,
     required this.round,
   });
-  final VoidCallback? onCompletePressed;
+  final VoidCallback? onCompleteRounds;
   final WorkoutRoundModel round;
   @override
   State<_ExerciseListWidget> createState() => _ExerciseListWidgetState();
@@ -263,7 +286,7 @@ class _ExerciseListWidgetState extends State<_ExerciseListWidget> {
 
               await NavigationService.go(
                 WorkoutPlayExercisesScreen(
-                  onRoundCompleted: widget.onCompletePressed,
+                  onRoundCompleted: widget.onCompleteRounds,
                   planExercises: exercises,
                   round: widget.round,
                 ),
