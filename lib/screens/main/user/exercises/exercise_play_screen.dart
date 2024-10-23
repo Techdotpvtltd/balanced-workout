@@ -409,59 +409,59 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                         ),
                         gapH8,
 
-                        /// Primary Muscle
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Primary Muscle",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            gapH6,
-                            Text(
-                              currentExercise.exercise.primaryMuscles
-                                  .join(', '),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            gapH6,
-                          ],
-                        ),
+                        // /// Primary Muscle
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     const Text(
+                        //       "Primary Muscle",
+                        //       style: TextStyle(
+                        //         color: Colors.white,
+                        //         fontSize: 18,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     ),
+                        //     gapH6,
+                        //     Text(
+                        //       currentExercise.exercise.primaryMuscles
+                        //           .join(', '),
+                        //       style: const TextStyle(
+                        //         color: Colors.white,
+                        //         fontSize: 16,
+                        //         fontWeight: FontWeight.w400,
+                        //       ),
+                        //     ),
+                        //     gapH6,
+                        //   ],
+                        // ),
 
-                        /// Secondary Muscle
-                        if (currentExercise
-                            .exercise.secondaryMuscles.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Secondary Muscle",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              gapH6,
-                              Text(
-                                currentExercise.exercise.primaryMuscles
-                                    .join(', '),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              gapH6,
-                            ],
-                          ),
+                        // /// Secondary Muscle
+                        // if (currentExercise
+                        //     .exercise.secondaryMuscles.isNotEmpty)
+                        //   Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       const Text(
+                        //         "Secondary Muscle",
+                        //         style: TextStyle(
+                        //           color: Colors.white,
+                        //           fontSize: 18,
+                        //           fontWeight: FontWeight.w600,
+                        //         ),
+                        //       ),
+                        //       gapH6,
+                        //       Text(
+                        //         currentExercise.exercise.primaryMuscles
+                        //             .join(', '),
+                        //         style: const TextStyle(
+                        //           color: Colors.white,
+                        //           fontSize: 16,
+                        //           fontWeight: FontWeight.w400,
+                        //         ),
+                        //       ),
+                        //       gapH6,
+                        //     ],
+                        //   ),
 
                         /// Secondary Muscle
                         if (currentExercise.exercise.modality.isNotEmpty)
