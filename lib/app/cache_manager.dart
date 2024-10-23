@@ -143,6 +143,11 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
               e.difficultyLevel == level && e.startDate.isSame(DateTime.now()))
           .toList() ??
       [];
+  List<WorkoutLogModel> fetchAllAt(DateTime selectedDate) =>
+      _item
+          ?.where((e) => e.startDate.onlyDate() == selectedDate.onlyDate())
+          .toList() ??
+      [];
 }
 
 class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {

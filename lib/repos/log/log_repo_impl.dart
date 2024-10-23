@@ -62,6 +62,7 @@ class LogRepo implements LogRepoInterface {
         userId: AppManager().user.uid,
         name: name,
         difficultyLevel: level,
+        coverUrl: coverUrl,
         startDate: DateTime.now(),
       );
 
@@ -84,14 +85,14 @@ class LogRepo implements LogRepoInterface {
   Future<void> markWorkoutCompleted({required String workoutId}) async {
     try {
       /// If it already existed
-      WorkoutLogModel? workout = CacheLogWorkout().find(workoutId: workoutId);
-      if (workout != null && workout.completeDate == null) {
-        workout = workout.copyWith(completeDate: DateTime.now());
+      WorkoutLogModel? logWrk = CacheLogWorkout().find(workoutId: workoutId);
+      if (logWrk != null && logWrk.completeDate == null) {
+        logWrk = logWrk.copyWith(completeDate: DateTime.now());
         await FirestoreService().updateWithDocId(
             path: FIREBASE_COLLECTION_LOG_WORKOUTS,
-            docId: workoutId,
-            data: workout.toMap());
-        CacheLogWorkout().update(workout: workout);
+            docId: logWrk.uuid,
+            data: logWrk.toMap());
+        CacheLogWorkout().update(workout: logWrk);
       } else {
         log(
           "Workout log not found or already completed",

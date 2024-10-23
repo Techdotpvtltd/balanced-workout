@@ -5,143 +5,133 @@
 // Date:        08-05-24 12:51:57 -- Wednesday
 // Description:
 
+import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import '../../../blocs/log/log_bloc.dart';
+import '../../../blocs/log/log_state.dart';
+import '../../../blocs/workout/workout_bloc.dart';
+import '../../../blocs/workout/workout_event.dart';
+import '../../../blocs/workout/workout_state.dart';
+import '../../../models/workout_model.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/dialogs/dialogs.dart';
+import '../../../utils/dialogs/loaders.dart';
+import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
+import '../../components/custom_ink_well.dart';
+import '../../components/custom_network_image.dart';
 import '../../components/custom_paddings.dart';
 import '../../components/custom_scaffold.dart';
 import 'components/custom_weekly_date.dart';
-import 'components/product_card.dart';
+import 'workouts/workout_exercises_screen.dart';
 
-class ProgressionScreen extends StatelessWidget {
+class ProgressionScreen extends StatefulWidget {
   const ProgressionScreen({super.key});
 
   @override
+  State<ProgressionScreen> createState() => _ProgressionScreenState();
+}
+
+class _ProgressionScreenState extends State<ProgressionScreen> {
+  late List<dynamic> workouts = CacheLogWorkout().fetchAllAt(DateTime.now());
+  bool isLoading = false;
+
+  void fetchAllAt(DateTime selectedDate) {
+    setState(() {
+      workouts = CacheLogWorkout().fetchAllAt(selectedDate);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBar: customAppBar(
-        background: const Color(0xFF2C2C2E).withOpacity(0.62),
-        title: "Progression",
-      ),
-      body: Column(
-        children: [
-          /// Date View
-          CustomWeeklyDate(onSelectedDate: (p0) {}),
-          Expanded(
-            child: SingleChildScrollView(
+    return MultiBlocListener(
+      listeners: [
+        /// Log Bloc
+
+        BlocListener<LogBloc, LogState>(
+          listener: (_, state) {
+            if (state is LogStateWorkoutsFetching ||
+                state is LogStateWorkoutsFetched ||
+                state is LogStateWorkoutsFetchFailure) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
+
+              if (state is LogStateWorkoutsFetched) {
+                setState(() {
+                  workouts = state.workouts;
+                });
+              }
+
+              if (state is LogStateWorkoutsFetchFailure) {
+                CustomDialogs().errorBox(message: state.exception.message);
+              }
+            }
+          },
+        ),
+
+        /// WorkoutBloc
+        BlocListener<WorkoutBloc, WorkoutState>(
+          listener: (context, state) {
+            if (state is WorkoutStateGetFailue ||
+                state is WorkoutStateGetting ||
+                state is WorkoutStateHGot) {
+              state.isLoading ? Loader().show() : Loader().hide();
+
+              if (state is WorkoutStateHGot) {
+                NavigationService.go(
+                    WorkoutExercisesScreen(workout: state.workout));
+              }
+
+              if (state is WorkoutStateGetFailue) {
+                CustomDialogs().errorBox(message: state.exception.message);
+              }
+            }
+
+            if (state is WorkoutStateFetchLastDocSnap) {}
+
+            if (state is WorkoutStateFetching ||
+                state is WorkoutStateFetchFailure ||
+                state is WorkoutStateFetched) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
+
+              if (state is WorkoutStateFetchFailure) {
+                debugPrint(state.exception.message);
+              }
+              if (state is WorkoutStateFetched) {
+                for (final workout in state.workouts) {
+                  if (!workouts.contains(workout)) {
+                    workouts.add(workout);
+                  }
+                }
+                setState(() {});
+              }
+            }
+          },
+        ),
+      ],
+      child: CustomScaffold(
+        appBar: customAppBar(
+          background: const Color(0xFF2C2C2E).withOpacity(0.62),
+          title: "Progression",
+        ),
+        body: Column(
+          children: [
+            /// Date View
+            CustomWeeklyDate(onSelectedDate: (p0) {
+              fetchAllAt(p0);
+            }),
+            Expanded(
               child: CustomPadding(
-                top: 60,
+                bottom: 0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Pie Chart Views
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        /// Workout Pie
-                        SizedBox(
-                          height: 126,
-                          child: PieChart(
-                            dataMap: {"App": 34},
-                            chartType: ChartType.ring,
-                            baseChartColor: AppTheme.darkButtonColor,
-                            colorList: [AppTheme.primaryColor1],
-                            totalValue: 100,
-                            degreeOptions: DegreeOptions(initialAngle: 270),
-                            animationDuration: Duration(seconds: 3),
-                            chartLegendSpacing: 0,
-                            chartValuesOptions: ChartValuesOptions(
-                              showChartValueBackground: false,
-                              showChartValues: false,
-                              showChartValuesInPercentage: false,
-                              showChartValuesOutside: false,
-                            ),
-                            legendOptions: LegendOptions(
-                              showLegends: false,
-                              showLegendsInRow: false,
-                            ),
-                            ringStrokeWidth: 8,
-                            centerWidget: Text.rich(
-                              TextSpan(
-                                text: "Workout\n",
-                                children: [
-                                  TextSpan(
-                                    text: "03",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 27,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.26,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        /// Time Pie Chart
-                        SizedBox(
-                          height: 126,
-                          child: PieChart(
-                            dataMap: {"App": 70},
-                            chartType: ChartType.ring,
-                            baseChartColor: AppTheme.darkButtonColor,
-                            colorList: [Color(0xFFFF2424)],
-                            totalValue: 100,
-                            degreeOptions: DegreeOptions(initialAngle: 270),
-                            animationDuration: Duration(seconds: 3),
-                            chartLegendSpacing: 0,
-                            chartValuesOptions: ChartValuesOptions(
-                              showChartValueBackground: false,
-                              showChartValues: false,
-                              showChartValuesInPercentage: false,
-                              showChartValuesOutside: false,
-                            ),
-                            legendOptions: LegendOptions(
-                              showLegends: false,
-                              showLegendsInRow: false,
-                            ),
-                            ringStrokeWidth: 8,
-                            centerWidget: Text.rich(
-                              TextSpan(
-                                text: "Time\n",
-                                children: [
-                                  TextSpan(
-                                    text: "45",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 27,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: " min",
-                                    style: TextStyle(
-                                      fontSize: 16.26,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.26,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    /// Recent Workout Data
-                    gapH20,
-
                     /// Challenge Title
                     const Text(
                       "Recent Work Out",
@@ -154,27 +144,97 @@ class ProgressionScreen extends StatelessWidget {
                     gapH20,
 
                     /// Challenges List
-                    ListView.builder(
-                      itemCount: 3,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(bottom: 7),
-                      itemBuilder: (context, index) {
-                        return ProductCard(
-                          title: "Simply Chest Work",
-                          subTitle: "7x4 Challenge",
-                          onClickCard: () {},
-                          coverUrl:
-                              'https://allmaxnutrition.com/cdn/shop/articles/13576-1200x600-1.jpg?v=1678816564',
-                        );
-                      },
+                    Expanded(
+                      child: (workouts.isEmpty && !isLoading)
+                          ? const Center(
+                              child: Text(
+                                "No recent workouts",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: workouts.length,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(bottom: 7),
+                              itemBuilder: (context, index) {
+                                final workout = workouts[index];
+                                return CustomInkWell(
+                                  onTap: () {
+                                    if (workout is WorkoutModel) {
+                                      NavigationService.go(
+                                          WorkoutExercisesScreen(
+                                              workout: workout));
+                                    } else {
+                                      context.read<WorkoutBloc>().add(
+                                          WorkoutEventGet(
+                                              uuid: workout.workoutId));
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 193,
+                                    margin: const EdgeInsets.only(
+                                        top: 7, bottom: 7),
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: const BoxDecoration(
+                                      color: AppTheme.darkWidgetColor,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: ColorFiltered(
+                                            colorFilter: ColorFilter.mode(
+                                                const Color(0xff000000)
+                                                    .withOpacity(0.35),
+                                                BlendMode.srcOver),
+                                            child: CustomNetworkImage(
+                                              imageUrl: workout.coverUrl ?? "",
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 23,
+                                          right: 10,
+                                          bottom: 10,
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  workout.name,
+                                                  maxLines: 3,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                     ),
                   ],
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
