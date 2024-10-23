@@ -13,7 +13,6 @@ import '../../../utils/extensions/navigation_service.dart';
 import '../../components/custom_app_bar.dart';
 import '../../components/custom_scaffold.dart';
 import 'completed_screen.dart';
-import 'components/max_stats_screen.dart';
 import 'components/navigation_button.dart';
 import 'components/recent_muscle_workout.dart';
 import 'my_data_screen.dart';
@@ -37,7 +36,7 @@ class _MyScreenState extends State<MyScreen> {
         rightPadding: 29,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 30, bottom: 100),
+        padding: const EdgeInsets.only(top: 30, bottom: 160),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,27 +85,27 @@ class _MyScreenState extends State<MyScreen> {
             ),
             gapH20,
             const RecentMuscleWorkout(),
-            gapH30,
-            const Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  gapH30,
-                  // Recent Workout
-                  Text(
-                    "Max Stats",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
-                  ),
-                  gapH20,
-                  MaxStatsWidget(),
-                ],
-              ),
-            ),
+            // gapH30,
+            // const Padding(
+            //   padding: EdgeInsets.only(left: 20, right: 20),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       // gapH30,
+            //       // Recent Workout
+            //       // Text(
+            //       //   "Max Stats",
+            //       //   style: TextStyle(
+            //       //     color: Colors.white,
+            //       //     fontWeight: FontWeight.w500,
+            //       //     fontSize: 18,
+            //       //   ),
+            //       // ),
+            //       // gapH20,
+            //       // MaxStatsWidget(),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
