@@ -130,6 +130,11 @@ class LogRepo implements LogRepoInterface {
       final data = await FirestoreService().fetchWithMultipleConditions(
         collection: FIREBASE_COLLECTION_LOG_EXERCISES,
         queries: [
+          QueryModel(
+            field: "userId",
+            value: AppManager().user.uid,
+            type: QueryType.isEqual,
+          ),
           QueryModel(field: "startDate", value: true, type: QueryType.orderBy),
           QueryModel(
               field: "startDate",
