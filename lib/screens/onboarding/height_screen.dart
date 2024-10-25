@@ -10,7 +10,7 @@ import '../../app/app_manager.dart';
 import '../../utils/extensions/navigation_service.dart';
 import 'components/information_widget.dart';
 import 'components/wheel_value_picker.dart';
-import 'goal_screen.dart';
+import 'profile_activity_level.dart';
 
 class HeightScreen extends StatelessWidget {
   const HeightScreen({super.key});
@@ -32,7 +32,7 @@ class HeightScreen extends StatelessWidget {
       ),
       onPressedNext: () {
         AppManager().user = AppManager().user.copyWith(height: height);
-        NavigationService.go(const GoalScreen());
+        NavigationService.go(const ProfileActivityLevelScreen());
       },
     );
   }

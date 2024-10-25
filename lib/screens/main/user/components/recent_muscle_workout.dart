@@ -5,7 +5,6 @@
 // Date:        08-05-24 17:04:07 -- Wednesday
 // Description:
 
-import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
@@ -42,7 +41,8 @@ class _RecentMuscleWorkoutState extends State<RecentMuscleWorkout> {
 
   @override
   void initState() {
-    filteredData(CacheLogExercise().getItem ?? []);
+    triggerFetchExerciesAtDate(DateTime.now());
+
     super.initState();
   }
 
