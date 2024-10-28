@@ -16,9 +16,7 @@ class LogEventFetchAllWorkouts extends LogEvent {}
 
 /// Fetch Workouts by level
 class LogEventFetchWorkoutsByLevel extends LogEvent {
-  final Level level;
-
-  LogEventFetchWorkoutsByLevel({required this.level});
+  LogEventFetchWorkoutsByLevel();
 }
 
 /// Save Workout log

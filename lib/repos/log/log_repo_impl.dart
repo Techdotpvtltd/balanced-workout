@@ -112,9 +112,9 @@ class LogRepo implements LogRepoInterface {
   }
 
   @override
-  Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level}) async {
+  Future<List<WorkoutLogModel>> getWorkoutsBy() async {
     try {
-      return CacheLogWorkout().getItemsBy(level: level);
+      return CacheLogWorkout().getItem ?? [];
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "WorkoutLog getWorkoutsBy");
       throw throwAppException(e: e);

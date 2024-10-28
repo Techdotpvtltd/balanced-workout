@@ -8,7 +8,6 @@
 import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import '../../../blocs/log/log_bloc.dart';
 import '../../../blocs/log/log_state.dart';
 import '../../../blocs/workout/workout_bloc.dart';

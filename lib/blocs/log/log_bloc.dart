@@ -27,7 +27,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
       (event, emit) async {
         try {
           emit(LogStateWorkoutsFetching());
-          final workouts = await LogRepo().getWorkoutsBy(level: event.level);
+          final workouts = await LogRepo().getWorkoutsBy();
           emit(LogStateWorkoutsFetched(workouts: workouts));
         } on AppException catch (e) {
           emit(LogStateWorkoutsFetchFailure(exception: e));

@@ -31,7 +31,7 @@ import '../../../components/custom_network_image.dart';
 
 class WorkoutListScreen extends StatefulWidget {
   const WorkoutListScreen(
-      {super.key, required this.selectedLevel, required this.isShowLogs});
+      {super.key, required this.selectedLevel, this.isShowLogs = false});
   final Level selectedLevel;
   final bool isShowLogs;
   @override
@@ -61,9 +61,7 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
   }
 
   void triggerFetchLogsWorkoutEvent() {
-    context
-        .read<LogBloc>()
-        .add(LogEventFetchWorkoutsByLevel(level: widget.selectedLevel));
+    context.read<LogBloc>().add(LogEventFetchWorkoutsByLevel());
   }
 
   void triggerFetchWorkoutEvent() {
