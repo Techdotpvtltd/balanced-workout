@@ -434,7 +434,7 @@ class _WorkoutPlayExercisesScreenState
                       children: [
                         gapH20,
                         const Text(
-                          "PRIMARY FOCUS",
+                          "MORE DETAILS",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,

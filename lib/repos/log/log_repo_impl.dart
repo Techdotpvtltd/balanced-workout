@@ -207,15 +207,15 @@ class LogRepo implements LogRepoInterface {
         queries: [
           QueryModel(field: "userId", value: user.uid, type: QueryType.isEqual),
           QueryModel(
-              field: "courseId",
-              value: [courseId],
-              type: QueryType.arrayContains),
+              field: "courseId", value: [courseId], type: QueryType.whereIn),
           QueryModel(field: "", value: 1, type: QueryType.limit),
         ],
       );
 
       if (data.isNotEmpty) {
-        return CourseLogModel.fromMap(data.first);
+        final course = CourseLogModel.fromMap(data.first);
+        CacheLogCourse().add = course;
+        return course;
       }
 
       // Save and fetch from local
@@ -235,18 +235,18 @@ class LogRepo implements LogRepoInterface {
 
   @override
   Future<void> markCourseDayCompleted({
-    required String courseId,
-    required CourseWeekLogModel week,
+    required String logId,
+    required int day,
   }) async {
     try {
       await FirestoreService().updateWithDocId(
         path: FIREBASE_COLLECTION_LOG_COURSES,
-        docId: courseId,
+        docId: logId,
         data: {
-          "weeks": FieldValue.arrayUnion([week])
+          "completedDays": FieldValue.arrayUnion([day])
         },
       );
-      CacheLogCourse().updateWeek(courseId, week);
+      CacheLogCourse().updateWeek(logId, day);
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "markCourseDayCompleted");
     }
@@ -260,7 +260,7 @@ class LogRepo implements LogRepoInterface {
         courseId: courseId,
         userId: user.uid,
         startDate: DateTime.now(),
-        weeks: [],
+        completedDays: [],
       );
 
       final Map<String, dynamic> data = await FirestoreService()

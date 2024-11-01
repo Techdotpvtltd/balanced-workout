@@ -99,7 +99,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     on<LogEventCourseUpdateWeekData>(
       (event, emit) async {
         await LogRepo()
-            .markCourseDayCompleted(courseId: event.courseId, week: event.week);
+            .markCourseDayCompleted(logId: event.logId, day: event.day);
         emit(LogStateCouseWeekDataUpdated());
       },
     );

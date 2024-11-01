@@ -64,8 +64,8 @@ class LogEventFetchCourse extends LogEvent {
 }
 
 class LogEventCourseUpdateWeekData extends LogEvent {
-  final CourseWeekLogModel week;
-  final String courseId;
+  final int day;
+  final String logId;
 
-  LogEventCourseUpdateWeekData({required this.week, required this.courseId});
+  LogEventCourseUpdateWeekData({required this.day, required this.logId});
 }

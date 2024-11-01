@@ -32,7 +32,7 @@ abstract class LogRepoInterface {
   Future<CourseLogModel> fetchCourse({required String courseId});
   Future<void> saveCourse({required String courseId});
   Future<void> markCourseDayCompleted({
-    required String courseId,
-    required CourseWeekLogModel week,
+    required String logId,
+    required int day,
   });
 }

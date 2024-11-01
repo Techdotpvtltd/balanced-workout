@@ -94,7 +94,7 @@ class CacheLogCourse implements CacheManager<List<CourseLogModel>> {
   factory CacheLogCourse() => _instance;
 
   @override
-  List<CourseLogModel>? _item;
+  List<CourseLogModel>? _item = [];
 
   @override
   List<CourseLogModel> get getItem => _item ?? [];
@@ -102,7 +102,7 @@ class CacheLogCourse implements CacheManager<List<CourseLogModel>> {
   @override
   set set(List<CourseLogModel> item) => _item = [];
 
-  set add(CourseLogModel item) => _item?.add(item);
+  set add(CourseLogModel item) => _item!.add(item);
 
   CourseLogModel? find({required String courseId}) {
     final int index = _item?.indexWhere((e) => e.courseId == courseId) ?? -2;
@@ -113,16 +113,13 @@ class CacheLogCourse implements CacheManager<List<CourseLogModel>> {
     return null;
   }
 
-  void updateWeek(String courseId, CourseWeekLogModel week) {
-    final int index = _item?.indexWhere((e) => e.courseId == courseId) ?? -2;
+  void updateWeek(String logId, int day) {
+    final int index = _item?.indexWhere((e) => e.uuid == logId) ?? -2;
     if (index > -1) {
       final courseModel = _item![index];
-      final int weekIndex =
-          courseModel.weeks.indexWhere((e) => e.week == week.week);
-      if (weekIndex > -1) {
-        courseModel.weeks[weekIndex] = week;
-        _item![index] = courseModel;
-      }
+      courseModel.completedDays.add(day);
+
+      _item![index] = courseModel;
     }
   }
 }
@@ -207,11 +204,22 @@ class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
 
   void add(ExerciseLogModel log) => _item?.insert(0, log);
 
+  List<String> _exerciseIdsFor(PlanType type) =>
+      _item?.map((e) => e.exerciseId).toList() as List<String>;
+
   List<ExerciseLogModel> findAt(DateTime date) =>
       _item?.where((e) => e.startDate.onlyDate() == date.onlyDate()).toList() ??
       [];
   List<ExerciseLogModel> findBy(PlanType type) =>
       _item?.where((e) => e.type == type).toList() ?? [];
+
+  bool checkAllExerciseCompleted(
+      {required List<String> exerciseIds, required PlanType type}) {
+    final data = _exerciseIdsFor(type);
+
+    // Check if every exercise ID is contained in the data
+    return exerciseIds.every((id) => data.contains(id));
+  }
 
   bool checkExistedBy({required String exerciseId, required PlanType type}) =>
       type == PlanType.workout
