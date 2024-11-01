@@ -5,6 +5,7 @@
 // Date:        05-07-24 15:59:45 -- Friday
 // Description:
 
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
@@ -84,6 +85,46 @@ class CacheWorkout implements CacheManager<WorkoutModel> {
 
   @override
   set set(WorkoutModel item) => _item = item;
+}
+
+/// Log Courses
+class CacheLogCourse implements CacheManager<List<CourseLogModel>> {
+  static final _instance = CacheLogCourse._internal();
+  CacheLogCourse._internal();
+  factory CacheLogCourse() => _instance;
+
+  @override
+  List<CourseLogModel>? _item;
+
+  @override
+  List<CourseLogModel> get getItem => _item ?? [];
+
+  @override
+  set set(List<CourseLogModel> item) => _item = [];
+
+  set add(CourseLogModel item) => _item?.add(item);
+
+  CourseLogModel? find({required String courseId}) {
+    final int index = _item?.indexWhere((e) => e.courseId == courseId) ?? -2;
+    if (index > -1) {
+      return _item![index];
+    }
+
+    return null;
+  }
+
+  void updateWeek(String courseId, CourseWeekLogModel week) {
+    final int index = _item?.indexWhere((e) => e.courseId == courseId) ?? -2;
+    if (index > -1) {
+      final courseModel = _item![index];
+      final int weekIndex =
+          courseModel.weeks.indexWhere((e) => e.week == week.week);
+      if (weekIndex > -1) {
+        courseModel.weeks[weekIndex] = week;
+        _item![index] = courseModel;
+      }
+    }
+  }
 }
 
 /// Log Workouts
