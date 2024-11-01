@@ -5,6 +5,7 @@
 // Date:        06-08-24 16:50:13 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 
@@ -53,4 +54,18 @@ class LogEventSaveExercise extends LogEvent {
   final ExerciseLogModel exercise;
 
   LogEventSaveExercise({required this.exercise});
+}
+
+/// Fetch Course Logs
+class LogEventFetchCourse extends LogEvent {
+  final String courseId;
+
+  LogEventFetchCourse({required this.courseId});
+}
+
+class LogEventCourseUpdateWeekData extends LogEvent {
+  final CourseWeekLogModel week;
+  final String courseId;
+
+  LogEventCourseUpdateWeekData({required this.week, required this.courseId});
 }
