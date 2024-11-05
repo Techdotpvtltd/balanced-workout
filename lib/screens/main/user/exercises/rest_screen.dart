@@ -313,6 +313,7 @@ class _RestScreenState extends State<RestScreen> {
                     ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (widget
                           .nextExercise.exercise.primaryMuscles.isNotEmpty)
@@ -343,7 +344,10 @@ class _RestScreenState extends State<RestScreen> {
                           ),
                         ),
                       if (widget
-                          .nextExercise.exercise.primaryMuscles.isNotEmpty)
+                          .nextExercise.exercise.secondaryMuscles.isNotEmpty)
+                        gapW4,
+                      if (widget
+                          .nextExercise.exercise.secondaryMuscles.isNotEmpty)
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +363,7 @@ class _RestScreenState extends State<RestScreen> {
                               ),
                               gapH6,
                               Text(
-                                widget.nextExercise.exercise.primaryMuscles
+                                widget.nextExercise.exercise.secondaryMuscles
                                     .join('\n'),
                                 style: const TextStyle(
                                   color: AppTheme.titleColor3,

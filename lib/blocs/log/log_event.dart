@@ -5,7 +5,6 @@
 // Date:        06-08-24 16:50:13 -- Tuesday
 // Description:
 
-import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 
