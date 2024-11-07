@@ -29,6 +29,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
 
+    // On Delete request  ============================================
+    on<AuthEventPerformDeletion>(
+      (event, emit) async {
+        await AuthRepo().performDeletion();
+        AppManager().clearAll();
+        NavigationService.offAll(const SplashScreen());
+        emit(AuthStateInitialize());
+      },
+    );
     // Splash Process completed  ============================================
     on<AuthEventSplashAction>((event, emit) async {
       try {

@@ -105,7 +105,7 @@ class StoreManager {
       rethrow;
     } catch (e) {
       log(e.toString(), name: "StoreSDK-Purchasing", time: DateTime.now());
-      CustomDialogs().errorBox(message: "Subscription failed");
+      // CustomDialogs().errorBox(message: "Subscription failed");
       rethrow;
     }
   }

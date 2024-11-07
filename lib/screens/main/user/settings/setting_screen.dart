@@ -255,11 +255,29 @@ class _SettingScreenState extends State<SettingScreen> {
             /// Invite Button
             gapH10,
             CustomChildButton(
-              onPressed: () {},
+              onPressed: () {
+                CustomDialogs().deleteBox(
+                  title: "Confirm Account Deletion",
+                  message:
+                      "Are you sure you want to delete your account? This action cannot be undone.\n\nDon't forget to cancel any active subscriptions before deleting your account.",
+                  onPositivePressed: () {
+                    CustomDialogs().alertBox(
+                      title: "Confirm Again",
+                      message: "Are you sure you want to delete your account?",
+                      onPositivePressed: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventPerformDeletion());
+                      },
+                      positiveTitle: "Yes, Delete it",
+                    );
+                  },
+                );
+              },
               child: Text(
-                "Invite Friends",
+                "Delete Account",
                 style: GoogleFonts.poppins(
-                  color: AppTheme.primaryColor1,
+                  color: Colors.red,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),

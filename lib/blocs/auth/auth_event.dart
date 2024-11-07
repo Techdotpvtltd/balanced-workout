@@ -52,3 +52,5 @@ class AuthEventFacebookLogin extends AuthEvent {}
 
 // Google Login Event
 class AuthEventGoogleLogin extends AuthEvent {}
+
+class AuthEventPerformDeletion extends AuthEvent {}
