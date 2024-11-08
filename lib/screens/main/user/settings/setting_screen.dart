@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/app_manager.dart';
 import '../../../../blocs/auth/auth_bloc.dart';
@@ -242,6 +243,57 @@ class _SettingScreenState extends State<SettingScreen> {
                   gapW30,
                   Text(
                     "Subscription",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            gapH10,
+            CustomChildButton(
+              onPressed: () {
+                launchUrl(Uri.parse(
+                    "https://www.freeprivacypolicy.com/live/9d9f6c3b-0ebc-408c-92da-dbfe3c94058b"));
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.privacy_tip_outlined,
+                    size: 24,
+                    color: Colors.white,
+                  ),
+                  gapW30,
+                  Text(
+                    "Privacy Policy",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            gapH10,
+            CustomChildButton(
+              onPressed: () {
+                launchUrl(Uri.parse(
+                    "https://pro-akbar.github.io/balance-workout-terms/"));
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.edit_document,
+                    size: 24,
+                    color: Colors.white,
+                  ),
+                  gapW30,
+                  Text(
+                    "Terms and Conditions",
                     style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 14,

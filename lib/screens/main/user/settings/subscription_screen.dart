@@ -144,7 +144,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     const TextSpan(text: " & "),
                     TextSpan(
                       text: "Terms of Use",
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrl(Uri.parse(
+                              "https://pro-akbar.github.io/balance-workout-terms/"));
+                        },
                       style: const TextStyle(
                         color: AppTheme.primaryColor1,
                         fontWeight: FontWeight.w600,
