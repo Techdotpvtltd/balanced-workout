@@ -17,6 +17,7 @@ import 'blocs/subscription/subsription_bloc.dart';
 import 'blocs/user/user_bloc.dart';
 import 'firebase_options.dart';
 import 'screens/onboarding/splash_screen.dart';
+
 // Project: 	   balanced_workout
 // File:    	   app
 // Path:    	   lib/screens/app/app.dart

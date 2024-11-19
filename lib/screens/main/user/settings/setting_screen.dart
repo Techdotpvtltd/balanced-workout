@@ -33,7 +33,6 @@ import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
 import '../../../onboarding/forgot_screen.dart';
 import '../../../onboarding/splash_screen.dart';
-import 'contact_us_screen.dart';
 import 'edit_profile_screen.dart';
 import 'subscription_screen.dart';
 
@@ -200,31 +199,31 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
 
             /// Contact Us Button
-            gapH10,
-            CustomChildButton(
-              onPressed: () {
-                NavigationService.go(const ContactUsScreen());
-              },
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    AppAssets.infoIcon,
-                    height: 24,
-                    colorFilter:
-                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                  ),
-                  gapW30,
-                  Text(
-                    "Contact Us",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // gapH10,
+            // CustomChildButton(
+            //   onPressed: () {
+            //     NavigationService.go(const ContactUsScreen());
+            //   },
+            //   child: Row(
+            //     children: [
+            //       SvgPicture.asset(
+            //         AppAssets.infoIcon,
+            //         height: 24,
+            //         colorFilter:
+            //             const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            //       ),
+            //       gapW30,
+            //       Text(
+            //         "Contact Us",
+            //         style: GoogleFonts.poppins(
+            //           color: Colors.white,
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
             /// Subscription Button
             gapH10,
