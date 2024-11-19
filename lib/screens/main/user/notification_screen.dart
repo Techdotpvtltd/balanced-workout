@@ -27,7 +27,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: customAppBar(title: "Notifications"),
+      appBar: customAppBar(title: "Notification"),
       body: notifications.isEmpty
           ? const Center(
               child: Column(
