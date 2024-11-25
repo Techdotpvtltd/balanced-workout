@@ -61,7 +61,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
         body: articles.isEmpty
             ? const Center(
                 child: Text(
-                  "No Articles",
+                  "No articles or facts available at the moment.",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

@@ -168,7 +168,7 @@ class AuthRepo {
               avatarUrl: user.photoURL,
               email: user.email ?? "",
             );
-            AppManager().isNewUserWithCred = true;
+            AppManager().isSSOAccountCreated = true;
             _fetchOrCreateUser();
           } else {
             throw throwAppException(e: e);

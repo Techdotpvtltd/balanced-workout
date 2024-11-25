@@ -113,13 +113,26 @@ class _CourseScreenState extends State<CourseScreen> {
             enabled: isLoading && lastSnapDoc == null,
             child: (courses.isEmpty && !isLoading)
                 ? const Center(
-                    child: Text(
-                      "No courses available",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Courses for this level will appear here.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          "Keep an eye out!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(

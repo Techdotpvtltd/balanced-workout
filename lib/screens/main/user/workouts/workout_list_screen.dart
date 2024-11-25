@@ -171,13 +171,26 @@ class _WorkoutScreenState extends State<WorkoutListScreen> {
             enabled: isLoading && lastDocSnap == null,
             child: (workouts.isEmpty && !isLoading)
                 ? const Center(
-                    child: Text(
-                      "No workouts available",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Looks like there are no workouts right now. ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          "Check again soon!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(
