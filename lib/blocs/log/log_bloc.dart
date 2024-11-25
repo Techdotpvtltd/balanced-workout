@@ -10,6 +10,7 @@ import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
 import 'package:balanced_workout/repos/log/log_repo_impl.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +28,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
       (event, emit) async {
         try {
           emit(LogStateWorkoutsFetching());
-          final workouts = await LogRepo().getWorkoutsBy(level: event.level);
+          final workouts = await LogRepo().getWorkoutsBy();
           emit(LogStateWorkoutsFetched(workouts: workouts));
         } on AppException catch (e) {
           emit(LogStateWorkoutsFetchFailure(exception: e));
@@ -79,6 +80,27 @@ class LogBloc extends Bloc<LogEvent, LogState> {
       (event, emit) async {
         LogRepo().markWorkoutCompleted(workoutId: event.workoutId);
         emit(LogStateMarkCompleted());
+      },
+    );
+
+    /// Fetch Fetch Course Log Event
+    on<LogEventFetchCourse>(
+      (event, emit) async {
+        try {
+          final course = await LogRepo().fetchCourse(courseId: event.courseId);
+          emit(LogStateCouseFetched(course: course));
+        } on AppException catch (e) {
+          debugPrint(e.message);
+        }
+      },
+    );
+
+    // Update Course Week Log Event
+    on<LogEventCourseUpdateWeekData>(
+      (event, emit) async {
+        await LogRepo()
+            .markCourseDayCompleted(logId: event.logId, day: event.day);
+        emit(LogStateCouseWeekDataUpdated());
       },
     );
   }

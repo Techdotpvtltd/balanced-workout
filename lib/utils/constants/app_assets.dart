@@ -14,6 +14,9 @@ class AppAssets {
   static const String wti3 = "${AppAssets._imagePath}/splash3.jpg";
   static const String anatomy = "${AppAssets._imagePath}/anatomy.png";
   static const String cover1 = "${AppAssets._imagePath}/cover1.png";
+  static const String monthly = "${AppAssets._imagePath}/monthly.jpg";
+  static const String quarter = "${AppAssets._imagePath}/quarter.jpg";
+  static const String weekly = "${AppAssets._imagePath}/weekly.jpg";
   static const String advancedLevel = "${AppAssets._imagePath}/advanced.jpg";
   static const String beginnersLevel = "${AppAssets._imagePath}/beginners.jpg";
   static const String intermedianLevel =

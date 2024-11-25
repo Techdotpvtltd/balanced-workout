@@ -22,12 +22,12 @@ class ExerciseListWidget extends StatefulWidget {
     required this.planExercises,
     required this.type,
     this.isFromChallengeLogs = false,
-    this.onCompletePressed,
+    this.onCompleted,
   });
   final List<PlanExercise> planExercises;
   final PlanType type;
   final bool isFromChallengeLogs;
-  final VoidCallback? onCompletePressed;
+  final VoidCallback? onCompleted;
   @override
   State<ExerciseListWidget> createState() => _ExerciseListWidgetState();
 }
@@ -45,7 +45,21 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
       planExercises =
           planExercises.where((e) => ids.contains(e.exercise.uuid)).toList();
     }
+
+    if (widget.type == PlanType.course) {
+      checkIfCourseCompleted();
+    }
     super.initState();
+  }
+
+  void checkIfCourseCompleted() {
+    final ids =
+        planExercises.map((e) => e.exercise.uuid).toList() as List<String>? ??
+            [];
+    if (CacheLogExercise()
+        .checkAllExerciseCompleted(exerciseIds: ids, type: PlanType.course)) {
+      widget.onCompleted!();
+    }
   }
 
   @override
@@ -59,18 +73,20 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
         final PlanExercise planExercise = planExercises[index];
 
         return CustomInkWell(
-          onTap: () {
+          onTap: () async {
             final exercises = List<PlanExercise>.from(planExercises)
                 .skipWhile((e) => e.uuid != planExercise.uuid)
                 .toList();
 
-            NavigationService.go(
-              ExercisePlayScreen(
-                planExercises: exercises,
-                type: widget.type,
-                onCompleteButton: widget.onCompletePressed,
-              ),
-            );
+            await NavigationService.go(ExercisePlayScreen(
+              planExercises: exercises,
+              type: widget.type,
+              onCompleteButton: widget.onCompleted,
+            ));
+            if (widget.type == PlanType.course) {
+              checkIfCourseCompleted();
+            }
+            setState(() {});
           },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
@@ -84,8 +100,12 @@ class _ExerciseListWidgetState extends State<ExerciseListWidget> {
                 /// Play Button
                 Container(
                   padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    color: AppTheme.primaryColor1,
+                  decoration: BoxDecoration(
+                    color: CacheLogExercise().checkExistedBy(
+                            exerciseId: planExercise.exercise.uuid,
+                            type: widget.type)
+                        ? AppTheme.primaryColor1
+                        : Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

@@ -26,3 +26,6 @@ const FIREBASE_COLLECTION_LOG_WORKOUTS =
 
 const FIREBASE_COLLECTION_LOG_EXERCISES =
     "${kReleaseMode ? "Rel-" : "Dev-"}Log-Exercises";
+
+const FIREBASE_COLLECTION_LOG_COURSES =
+    "${kReleaseMode ? "Rel-" : "Dev-"}Log-Courses";

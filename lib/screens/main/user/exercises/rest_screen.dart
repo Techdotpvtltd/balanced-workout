@@ -27,16 +27,17 @@ class RestScreen extends StatefulWidget {
     super.key,
     required this.nextExercise,
     required this.currentExercise,
+    this.restTime = 60,
   });
   final PlanExercise nextExercise;
   final PlanExercise currentExercise;
-
+  final int restTime;
   @override
   State<RestScreen> createState() => _RestScreenState();
 }
 
 class _RestScreenState extends State<RestScreen> {
-  late int seconds = widget.currentExercise.rest ?? 1;
+  late int seconds = widget.restTime;
   Timer? _timer;
   bool isDualSound = false;
 
@@ -199,6 +200,68 @@ class _RestScreenState extends State<RestScreen> {
                       ),
                     ],
                   ),
+                  if (widget.nextExercise.setsValue.isNotEmpty) gapH20,
+
+                  /// Steps
+                  if (widget.nextExercise.setsValue.isNotEmpty)
+                    DataTable(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppTheme.titleColor1,
+                          width: 0.1,
+                        ),
+                      ),
+                      dividerThickness: 0.2,
+                      headingTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      dataTextStyle: const TextStyle(
+                        color: AppTheme.titleColor1,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      columns: [
+                        for (int row = 0;
+                            row < widget.nextExercise.exercise.sets.length;
+                            row++)
+                          DataColumn(
+                            label: Text(
+                              widget.nextExercise.exercise.sets[row].name
+                                  .firstCapitalize(),
+                              style: const TextStyle(
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                      ],
+                      rows: [
+                        for (int row = 0;
+                            row <
+                                (widget.nextExercise.setsValue.length > 1
+                                    ? 1
+                                    : 0);
+                            row++)
+                          DataRow(
+                            cells: [
+                              for (int col = 0;
+                                  col <
+                                      widget.nextExercise.exercise.sets.length;
+                                  col++)
+                                DataCell(
+                                  Text(
+                                    "${widget.nextExercise.setsValue[row].isEmpty ? "-" : widget.nextExercise.setsValue[row][col].value ?? "-"} ${widget.nextExercise.setsValue[row][col].value != null ? widget.nextExercise.exercise.sets[col].name.toLowerCase() == "time" ? "s" : widget.nextExercise.exercise.sets[col].name.toLowerCase() == "weights" ? "kg" : "" : ""}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                )
+                            ],
+                          )
+                      ],
+                    ),
                   if (widget.nextExercise.exercise.difficulty != null) gapH16,
                   if (widget.nextExercise.exercise.difficulty != null)
                     Row(
@@ -250,6 +313,7 @@ class _RestScreenState extends State<RestScreen> {
                     ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (widget
                           .nextExercise.exercise.primaryMuscles.isNotEmpty)
@@ -280,7 +344,10 @@ class _RestScreenState extends State<RestScreen> {
                           ),
                         ),
                       if (widget
-                          .nextExercise.exercise.primaryMuscles.isNotEmpty)
+                          .nextExercise.exercise.secondaryMuscles.isNotEmpty)
+                        gapW4,
+                      if (widget
+                          .nextExercise.exercise.secondaryMuscles.isNotEmpty)
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -296,7 +363,7 @@ class _RestScreenState extends State<RestScreen> {
                               ),
                               gapH6,
                               Text(
-                                widget.nextExercise.exercise.primaryMuscles
+                                widget.nextExercise.exercise.secondaryMuscles
                                     .join('\n'),
                                 style: const TextStyle(
                                   color: AppTheme.titleColor3,

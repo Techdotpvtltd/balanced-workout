@@ -25,21 +25,18 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     WalkthroughModel(
         index: 1,
         imagePath: AppAssets.wti1,
-        title: "EXPLORE THE WORLD’S\nWONDERS TODAY WITH US",
-        description:
-            "Start your adventure with us! Discover unforgotable\ndestinations an d hidden gems"),
+        title: "Welcome to your new journey!",
+        description: "Every step, every rep, is progress."),
     WalkthroughModel(
         index: 2,
         imagePath: AppAssets.wti2,
-        title: "EXPLORE THE WORLD’S\nWONDERS TODAY WITH US",
-        description:
-            "Start your adventure with us! Discover unforgotable\ndestinations an d hidden gems"),
+        title: " Fitness is about balance—mind, body, and life.",
+        description: "Find your strength in the journey."),
     WalkthroughModel(
         index: 3,
         imagePath: AppAssets.wti3,
-        title: "EXPLORE THE WORLD’S\nWONDERS TODAY WITH US",
-        description:
-            "Start your adventure with us! Discover unforgotable\ndestinations an d hidden gems"),
+        title: "Progress isn't always visible,",
+        description: "but every small step brings you closer to your goal"),
   ];
 
   int currentIndex = 0;

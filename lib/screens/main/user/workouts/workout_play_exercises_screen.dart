@@ -1,59 +1,62 @@
 // Project: 	   balanced_workout
-// File:    	   exercise_play_screen
-// Path:    	   lib/screens/main/user/exercises/exercise_play_screen.dart
+// File:    	   workout_play_exercises_screen
+// Path:    	   lib/screens/main/user/workouts/workout_play_exercises_screen.dart
 // Author:       Ali Akbar
-// Date:        09-07-24 16:23:55 -- Tuesday
+// Date:        24-09-24 18:11:02 -- Tuesday
 // Description:
 
 import 'dart:async';
 
-import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
-import 'package:balanced_workout/blocs/log/log_event.dart';
-import 'package:balanced_workout/models/logs/exercise_log_model.dart';
-import 'package:balanced_workout/screens/components/custom_app_bar.dart';
-import 'package:balanced_workout/screens/components/custom_button.dart';
-import 'package:balanced_workout/screens/components/custom_network_image.dart';
-import 'package:balanced_workout/screens/main/user/exercises/rest_screen.dart';
-import 'package:balanced_workout/utils/constants/app_theme.dart';
-import 'package:balanced_workout/utils/constants/constants.dart';
+import 'package:balanced_workout/models/workout_round_model.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/extensions/int_ext.dart';
-import 'package:balanced_workout/utils/extensions/navigation_service.dart';
-import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../../app/app_manager.dart';
+import '../../../../blocs/log/log_event.dart';
+import '../../../../models/logs/exercise_log_model.dart';
 import '../../../../models/plan_exercise_model.dart';
+import '../../../../utils/constants/app_theme.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
+import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_button.dart';
+import '../../../components/custom_network_image.dart';
+import '../exercises/rest_screen.dart';
 
-class ExercisePlayScreen extends StatefulWidget {
-  const ExercisePlayScreen(
+class WorkoutPlayExercisesScreen extends StatefulWidget {
+  const WorkoutPlayExercisesScreen(
       {super.key,
       required this.planExercises,
       this.currentExercise,
-      this.onCompleteButton,
-      required this.type});
+      this.onRoundCompleted,
+      required this.round});
   final List<PlanExercise> planExercises;
   final PlanExercise? currentExercise;
-  final PlanType type;
-  final VoidCallback? onCompleteButton;
+  final VoidCallback? onRoundCompleted;
+  final WorkoutRoundModel round;
   @override
-  State<ExercisePlayScreen> createState() => _ExercisePlayScreenState();
+  State<WorkoutPlayExercisesScreen> createState() =>
+      _WorkoutPlayExercisesScreenState();
 }
 
-class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
+class _WorkoutPlayExercisesScreenState
+    extends State<WorkoutPlayExercisesScreen> {
   late PlanExercise currentExercise =
       widget.currentExercise ?? widget.planExercises.first;
   late List<PlanExercise> planExercises = List.from(widget.planExercises);
   PlanExercise? nextExercise;
-
+  int currentSet = 1;
   int seconds = 0;
   Timer? _timer;
   ChewieController? chewieController;
   bool isPlaying = false;
-  bool isShowCompleteButton = false;
+  bool isRoundCompleted = false;
 
   void triggerSaveExerciseLogEvent() {
     final List<String> muscles =
@@ -72,7 +75,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
             .map((e) => ExerciseMuscleType.values
                 .firstWhere((m) => m.name.toLowerCase() == e.toLowerCase()))
             .toList(),
-        type: widget.type);
+        type: PlanType.workout);
     context.read<LogBloc>().add(LogEventSaveExercise(exercise: exer));
   }
 
@@ -104,11 +107,25 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       prepareVideoController();
       getNextExercise();
     } else {
-      setState(() {
-        isShowCompleteButton = planExercises.length == nextIndex &&
-            widget.type == PlanType.workout;
-      });
+      checkRemainingSets();
     }
+  }
+
+  void checkRemainingSets() async {
+    if (currentSet < widget.round.noOfSets) {
+      currentSet++;
+      currentExercise = planExercises.first;
+      getNextExercise();
+      await NavigationService.present(RestScreen(
+        currentExercise: currentExercise,
+        nextExercise: currentExercise,
+        restTime: widget.round.rest,
+      ));
+    } else {
+      isRoundCompleted = currentSet >= widget.round.noOfSets;
+    }
+
+    setState(() {});
   }
 
   void prepareVideoController() async {
@@ -166,22 +183,28 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: CustomButton(
-          title: nextExercise == null ? "Complete" : "Next Exercise",
+          title: (nextExercise == null && !isRoundCompleted)
+              ? "Complete Set $currentSet"
+              : (isRoundCompleted
+                  ? "Mark Round ${widget.round.id + 1} Completed"
+                  : "Next Exercise (Set $currentSet)"),
           subTitle: nextExercise?.exercise.name,
           onPressed: () async {
             triggerSaveExerciseLogEvent();
 
-            if (nextExercise == null) {
-              // widget.onCompleteButton!();
+            if (isRoundCompleted) {
               NavigationService.back();
+              widget.onRoundCompleted!();
               return;
             }
-
             if (nextExercise != null) {
               await NavigationService.present(RestScreen(
-                  currentExercise: currentExercise,
-                  nextExercise: nextExercise!));
+                currentExercise: currentExercise,
+                nextExercise: nextExercise!,
+                restTime: currentExercise.rest ?? 60,
+              ));
             }
+
             processNextExercise();
           },
         ),
@@ -198,6 +221,17 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
             fontSize: 32,
           ),
         ),
+        actions: [
+          Text(
+            "Set $currentSet",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+            ),
+          ),
+          gapW20,
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,8 +255,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                         child: CircularProgressIndicator(),
                       )
                 : CustomNetworkImage(
-                    imageUrl: currentExercise.exercise.coverUrl ?? "",
-                  ),
+                    imageUrl: currentExercise.exercise.coverUrl ?? ""),
           ),
 
           gapH20,
@@ -263,61 +296,62 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                             ),
                           ),
                         ),
-                        if (currentExercise.setsValue.isNotEmpty) gapH20,
-
-                        /// Steps
-                        if (currentExercise.setsValue.isNotEmpty)
-                          DataTable(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppTheme.titleColor1,
-                                width: 0.1,
-                              ),
-                            ),
-                            dividerThickness: 0.2,
-                            headingTextStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            dataTextStyle: const TextStyle(
-                              color: AppTheme.titleColor1,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            columns: [
-                              for (int row = 0;
-                                  row < currentExercise.exercise.sets.length;
-                                  row++)
-                                DataColumn(
-                                  label: Text(
-                                    currentExercise.exercise.sets[row].name
-                                        .firstCapitalize(),
-                                  ),
-                                ),
-                            ],
-                            rows: [
-                              for (int row = 0;
-                                  row < currentExercise.setsValue.length;
-                                  row++)
-                                DataRow(
-                                  cells: [
-                                    for (int col = 0;
-                                        col <
-                                            currentExercise
-                                                .exercise.sets.length;
-                                        col++)
-                                      DataCell(
-                                        Text(
-                                          "${currentExercise.setsValue[row].isEmpty ? "-" : currentExercise.setsValue[row][col].value ?? "-"} ${currentExercise.setsValue[row][col].value != null ? currentExercise.exercise.sets[col].name.toLowerCase() == "time" ? "s" : currentExercise.exercise.sets[col].name.toLowerCase() == "weights" ? "kg" : "" : ""}",
-                                        ),
-                                      )
-                                  ],
-                                )
-                            ],
-                          ),
                       ],
                     ),
+
+                    /// Basic Info
+
+                    if (currentExercise.setsValue.isNotEmpty) gapH20,
+
+                    /// Steps
+                    if (currentExercise.setsValue.isNotEmpty)
+                      DataTable(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppTheme.titleColor1,
+                            width: 0.1,
+                          ),
+                        ),
+                        dividerThickness: 0.2,
+                        headingTextStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        dataTextStyle: const TextStyle(
+                          color: AppTheme.titleColor1,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        columns: [
+                          for (int row = 0;
+                              row < currentExercise.exercise.sets.length;
+                              row++)
+                            DataColumn(
+                              label: Text(
+                                currentExercise.exercise.sets[row].name
+                                    .firstCapitalize(),
+                              ),
+                            ),
+                        ],
+                        rows: [
+                          for (int row = 0;
+                              row < currentExercise.setsValue.length;
+                              row++)
+                            DataRow(
+                              cells: [
+                                for (int col = 0;
+                                    col < currentExercise.exercise.sets.length;
+                                    col++)
+                                  DataCell(
+                                    Text(
+                                      "${currentExercise.setsValue[row].isEmpty ? "-" : currentExercise.setsValue[row][col].value ?? "-"} ${currentExercise.setsValue[row][col].value != null ? currentExercise.exercise.sets[col].name.toLowerCase() == "time" ? "s" : currentExercise.exercise.sets[col].name.toLowerCase() == "weights" ? "kg" : "" : ""}",
+                                    ),
+                                  )
+                              ],
+                            )
+                        ],
+                      ),
 
                     /// Equipments
                     if (currentExercise.exercise.equipments.isNotEmpty)
@@ -407,7 +441,7 @@ class _ExercisePlayScreenState extends State<ExercisePlayScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        gapH8,
+                        // gapH8,
 
                         // /// Primary Muscle
                         // Column(

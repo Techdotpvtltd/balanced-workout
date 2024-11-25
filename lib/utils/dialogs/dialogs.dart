@@ -88,7 +88,7 @@ class CustomDialogs {
     _genericAlertDilaog(
       icon: icon ?? Icons.warning,
       title: title ?? "Alert!",
-      message: message ?? "Alet",
+      message: message ?? "Alert",
       barrierDismissible: barrierDismissible,
       bottomWidget: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

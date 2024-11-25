@@ -5,7 +5,16 @@
 // Date:        09-05-24 13:10:15 -- Thursday
 // Description:
 
+import 'package:balanced_workout/app/store_manager.dart';
+import 'package:balanced_workout/blocs/subscription/subscription_event.dart';
+import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
+import 'package:balanced_workout/screens/onboarding/splash_screen.dart';
+import 'package:balanced_workout/utils/dialogs/dialogs.dart';
+import 'package:balanced_workout/utils/extensions/navigation_service.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -15,51 +24,151 @@ import '../../../components/custom_button.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SubscriptionScreen extends StatelessWidget {
+class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
+
+  @override
+  State<SubscriptionScreen> createState() => _SubscriptionScreenState();
+}
+
+class _SubscriptionScreenState extends State<SubscriptionScreen> {
+  late Package? activedPackage = storeManager.availablePackages
+      .firstWhereOrNull((e) =>
+          e.storeProduct.identifier == storeManager.active?.productIdentifier);
+  late Package? selectedPackage = activedPackage;
+
+  bool isPurchasingSubscription = false;
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundImagePath: AppAssets.cover1,
       appBar: customAppBar(),
-      body: CustomPadding(
-        bottom: 82,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            /// Title
-            const Text(
-              "Be Premium\nGet unlimited access",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
+      body: SingleChildScrollView(
+        child: CustomPadding(
+          bottom: 82,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              /// Title
+              const Text(
+                "Be Premium\nGet unlimited access",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            const Text(
-              "When you subscribe, you’ll get instant unlimited access",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+              const Text(
+                "When you subscribe, you’ll get instant unlimited access",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
-            ),
-            gapH50,
-            gapH50,
+              gapH50,
+              gapH50,
 
-            /// Plan List
-            const _PlanList(),
-            gapH50,
+              /// Plan List
+              _PlanList(
+                selectedPackage: selectedPackage,
+                onSelectPackage: (package) {
+                  setState(() {
+                    selectedPackage = package;
+                  });
+                },
+              ),
+              gapH50,
 
-            /// Subscribe Now Button
-            CustomButton(
-              onPressed: () {},
-              title: "Subscribe Now",
-            )
-          ],
+              /// Subscribe Now Button
+              CustomButton(
+                isEnabled: selectedPackage != null &&
+                    selectedPackage != activedPackage,
+                isLoading: isPurchasingSubscription,
+                onPressed: () async {
+                  try {
+                    setState(() {
+                      isPurchasingSubscription = true;
+                    });
+
+                    await storeManager.purchase(selectedPackage!);
+                    setState(() {
+                      isPurchasingSubscription = false;
+                    });
+                    if (context.mounted) {
+                      context
+                          .read<SubscriptionBloc>()
+                          .add(SubscriptionEventUpdate());
+                      CustomDialogs().successBox(
+                        title: "Subscription Active",
+                        message:
+                            "Thank you for the subscription. Now you can access all the feature of this app. Please restart the app once for proper use.",
+                        onPositivePressed: () {
+                          NavigationService.offAll(const SplashScreen());
+                        },
+                        positiveTitle: "Restart",
+                        barrierDismissible: false,
+                      );
+                    }
+                  } catch (e) {
+                    setState(() {
+                      isPurchasingSubscription = false;
+                    });
+                  }
+                },
+                title: "Subscribe Now",
+              ),
+              gapH20,
+              Text.rich(
+                TextSpan(
+                  text: "By purchasing this subscription, you agree to our ",
+                  children: [
+                    TextSpan(
+                      text: "Privacy Policy",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrl(Uri.parse(
+                              "https://www.freeprivacypolicy.com/live/9d9f6c3b-0ebc-408c-92da-dbfe3c94058b"));
+                        },
+                      style: const TextStyle(
+                        color: AppTheme.primaryColor1,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppTheme.primaryColor1,
+                      ),
+                    ),
+                    const TextSpan(text: " & "),
+                    TextSpan(
+                      text: "Terms of Use",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          launchUrl(Uri.parse(
+                              "https://pro-akbar.github.io/balance-workout-terms/"));
+                        },
+                      style: const TextStyle(
+                        color: AppTheme.primaryColor1,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppTheme.primaryColor1,
+                      ),
+                    ),
+                    const TextSpan(
+                        text:
+                            ".Your subscription will automatically renew unless canceled at least 24 hours before the end of the current period."),
+                  ],
+                ),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -68,28 +177,32 @@ class SubscriptionScreen extends StatelessWidget {
 
 // ===========================Plan List================================
 class _PlanList extends StatefulWidget {
-  const _PlanList();
+  const _PlanList({this.selectedPackage, required this.onSelectPackage});
+  final Package? selectedPackage;
+  final Function(Package) onSelectPackage;
 
   @override
   State<_PlanList> createState() => _PlanListState();
 }
 
 class _PlanListState extends State<_PlanList> {
-  int selectedIndex = 0;
-
+  late Package? selectedPackage = widget.selectedPackage;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (int index = 0; index < 2; index++)
+        for (int index = 0;
+            index < storeManager.availablePackages.length;
+            index++)
           Builder(
             builder: (context) {
-              bool isSelected = selectedIndex == index;
+              final Package package = storeManager.availablePackages[index];
+              final bool isSelected = selectedPackage == package;
+
               return CustomInkWell(
                 onTap: () {
-                  setState(() {
-                    selectedIndex = index;
-                  });
+                  selectedPackage = package;
+                  widget.onSelectPackage(package);
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 9),
@@ -108,9 +221,12 @@ class _PlanListState extends State<_PlanList> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       /// Round Widget
                       Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             width: 23,
@@ -127,63 +243,59 @@ class _PlanListState extends State<_PlanList> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Monthly",
-                                style: TextStyle(
+                              Text(
+                                package.storeProduct.title,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               gapH4,
-                              Text(
-                                "Pay monthly, cancel any time",
-                                style: TextStyle(
-                                  color: isSelected
-                                      ? AppTheme.primaryColor1
-                                      : Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
+                              SizedBox(
+                                width: 130,
+                                child: Text(
+                                  package.storeProduct.subscriptionPeriod ==
+                                          "P1M"
+                                      ? "Valid for a month"
+                                      : package.storeProduct
+                                                  .subscriptionPeriod ==
+                                              "P3M"
+                                          ? "Valid for 3 months"
+                                          : package.storeProduct
+                                                      .subscriptionPeriod ==
+                                                  "P1Y"
+                                              ? "Valid for a year"
+                                              : package.storeProduct
+                                                      .subscriptionPeriod ??
+                                                  "",
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? AppTheme.primaryColor1
+                                        : Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
+                      gapW10,
 
                       /// Price Label
-                      const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "\$",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
+                      Flexible(
+                        child: Text(
+                          package.storeProduct.priceString,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Text.rich(
-                            TextSpan(
-                              text: "18",
-                              children: [
-                                TextSpan(
-                                  text: "/m",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 23,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
                 ),

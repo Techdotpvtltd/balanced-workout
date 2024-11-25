@@ -29,6 +29,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
 
+    // On Delete request  ============================================
+    on<AuthEventPerformDeletion>(
+      (event, emit) async {
+        await AuthRepo().performDeletion();
+        AppManager().clearAll();
+        NavigationService.offAll(const SplashScreen());
+        emit(AuthStateInitialize());
+      },
+    );
     // Splash Process completed  ============================================
     on<AuthEventSplashAction>((event, emit) async {
       try {
@@ -107,7 +116,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthStateLogging(loadingText: "Signing with Apple."));
         await AuthRepo().loginWithApple();
-        if (AppManager().isNewUserWithCred) {
+        if (AppManager().isSSOAccountCreated) {
           emit(AuthStateNeedToGetUserInfo());
           return;
         }
@@ -122,7 +131,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthStateLogging(loadingText: "Signing with Facebook.."));
         await AuthRepo().loginWithFB();
-        if (AppManager().isNewUserWithCred) {
+        if (AppManager().isSSOAccountCreated) {
           emit(AuthStateNeedToGetUserInfo());
           return;
         }
@@ -137,7 +146,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: true, loadingText: "Signing with Google."));
       try {
         await AuthRepo().loginWithGoogle();
-        if (AppManager().isNewUserWithCred) {
+        if (AppManager().isSSOAccountCreated) {
           emit(AuthStateNeedToGetUserInfo());
           return;
         }

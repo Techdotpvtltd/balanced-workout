@@ -5,6 +5,7 @@
 // Date:        05-07-24 15:59:45 -- Friday
 // Description:
 
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/models/workout_model.dart';
@@ -86,6 +87,43 @@ class CacheWorkout implements CacheManager<WorkoutModel> {
   set set(WorkoutModel item) => _item = item;
 }
 
+/// Log Courses
+class CacheLogCourse implements CacheManager<List<CourseLogModel>> {
+  static final _instance = CacheLogCourse._internal();
+  CacheLogCourse._internal();
+  factory CacheLogCourse() => _instance;
+
+  @override
+  List<CourseLogModel>? _item = [];
+
+  @override
+  List<CourseLogModel> get getItem => _item ?? [];
+
+  @override
+  set set(List<CourseLogModel> item) => _item = [];
+
+  set add(CourseLogModel item) => _item!.add(item);
+
+  CourseLogModel? find({required String courseId}) {
+    final int index = _item?.indexWhere((e) => e.courseId == courseId) ?? -2;
+    if (index > -1) {
+      return _item![index];
+    }
+
+    return null;
+  }
+
+  void updateWeek(String logId, int day) {
+    final int index = _item?.indexWhere((e) => e.uuid == logId) ?? -2;
+    if (index > -1) {
+      final courseModel = _item![index];
+      courseModel.completedDays.add(day);
+
+      _item![index] = courseModel;
+    }
+  }
+}
+
 /// Log Workouts
 class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   static final _instance = CacheLogWorkout._internal();
@@ -101,7 +139,10 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   set set(List<WorkoutLogModel> item) => _item = item;
 
   bool doesExisted({required String workoutId}) =>
-      (_item?.indexWhere((e) => e.workoutId == workoutId) ?? -1) > -1;
+      (_item?.indexWhere((e) =>
+              e.workoutId == workoutId && e.startDate.isSame(DateTime.now())) ??
+          -1) >
+      -1;
 
   WorkoutLogModel? find({required String workoutId}) {
     final int index = _item?.indexWhere((e) => e.workoutId == workoutId) ?? -1;
@@ -109,6 +150,15 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
       return _item![index];
     }
     return null;
+  }
+
+  bool isCompleted({required String workoutId}) {
+    return (_item?.indexWhere((e) =>
+                e.workoutId == workoutId &&
+                e.completeDate != null &&
+                e.completeDate!.isSame(DateTime.now())) ??
+            -1) >
+        -1;
   }
 
   List<WorkoutLogModel> findCompletedWorkouts() =>
@@ -126,7 +176,16 @@ class CacheLogWorkout implements CacheManager<List<WorkoutLogModel>> {
   void add(WorkoutLogModel workout) =>
       !doesExisted(workoutId: workout.uuid) ? _item?.add(workout) : {};
   List<WorkoutLogModel> getItemsBy({required Level level}) =>
-      _item?.where((e) => e.difficultyLevel == level).toList() ?? [];
+      _item
+          ?.where((e) =>
+              e.difficultyLevel == level && e.startDate.isSame(DateTime.now()))
+          .toList() ??
+      [];
+  List<WorkoutLogModel> fetchAllAt(DateTime selectedDate) =>
+      _item
+          ?.where((e) => e.startDate.onlyDate() == selectedDate.onlyDate())
+          .toList() ??
+      [];
 }
 
 class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
@@ -145,14 +204,37 @@ class CacheLogExercise implements CacheManager<List<ExerciseLogModel>> {
 
   void add(ExerciseLogModel log) => _item?.insert(0, log);
 
+  List<String> _exerciseIdsFor(PlanType type) =>
+      _item?.map((e) => e.exerciseId).toList() as List<String>;
+
   List<ExerciseLogModel> findAt(DateTime date) =>
       _item?.where((e) => e.startDate.onlyDate() == date.onlyDate()).toList() ??
       [];
   List<ExerciseLogModel> findBy(PlanType type) =>
       _item?.where((e) => e.type == type).toList() ?? [];
 
+  bool checkAllExerciseCompleted(
+      {required List<String> exerciseIds, required PlanType type}) {
+    final data = _exerciseIdsFor(type);
+
+    // Check if every exercise ID is contained in the data
+    return exerciseIds.every((id) => data.contains(id));
+  }
+
   bool checkExistedBy({required String exerciseId, required PlanType type}) =>
-      (_item?.indexWhere((e) => e.exerciseId == exerciseId && e.type == type) ??
+      type == PlanType.workout
+          ? checkWorkoutsExistion(exerciseId: exerciseId)
+          : (_item?.indexWhere(
+                      (e) => e.exerciseId == exerciseId && e.type == type) ??
+                  -1) >
+              -1;
+
+  bool checkWorkoutsExistion({required String exerciseId}) =>
+      (_item?.indexWhere((e) =>
+              e.exerciseId == exerciseId &&
+              e.type == PlanType.workout &&
+              e.completeDate != null &&
+              e.completeDate!.isSame(DateTime.now())) ??
           -1) >
       -1;
 }

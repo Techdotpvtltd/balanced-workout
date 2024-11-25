@@ -16,26 +16,10 @@ class AppManager {
 
   String screenTitle = "";
   UserModel user = UserModel.empty();
-  bool isNewUserWithCred = false;
+  bool isSSOAccountCreated = false;
 
   void clearAll() {
     user = UserModel.empty();
-    isNewUserWithCred = false;
+    isSSOAccountCreated = false;
   }
-
-  List<Map<String, List<String>>> records = [
-    {
-      "Strength Training": [
-        "Weights",
-        "Resistance Bands",
-        "Bodyweight Exercises"
-      ]
-    },
-    {
-      "Cardio Workout": ["Running", "Cycling", "Jump Rope"]
-    },
-    {
-      "Yoga Classes": ["Hatha Yoga", "Vinyasa Yoga", "Power Yoga"]
-    }
-  ];
 }

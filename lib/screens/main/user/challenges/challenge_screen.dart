@@ -100,13 +100,26 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
             enabled: isLoading && lastSnapDoc == null,
             child: (challenges.isEmpty && !isLoading)
                 ? const Center(
-                    child: Text(
-                      "No cardio available",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No challenges added yet.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          "Let’s keep the spirit alive!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(

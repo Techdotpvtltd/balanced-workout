@@ -16,9 +16,7 @@ class LogEventFetchAllWorkouts extends LogEvent {}
 
 /// Fetch Workouts by level
 class LogEventFetchWorkoutsByLevel extends LogEvent {
-  final Level level;
-
-  LogEventFetchWorkoutsByLevel({required this.level});
+  LogEventFetchWorkoutsByLevel();
 }
 
 /// Save Workout log
@@ -55,4 +53,18 @@ class LogEventSaveExercise extends LogEvent {
   final ExerciseLogModel exercise;
 
   LogEventSaveExercise({required this.exercise});
+}
+
+/// Fetch Course Logs
+class LogEventFetchCourse extends LogEvent {
+  final String courseId;
+
+  LogEventFetchCourse({required this.courseId});
+}
+
+class LogEventCourseUpdateWeekData extends LogEvent {
+  final int day;
+  final String logId;
+
+  LogEventCourseUpdateWeekData({required this.day, required this.logId});
 }

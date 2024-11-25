@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:balanced_workout/exceptions/app_exceptions.dart';
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 
 import '../../models/logs/exercise_log_model.dart';
 import '../../models/logs/workout_log_model.dart';
@@ -55,3 +56,15 @@ class LogStateFetchedExercisesByDate extends LogState {
 // ===========================Workout Mark Complete================================
 
 class LogStateMarkCompleted extends LogState {}
+
+// ===========================Fetch Course Log States================================
+
+class LogStateCouseFetched extends LogState {
+  final CourseLogModel course;
+
+  LogStateCouseFetched({required this.course});
+}
+
+// ===========================Update Course Log State================================
+
+class LogStateCouseWeekDataUpdated extends LogState {}

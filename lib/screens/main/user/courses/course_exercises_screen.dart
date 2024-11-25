@@ -21,9 +21,11 @@ class CourseExercisesScreen extends StatefulWidget {
       {super.key,
       required this.day,
       required this.week,
-      required this.planExercises});
+      required this.planExercises,
+      required this.onCompletedDay});
   final int day, week;
   final List<PlanExercise> planExercises;
+  final Function(int week, int day) onCompletedDay;
   @override
   State<CourseExercisesScreen> createState() => _CourseExercisesScreenState();
 }
@@ -159,6 +161,9 @@ class _CourseExercisesScreenState extends State<CourseExercisesScreen> {
               child: ExerciseListWidget(
                 planExercises: planExercises,
                 type: PlanType.course,
+                onCompleted: () {
+                  widget.onCompletedDay(widget.week, widget.day);
+                },
               ),
             ),
           ],

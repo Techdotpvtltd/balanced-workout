@@ -1,3 +1,4 @@
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/article/article_bloc.dart';
 import 'package:balanced_workout/blocs/chat/%20chat_bloc.dart';
 import 'package:balanced_workout/blocs/course/course_bloc.dart';
@@ -12,9 +13,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app/app_bloc_observer.dart';
 import 'blocs/auth/auth_bloc.dart';
+import 'blocs/subscription/subsription_bloc.dart';
 import 'blocs/user/user_bloc.dart';
 import 'firebase_options.dart';
 import 'screens/onboarding/splash_screen.dart';
+
 // Project: 	   balanced_workout
 // File:    	   app
 // Path:    	   lib/screens/app/app.dart
@@ -31,9 +34,9 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
   //  1 - Ensure firebase app is initialized if starting from background/terminated state
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await storeManager.initialize();
+
   runApp(const MainApp());
 }
 
@@ -53,6 +56,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => MessageBloc()),
         BlocProvider(create: (context) => ArticleBloc()),
         BlocProvider(create: (context) => LogBloc()),
+        BlocProvider(create: (context) => SubscriptionBloc()),
       ],
       child: MaterialApp(
         navigatorKey: navKey,

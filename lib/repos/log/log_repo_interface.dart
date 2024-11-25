@@ -5,6 +5,7 @@
 // Date:        06-08-24 15:58:08 -- Tuesday
 // Description:
 
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 
 import '../../models/logs/exercise_log_model.dart';
@@ -21,9 +22,17 @@ abstract class LogRepoInterface {
   Future<void> markWorkoutCompleted({required String workoutId});
 
   Future<void> getWorkouts();
-  Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level});
+  Future<List<WorkoutLogModel>> getWorkoutsBy();
 
   /// Exercises
   Future<void> saveExercise({required ExerciseLogModel exercise});
   Future<void> fetchExercisesForMonth();
+
+  // Course Logs
+  Future<CourseLogModel> fetchCourse({required String courseId});
+  Future<void> saveCourse({required String courseId});
+  Future<void> markCourseDayCompleted({
+    required String logId,
+    required int day,
+  });
 }

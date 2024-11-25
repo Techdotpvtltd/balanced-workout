@@ -1,8 +1,11 @@
+import 'package:balanced_workout/screens/main/user/settings/subscription_screen.dart';
+import 'package:balanced_workout/screens/main/user/stretches/stretches_exercises_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../app/store_manager.dart';
 import '../../../../blocs/plan/plan_bloc.dart';
 import '../../../../blocs/plan/plan_event.dart';
 import '../../../../blocs/plan/plan_state.dart';
@@ -14,7 +17,6 @@ import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
-import '../cardio/cardio_exercise_screen.dart';
 
 class StretchesScreen extends StatefulWidget {
   const StretchesScreen({super.key});
@@ -29,6 +31,7 @@ class _StretchesScreenState extends State<StretchesScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
+  late final isAllowContent = storeManager.hasSubscription;
 
   void addScrollListener() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
@@ -93,13 +96,26 @@ class _StretchesScreenState extends State<StretchesScreen> {
             enabled: isLoading && lastSnapDoc == null,
             child: (stretches.isEmpty && !isLoading)
                 ? const Center(
-                    child: Text(
-                      "No cardio available",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No stretches available at the moment.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          "Stay tuned for new ones!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(
@@ -107,11 +123,12 @@ class _StretchesScreenState extends State<StretchesScreen> {
                     itemCount: stretches.length,
                     padding: const EdgeInsets.only(top: 20),
                     itemBuilder: (_, index) {
-                      final cardio = stretches[index];
+                      final stretch = stretches[index];
                       return CustomInkWell(
                         onTap: () {
-                          NavigationService.go(
-                              CardioExerciseScreen(cardio: cardio));
+                          NavigationService.go(isAllowContent
+                              ? StretchesExercisesScreen(stretches: stretch)
+                              : const SubscriptionScreen());
                         },
                         child: Container(
                           height: 193,
@@ -130,7 +147,7 @@ class _StretchesScreenState extends State<StretchesScreen> {
                                             .withOpacity(0.35),
                                         BlendMode.srcOver),
                                     child: CustomNetworkImage(
-                                        imageUrl: cardio.coverUrl ?? "")),
+                                        imageUrl: stretch.coverUrl ?? "")),
                               ),
                               Positioned(
                                 left: 23,
@@ -144,7 +161,7 @@ class _StretchesScreenState extends State<StretchesScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        cardio.name,
+                                        stretch.name,
                                         maxLines: 3,
                                         style: const TextStyle(
                                           color: Colors.white,
@@ -155,7 +172,17 @@ class _StretchesScreenState extends State<StretchesScreen> {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
+                              if (!isAllowContent)
+                                const Positioned(
+                                  right: 10,
+                                  top: 10,
+                                  child: Icon(
+                                    Icons.lock,
+                                    size: 24,
+                                    color: AppTheme.primaryColor1,
+                                  ),
+                                ),
                             ],
                           ),
                         ),

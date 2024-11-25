@@ -88,9 +88,9 @@ class _ProfilePickerScreenState extends State<ProfilePickerScreen> {
           }
 
           if (state is UserStateProfileUpdated) {
-            if (AppManager().isNewUserWithCred) {
+            if (AppManager().isSSOAccountCreated) {
               NavigationService.offAll(const MainUserScreen());
-              AppManager().isNewUserWithCred = false;
+              AppManager().isSSOAccountCreated = false;
               return;
             }
             CustomDialogs().successBox(

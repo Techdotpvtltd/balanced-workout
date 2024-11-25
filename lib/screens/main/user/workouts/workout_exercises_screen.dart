@@ -9,17 +9,23 @@ import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/workout_model.dart';
-import 'package:balanced_workout/screens/main/user/components/exercise_list_widget.dart';
-import 'package:balanced_workout/utils/constants/enum.dart';
+import 'package:balanced_workout/screens/components/custom_button.dart';
+
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/cache_manager.dart';
+import '../../../../models/plan_exercise_model.dart';
+import '../../../../models/workout_round_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/extensions/navigation_service.dart';
 import '../../../components/custom_app_bar.dart';
+import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_network_image.dart';
+import 'workout_play_exercises_screen.dart';
 
 class WorkoutExercisesScreen extends StatefulWidget {
   const WorkoutExercisesScreen({super.key, required this.workout});
@@ -31,7 +37,11 @@ class WorkoutExercisesScreen extends StatefulWidget {
 
 class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
   late final WorkoutModel workout = widget.workout;
+  late List<String> exericeIds = workout.rounds
+      .expand((e) => e.exercises.map((e) => e.exercise.uuid))
+      .toList();
 
+  int currentSet = 0;
   void triggerSaveWorkoutLogEvent() {
     context.read<LogBloc>().add(
           LogEventSaveWorkout(
@@ -64,12 +74,30 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
           listener: (_, state) {
             if (state is LogStateMarkCompleted) {
               CustomDialogs().successBox(
-                  title: "Great Work!", message: "You completed this workout.");
+                title: "Great Work!",
+                message: "Get ready for next workout!",
+                onPositivePressed: () {
+                  NavigationService.back();
+                },
+              );
             }
           },
         ),
       ],
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 60),
+          child: CustomButton(
+            isEnabled: !CacheLogWorkout().isCompleted(workoutId: workout.uuid),
+            title: CacheLogWorkout().isCompleted(workoutId: workout.uuid)
+                ? "Completed"
+                : "Mark Complete",
+            onPressed: () {
+              triggerMarkWorkoutCompleteEvent();
+            },
+          ),
+        ),
         body: Column(
           children: [
             Stack(
@@ -99,7 +127,8 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
             /// Contents
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 30, left: 29, right: 29),
+                padding: const EdgeInsets.only(
+                    top: 30, left: 29, right: 29, bottom: 80),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -157,7 +186,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                               ),
                               gapW10,
                               const Text(
-                                "Exercises",
+                                "Rounds",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
@@ -166,7 +195,7 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                               ),
                               const Spacer(),
                               Text(
-                                (workout.exercises.length).toString(),
+                                (workout.rounds.length).toString(),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
@@ -179,30 +208,140 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                       ),
                     ),
                     gapH20,
-                    const Text(
-                      "Exercises",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                    for (int round = 0; round < workout.rounds.length; round++)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Round ${round + 1}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                          gapH2,
+                          // Play List Widget
+                          _ExerciseListWidget(
+                            round: workout.rounds[round],
+                            onCompleteRounds: () {
+                              CustomDialogs().successBox(
+                                  title: "Great Work!",
+                                  message: "Get ready for next round!");
+                            },
+                          ),
+                        ],
                       ),
-                    ),
-                    gapH14,
-
-                    /// Play List Widget
-                    ExerciseListWidget(
-                      planExercises: workout.exercises,
-                      type: PlanType.workout,
-                      onCompletePressed: () {
-                        triggerMarkWorkoutCompleteEvent();
-                      },
-                    ),
                   ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ExerciseListWidget extends StatefulWidget {
+  const _ExerciseListWidget({
+    this.onCompleteRounds,
+    required this.round,
+  });
+  final VoidCallback? onCompleteRounds;
+  final WorkoutRoundModel round;
+  @override
+  State<_ExerciseListWidget> createState() => _ExerciseListWidgetState();
+}
+
+class _ExerciseListWidgetState extends State<_ExerciseListWidget> {
+  late List<PlanExercise> planExercises = widget.round.exercises;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LogBloc, LogState>(
+          listener: (_, state) {},
+        ),
+      ],
+      child: ListView.builder(
+        itemCount: planExercises.length,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        shrinkWrap: true,
+        itemBuilder: (ctx, index) {
+          final PlanExercise planExercise = planExercises[index];
+
+          return CustomInkWell(
+            onTap: () async {
+              final exercises = List<PlanExercise>.from(planExercises)
+                  .skipWhile((e) => e.uuid != planExercise.uuid)
+                  .toList();
+
+              await NavigationService.go(
+                WorkoutPlayExercisesScreen(
+                  onRoundCompleted: widget.onCompleteRounds,
+                  planExercises: exercises,
+                  round: widget.round,
+                ),
+              );
+
+              setState(() {});
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: const BoxDecoration(
+                color: Color(0xFF303030),
+                borderRadius: BorderRadius.all(Radius.circular(36)),
+              ),
+              child: Row(
+                children: [
+                  /// Play Button
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: CacheLogExercise().checkWorkoutsExistion(
+                              exerciseId: planExercise.exercise.uuid)
+                          ? AppTheme.primaryColor1
+                          : Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.black,
+                      size: 26,
+                    ),
+                  ),
+                  gapW16,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          planExercise.exercise.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

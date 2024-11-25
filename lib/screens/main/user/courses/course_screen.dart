@@ -5,10 +5,12 @@
 // Date:        31-07-24 19:42:07 -- Wednesday
 // Description:
 
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/screens/components/custom_app_bar.dart';
 import 'package:balanced_workout/screens/components/custom_paddings.dart';
 import 'package:balanced_workout/screens/components/custom_scaffold.dart';
 import 'package:balanced_workout/screens/main/user/courses/progress_course_screen.dart';
+import 'package:balanced_workout/screens/main/user/settings/subscription_screen.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,7 @@ class _CourseScreenState extends State<CourseScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
+  late final isAllowContent = storeManager.hasSubscription;
 
   void addScrollListener() {
     scrollController.addListener(
@@ -110,13 +113,26 @@ class _CourseScreenState extends State<CourseScreen> {
             enabled: isLoading && lastSnapDoc == null,
             child: (courses.isEmpty && !isLoading)
                 ? const Center(
-                    child: Text(
-                      "No courses available",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Courses for this level will appear here.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          "Keep an eye out!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(
@@ -127,8 +143,9 @@ class _CourseScreenState extends State<CourseScreen> {
                       final course = courses[index];
                       return CustomInkWell(
                         onTap: () {
-                          NavigationService.go(
-                              ProgressCourseScreen(course: course));
+                          NavigationService.go(isAllowContent
+                              ? ProgressCourseScreen(course: course)
+                              : const SubscriptionScreen());
                         },
                         child: Container(
                           height: 193,
@@ -173,7 +190,17 @@ class _CourseScreenState extends State<CourseScreen> {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
+                              if (!isAllowContent)
+                                const Positioned(
+                                  right: 10,
+                                  top: 10,
+                                  child: Icon(
+                                    Icons.lock,
+                                    size: 24,
+                                    color: AppTheme.primaryColor1,
+                                  ),
+                                ),
                             ],
                           ),
                         ),

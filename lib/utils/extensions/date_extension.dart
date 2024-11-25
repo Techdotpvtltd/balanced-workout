@@ -3,13 +3,10 @@ import 'dart:developer';
 import 'package:intl/intl.dart';
 
 extension DateTimeExt on DateTime {
-  DateTime onlyDate() {
-    return DateTime(year, month, day);
-  }
-
-  String dateToString(String pattern) {
-    return DateFormat(pattern).format(this);
-  }
+  DateTime onlyDate() => DateTime(year, month, day);
+  bool isSame(DateTime date) =>
+      year == date.year && month == date.month && day == date.day;
+  String dateToString(String pattern) => DateFormat(pattern).format(this);
 
   String formatChatDateToString() {
     final days = DateTime.now().difference(this).inDays;
@@ -37,4 +34,13 @@ double monthDayPercentage() {
   final now = DateTime.now();
   final totalCurrentMonthDays = DateTime(now.year, now.month, 0).day;
   return (now.day / totalCurrentMonthDays) * 100;
+}
+
+extension STR on String {
+  String formatDate(String from, String to) {
+    final date = DateFormat(from).parse(this);
+    return date.dateToString(to);
+  }
+
+  DateTime toDate(String pattern) => DateFormat(pattern).parse(this);
 }

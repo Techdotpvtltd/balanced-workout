@@ -6,13 +6,13 @@
 // Description:
 
 import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/chat/chat_state.dart';
 import 'package:balanced_workout/blocs/log/log_bloc.dart';
 import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/article_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
-import 'package:balanced_workout/screens/main/user/activity_level_screen.dart';
 import 'package:balanced_workout/screens/main/user/challenges/challenge_screen.dart';
 import 'package:balanced_workout/screens/main/user/log/challenge_log_screen.dart';
 import 'package:balanced_workout/utils/constants/enum.dart';
@@ -43,6 +43,7 @@ import 'components/horizontal_product_card.dart';
 import 'components/navigation_button.dart';
 import 'notification_screen.dart';
 import 'settings/edit_profile_screen.dart';
+import 'workouts/workout_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     triggerFetchAllWorkoutsLogEvent();
     triggerFetchAllExercisesLogEvent();
     triggerFetchChatsEvent();
+    debugPrint("Check Subscription From Home: ${storeManager.active}");
     super.initState();
   }
 
@@ -288,10 +290,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         isSVG: true,
                         onPressed: () {
                           NavigationService.go(
-                            ActivityLevelScreen(
-                              type: ScreenType.workout,
-                              isShowLogs: true,
-                            ),
+                            const WorkoutListScreen(
+                                selectedLevel: Level.beginner,
+                                isShowLogs: true),
                           );
                         },
                       ),

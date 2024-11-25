@@ -9,7 +9,9 @@ import 'dart:developer';
 
 import 'package:balanced_workout/app/app_manager.dart';
 import 'package:balanced_workout/app/cache_manager.dart';
+import 'package:balanced_workout/exceptions/data_exceptions.dart';
 import 'package:balanced_workout/exceptions/exception_parsing.dart';
+import 'package:balanced_workout/models/logs/course_log_model.dart';
 import 'package:balanced_workout/models/logs/exercise_log_model.dart';
 import 'package:balanced_workout/models/logs/workout_log_model.dart';
 import 'package:balanced_workout/repos/log/log_repo_interface.dart';
@@ -17,8 +19,11 @@ import 'package:balanced_workout/utils/constants/enum.dart';
 import 'package:balanced_workout/utils/constants/firebase_collections.dart';
 import 'package:balanced_workout/web_services/firestore_services.dart';
 import 'package:balanced_workout/web_services/query_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogRepo implements LogRepoInterface {
+  final user = AppManager().user;
+
   @override
   Future<void> getWorkouts() async {
     try {
@@ -28,7 +33,7 @@ class LogRepo implements LogRepoInterface {
         queries: [
           QueryModel(
             field: "userId",
-            value: AppManager().user.uid,
+            value: user.uid,
             type: QueryType.isEqual,
           ),
           QueryModel(field: "startDate", value: true, type: QueryType.orderBy),
@@ -59,9 +64,10 @@ class LogRepo implements LogRepoInterface {
       final logWorkout = WorkoutLogModel(
         uuid: "",
         workoutId: workoutId,
-        userId: AppManager().user.uid,
+        userId: user.uid,
         name: name,
         difficultyLevel: level,
+        coverUrl: coverUrl,
         startDate: DateTime.now(),
       );
 
@@ -84,14 +90,14 @@ class LogRepo implements LogRepoInterface {
   Future<void> markWorkoutCompleted({required String workoutId}) async {
     try {
       /// If it already existed
-      WorkoutLogModel? workout = CacheLogWorkout().find(workoutId: workoutId);
-      if (workout != null && workout.completeDate == null) {
-        workout = workout.copyWith(completeDate: DateTime.now());
+      WorkoutLogModel? logWrk = CacheLogWorkout().find(workoutId: workoutId);
+      if (logWrk != null && logWrk.completeDate == null) {
+        logWrk = logWrk.copyWith(completeDate: DateTime.now());
         await FirestoreService().updateWithDocId(
             path: FIREBASE_COLLECTION_LOG_WORKOUTS,
-            docId: workoutId,
-            data: workout.toMap());
-        CacheLogWorkout().update(workout: workout);
+            docId: logWrk.uuid,
+            data: logWrk.toMap());
+        CacheLogWorkout().update(workout: logWrk);
       } else {
         log(
           "Workout log not found or already completed",
@@ -111,9 +117,9 @@ class LogRepo implements LogRepoInterface {
   }
 
   @override
-  Future<List<WorkoutLogModel>> getWorkoutsBy({required Level level}) async {
+  Future<List<WorkoutLogModel>> getWorkoutsBy() async {
     try {
-      return CacheLogWorkout().getItemsBy(level: level);
+      return CacheLogWorkout().getItem ?? [];
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "WorkoutLog getWorkoutsBy");
       throw throwAppException(e: e);
@@ -129,6 +135,11 @@ class LogRepo implements LogRepoInterface {
       final data = await FirestoreService().fetchWithMultipleConditions(
         collection: FIREBASE_COLLECTION_LOG_EXERCISES,
         queries: [
+          QueryModel(
+            field: "userId",
+            value: user.uid,
+            type: QueryType.isEqual,
+          ),
           QueryModel(field: "startDate", value: true, type: QueryType.orderBy),
           QueryModel(
               field: "startDate",
@@ -166,6 +177,7 @@ class LogRepo implements LogRepoInterface {
         throw throwAppException(e: Exception());
       }
 
+      exercise = exercise.copyWith(completeDate: DateTime.now());
       final Map<String, dynamic> map = await FirestoreService()
           .saveWithSpecificIdFiled(
               path: FIREBASE_COLLECTION_LOG_EXERCISES,
@@ -176,6 +188,89 @@ class LogRepo implements LogRepoInterface {
     } catch (e) {
       log("", time: DateTime.now(), error: e, name: "WorkoutLog saveExercise");
       throw throwAppException(e: e);
+    }
+  }
+
+  @override
+  Future<CourseLogModel> fetchCourse({required String courseId}) async {
+    try {
+      // Search in Local Cache
+      CourseLogModel? course = CacheLogCourse().find(courseId: courseId);
+      if (course != null) {
+        return course;
+      }
+
+      // Search in remote database
+      final List<Map<String, dynamic>> data =
+          await FirestoreService().fetchWithMultipleConditions(
+        collection: FIREBASE_COLLECTION_LOG_COURSES,
+        queries: [
+          QueryModel(field: "userId", value: user.uid, type: QueryType.isEqual),
+          QueryModel(
+              field: "courseId", value: [courseId], type: QueryType.whereIn),
+          QueryModel(field: "", value: 1, type: QueryType.limit),
+        ],
+      );
+
+      if (data.isNotEmpty) {
+        final course = CourseLogModel.fromMap(data.first);
+        CacheLogCourse().add = course;
+        return course;
+      }
+
+      // Save and fetch from local
+      await saveCourse(courseId: courseId);
+
+      course = CacheLogCourse().find(courseId: courseId);
+      if (course != null) {
+        return course;
+      }
+
+      throw DataExceptionNotFound(message: "Course not found");
+    } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "fetchCourses");
+      throw throwAppException(e: e);
+    }
+  }
+
+  @override
+  Future<void> markCourseDayCompleted({
+    required String logId,
+    required int day,
+  }) async {
+    try {
+      await FirestoreService().updateWithDocId(
+        path: FIREBASE_COLLECTION_LOG_COURSES,
+        docId: logId,
+        data: {
+          "completedDays": FieldValue.arrayUnion([day])
+        },
+      );
+      CacheLogCourse().updateWeek(logId, day);
+    } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "markCourseDayCompleted");
+    }
+  }
+
+  @override
+  Future<void> saveCourse({required String courseId}) async {
+    try {
+      final CourseLogModel model = CourseLogModel(
+        uuid: "",
+        courseId: courseId,
+        userId: user.uid,
+        startDate: DateTime.now(),
+        completedDays: [],
+      );
+
+      final Map<String, dynamic> data = await FirestoreService()
+          .saveWithSpecificIdFiled(
+              path: FIREBASE_COLLECTION_LOG_COURSES,
+              data: model.toMap(),
+              docIdFiled: 'uuid');
+      CacheLogCourse().add = CourseLogModel.fromMap(data);
+    } catch (e) {
+      log("", time: DateTime.now(), error: e, name: "saveCourse");
     }
   }
 }

@@ -66,5 +66,5 @@ const gapW46 = SizedBox(width: 46);
 const gapW48 = SizedBox(width: 48);
 const gapW50 = SizedBox(width: 50);
 
-final double SCREEN_WIDTH = MediaQuery.of(navKey.currentContext!).size.width;
-final double SCREEN_HEIGHT = MediaQuery.of(navKey.currentContext!).size.height;
+final double SCREEN_WIDTH = MediaQuery.sizeOf(navKey.currentContext!).width;
+final double SCREEN_HEIGHT = MediaQuery.sizeOf(navKey.currentContext!).height;
