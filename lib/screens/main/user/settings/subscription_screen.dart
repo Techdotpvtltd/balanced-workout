@@ -40,6 +40,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   late Package? selectedPackage = activedPackage;
 
   bool isPurchasingSubscription = false;
+  bool isRestoring = false;
 
   final List<String> offers = [
     '- Course Exercises',
@@ -145,6 +146,50 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   }
                 },
                 title: "Subscribe Now",
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: isRestoring
+                      ? null
+                      : () async {
+                          try {
+                            setState(() {
+                              selectedPackage = null;
+                              isRestoring = true;
+                            });
+
+                            await storeManager.restoreSubscription();
+                            setState(() {
+                              isPurchasingSubscription = false;
+                            });
+                            if (context.mounted) {
+                              context
+                                  .read<SubscriptionBloc>()
+                                  .add(SubscriptionEventUpdate());
+                              CustomDialogs().successBox(
+                                title: "Subscription Restored",
+                                message:
+                                    "Your subscription is restored. Now you can access all the feature of this app. Please restart the app once for proper use.",
+                                onPositivePressed: () {
+                                  NavigationService.offAll(
+                                      const SplashScreen());
+                                },
+                                positiveTitle: "Restart",
+                                barrierDismissible: false,
+                              );
+                            }
+                          } catch (e) {
+                            setState(() {
+                              isRestoring = false;
+                            });
+                          }
+                        },
+                  child: Text(
+                    isRestoring ? "Restoring..." : "Restore subscription",
+                    style: const TextStyle(color: AppTheme.primaryColor1),
+                  ),
+                ),
               ),
               gapH20,
               Text.rich(
