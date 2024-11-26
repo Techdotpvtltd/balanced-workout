@@ -41,10 +41,19 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   bool isPurchasingSubscription = false;
 
+  final List<String> offers = [
+    '- Course Exercises',
+    '- Stretches Exercises',
+    '- Cardio Exercises  ',
+    '- Daily Challeneges',
+    '- Create Communities'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundImagePath: AppAssets.cover1,
+      backgrounsOpacity: 0.3,
       appBar: customAppBar(),
       body: SingleChildScrollView(
         child: CustomPadding(
@@ -63,15 +72,30 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
               ),
               const Text(
-                "When you subscribe, you’ll get instant unlimited access",
+                "When you subscribe, you’ll get instant unlimited access to:",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
               ),
-              gapH50,
-              gapH50,
+              gapH10,
+              Wrap(
+                direction: Axis.horizontal,
+                spacing: 32.0,
+                runSpacing: 4.0,
+                children: List.generate(offers.length, (i) {
+                  return Text(
+                    offers[i],
+                    style: const TextStyle(
+                      color: AppTheme.primaryColor1,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  );
+                }),
+              ),
+              gapH40,
 
               /// Plan List
               _PlanList(
