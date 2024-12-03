@@ -8,13 +8,13 @@
 import 'package:balanced_workout/app/store_manager.dart';
 import 'package:balanced_workout/blocs/subscription/subscription_event.dart';
 import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
-import 'package:balanced_workout/screens/onboarding/splash_screen.dart';
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/navigation_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -24,7 +24,6 @@ import '../../../components/custom_button.dart';
 import '../../../components/custom_ink_well.dart';
 import '../../../components/custom_paddings.dart';
 import '../../../components/custom_scaffold.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -131,11 +130,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       CustomDialogs().successBox(
                         title: "Subscription Active",
                         message:
-                            "Thank you for the subscription. Now you can access all the feature of this app. Please restart the app once for proper use.",
+                            "Thank you for the subscription. Now you can access all the feature of this app.",
                         onPositivePressed: () {
-                          NavigationService.offAll(const SplashScreen());
+                          NavigationService.back();
                         },
-                        positiveTitle: "Restart",
+                        positiveTitle: "Go Back",
                         barrierDismissible: false,
                       );
                     }
@@ -155,15 +154,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       : () async {
                           try {
                             setState(() {
-                              selectedPackage = null;
                               isRestoring = true;
                             });
 
-                            await storeManager.restoreSubscription();
+                            final data =
+                                await storeManager.restoreSubscription();
                             setState(() {
                               isPurchasingSubscription = false;
+                              isRestoring = false;
                             });
-                            if (context.mounted) {
+
+                            if (data != null && context.mounted) {
                               context
                                   .read<SubscriptionBloc>()
                                   .add(SubscriptionEventUpdate());
@@ -171,18 +172,22 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 title: "Subscription Restored",
                                 message:
                                     "Your subscription is restored. Now you can access all the feature of this app. Please restart the app once for proper use.",
+                                positiveTitle: "Go Back",
                                 onPositivePressed: () {
-                                  NavigationService.offAll(
-                                      const SplashScreen());
+                                  NavigationService.back();
                                 },
-                                positiveTitle: "Restart",
-                                barrierDismissible: false,
+                              );
+                            } else {
+                              CustomDialogs().errorBox(
+                                title: "Restore Subscription Failed",
+                                message: "Purchase was cancelled or failed",
                               );
                             }
                           } catch (e) {
                             setState(() {
                               isRestoring = false;
                             });
+                            CustomDialogs().errorBox(message: e.toString());
                           }
                         },
                   child: Text(

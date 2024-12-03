@@ -6,12 +6,12 @@
 // Description:
 
 import 'dart:developer';
+import 'dart:io' show Platform;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'dart:io' show Platform;
 
 import '../secrets/app_secret.dart';
 import '../utils/dialogs/dialogs.dart';
@@ -84,14 +84,18 @@ class StoreManager {
   }
 
   Future<EntitlementInfo?> restoreSubscription() async {
-    final info = await Purchases.restorePurchases();
-    final sub = info.entitlements.active['pro'];
-    if (sub?.isActive ?? false) {
-      active = sub;
-      hasSubscription = true;
-      return active;
+    try {
+      final info = await Purchases.restorePurchases();
+      final sub = info.entitlements.active['pro'];
+      if (sub?.isActive ?? false) {
+        active = sub;
+        hasSubscription = true;
+        return active;
+      }
+      return null;
+    } catch (e) {
+      rethrow;
     }
-    return null;
   }
 
   /// Perchase Susbcription
@@ -111,5 +115,5 @@ class StoreManager {
   }
 }
 
-/// Access Global
+/// Access Globally
 final StoreManager storeManager = StoreManager();
