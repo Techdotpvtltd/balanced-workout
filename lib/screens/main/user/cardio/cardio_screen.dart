@@ -15,6 +15,8 @@ import '../../../../app/store_manager.dart';
 import '../../../../blocs/plan/plan_bloc.dart';
 import '../../../../blocs/plan/plan_event.dart';
 import '../../../../blocs/plan/plan_state.dart';
+import '../../../../blocs/subscription/subscription_state.dart';
+import '../../../../blocs/subscription/subsription_bloc.dart';
 import '../../../../models/plan_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/extensions/navigation_service.dart';
@@ -38,7 +40,7 @@ class _CardioScreenState extends State<CardioScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
-  late final isAllowContent = storeManager.hasSubscription;
+  late bool isAllowContent = storeManager.hasSubscription;
 
   void triggerFetchCardioEvent() {
     context
@@ -68,33 +70,46 @@ class _CardioScreenState extends State<CardioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PlanBloc, PlanState>(
-      listener: (context, state) {
-        if (state is PlanStateLastSnapReceived) {
-          isReachedEnd = state.lastSnapDoc == null;
-          lastSnapDoc = state.lastSnapDoc;
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SubscriptionBloc, SubscriptionState>(
+          listener: (_, state) {
+            if (state is SubscriptionStateUpdated) {
+              setState(() {
+                isAllowContent = storeManager.hasSubscription;
+              });
+            }
+          },
+        ),
+        BlocListener<PlanBloc, PlanState>(
+          listener: (context, state) {
+            if (state is PlanStateLastSnapReceived) {
+              isReachedEnd = state.lastSnapDoc == null;
+              lastSnapDoc = state.lastSnapDoc;
+            }
 
-        if (state is PlanStateCardioFetchFailure ||
-            state is PlanStateCardioFetched ||
-            state is PlanStateCardioFetching) {
-          setState(() {
-            isLoading = state.isLoading;
-          });
+            if (state is PlanStateCardioFetchFailure ||
+                state is PlanStateCardioFetched ||
+                state is PlanStateCardioFetching) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
 
-          if (state is PlanStateCardioFetchFailure) {
-            debugPrint(state.exception.message);
-          }
-          if (state is PlanStateCardioFetched) {
-            for (final cardio in state.cardios) {
-              if (!cardios.contains(cardio)) {
-                cardios.add(cardio);
+              if (state is PlanStateCardioFetchFailure) {
+                debugPrint(state.exception.message);
+              }
+              if (state is PlanStateCardioFetched) {
+                for (final cardio in state.cardios) {
+                  if (!cardios.contains(cardio)) {
+                    cardios.add(cardio);
+                  }
+                }
+                setState(() {});
               }
             }
-            setState(() {});
-          }
-        }
-      },
+          },
+        ),
+      ],
       child: CustomScaffold(
         appBar: customAppBar(title: "Cardio"),
         body: CustomPadding(

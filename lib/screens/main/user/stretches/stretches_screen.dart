@@ -9,6 +9,8 @@ import '../../../../app/store_manager.dart';
 import '../../../../blocs/plan/plan_bloc.dart';
 import '../../../../blocs/plan/plan_event.dart';
 import '../../../../blocs/plan/plan_state.dart';
+import '../../../../blocs/subscription/subscription_state.dart';
+import '../../../../blocs/subscription/subsription_bloc.dart';
 import '../../../../models/plan_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/extensions/navigation_service.dart';
@@ -31,7 +33,7 @@ class _StretchesScreenState extends State<StretchesScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
-  late final isAllowContent = storeManager.hasSubscription;
+  late bool isAllowContent = storeManager.hasSubscription;
 
   void addScrollListener() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
@@ -61,33 +63,46 @@ class _StretchesScreenState extends State<StretchesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PlanBloc, PlanState>(
-      listener: (context, state) {
-        if (state is PlanStateLastSnapReceived) {
-          isReachedEnd = state.lastSnapDoc == null;
-          lastSnapDoc = state.lastSnapDoc;
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SubscriptionBloc, SubscriptionState>(
+          listener: (_, state) {
+            if (state is SubscriptionStateUpdated) {
+              setState(() {
+                isAllowContent = storeManager.hasSubscription;
+              });
+            }
+          },
+        ),
+        BlocListener<PlanBloc, PlanState>(
+          listener: (context, state) {
+            if (state is PlanStateLastSnapReceived) {
+              isReachedEnd = state.lastSnapDoc == null;
+              lastSnapDoc = state.lastSnapDoc;
+            }
 
-        if (state is PlanStateStretchesFetchFailure ||
-            state is PlanStateStretchesFetched ||
-            state is PlanStateStretchesFetching) {
-          setState(() {
-            isLoading = state.isLoading;
-          });
+            if (state is PlanStateStretchesFetchFailure ||
+                state is PlanStateStretchesFetched ||
+                state is PlanStateStretchesFetching) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
 
-          if (state is PlanStateStretchesFetchFailure) {
-            debugPrint(state.exception.message);
-          }
-          if (state is PlanStateStretchesFetched) {
-            for (final cardio in state.stretches) {
-              if (!stretches.contains(cardio)) {
-                stretches.add(cardio);
+              if (state is PlanStateStretchesFetchFailure) {
+                debugPrint(state.exception.message);
+              }
+              if (state is PlanStateStretchesFetched) {
+                for (final cardio in state.stretches) {
+                  if (!stretches.contains(cardio)) {
+                    stretches.add(cardio);
+                  }
+                }
+                setState(() {});
               }
             }
-            setState(() {});
-          }
-        }
-      },
+          },
+        ),
+      ],
       child: CustomScaffold(
         appBar: customAppBar(title: "Stretches"),
         body: CustomPadding(

@@ -15,6 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../app/store_manager.dart';
 import '../../../../blocs/message/mesaage_bloc.dart';
 import '../../../../blocs/message/message_event.dart';
+import '../../../../blocs/subscription/subscription_state.dart';
+import '../../../../blocs/subscription/subsription_bloc.dart';
 import '../../../../models/message_model.dart';
 import '../../../../utils/constants/app_assets.dart';
 import '../../../../utils/constants/app_theme.dart';
@@ -38,7 +40,7 @@ class GroupChatScreen extends StatefulWidget {
 
 class _GroupChatScreenState extends State<GroupChatScreen> {
   late final ChatModel chat = widget.chat;
-  late final isAllowContent = storeManager.hasSubscription;
+  late bool isAllowContent = storeManager.hasSubscription;
 
   TextEditingController messageController = TextEditingController();
 
@@ -75,130 +77,143 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBar: customAppBar(
-        background: const Color(0xFF2C2C2E).withOpacity(0.62),
-
-        /// Title Widget
-        titleWidget: CustomInkWell(
-          onTap: () {
-            if (isAllowContent) {
-              NavigationService.go(CommunityInfoScreen(chat: chat));
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SubscriptionBloc, SubscriptionState>(
+          listener: (_, state) {
+            if (state is SubscriptionStateUpdated) {
+              setState(() {
+                isAllowContent = storeManager.hasSubscription;
+              });
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                chat.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              gapH6,
-              Text.rich(
-                TextSpan(
-                  text: chat.participantUids.length.toString(),
-                  children: const [
-                    TextSpan(
-                      text: ' members',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  ],
-                ),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
         ),
+      ],
+      child: CustomScaffold(
+        appBar: customAppBar(
+          background: const Color(0xFF2C2C2E).withOpacity(0.62),
 
-        /// Menu Button
-        actions: [
-          // CircleButton(
-          //   icon: AppAssets.menuIcon,
-          //   onPressed: () {},
-          //   backgroundColor: const Color(0xFFDEDEE0).withOpacity(0.11),
-          // ),
-          gapW20,
-        ],
-      ),
-      body: Column(
-        children: [
-          /// A chapi Style
-          Container(
-            height: 25,
-            decoration: BoxDecoration(
-              color: const Color(0xFF2C2C2E).withOpacity(0.62),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
+          /// Title Widget
+          titleWidget: CustomInkWell(
+            onTap: () {
+              if (isAllowContent) {
+                NavigationService.go(CommunityInfoScreen(chat: chat));
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chat.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                gapH6,
+                Text.rich(
+                  TextSpan(
+                    text: chat.participantUids.length.toString(),
+                    children: const [
+                      TextSpan(
+                        text: ' members',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    ],
+                  ),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
           ),
 
-          Expanded(child: BubbleWidget(conversationId: chat.uuid)),
+          /// Menu Button
+          actions: [
+            // CircleButton(
+            //   icon: AppAssets.menuIcon,
+            //   onPressed: () {},
+            //   backgroundColor: const Color(0xFFDEDEE0).withOpacity(0.11),
+            // ),
+            gapW20,
+          ],
+        ),
+        body: Column(
+          children: [
+            /// A chapi Style
+            Container(
+              height: 25,
+              decoration: BoxDecoration(
+                color: const Color(0xFF2C2C2E).withOpacity(0.62),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+              ),
+            ),
 
-          /// TextField
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
-            child: isAllowContent
-                ? CustomTextField(
-                    controller: messageController,
-                    hintText: "Message",
-                    maxLines: 5,
-                    minLines: 1,
-                    prefixWidget: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: Center(
-                        child: CircleButton(
-                          onPressed: () {
-                            onMediaPressed();
-                          },
-                          icon: AppAssets.plusIcon,
-                          backgroundColor: AppTheme.primaryColor1,
+            Expanded(child: BubbleWidget(conversationId: chat.uuid)),
+
+            /// TextField
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
+              child: isAllowContent
+                  ? CustomTextField(
+                      controller: messageController,
+                      hintText: "Message",
+                      maxLines: 5,
+                      minLines: 1,
+                      prefixWidget: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Center(
+                          child: CircleButton(
+                            onPressed: () {
+                              onMediaPressed();
+                            },
+                            icon: AppAssets.plusIcon,
+                            backgroundColor: AppTheme.primaryColor1,
+                          ),
+                        ),
+                      ),
+                      suffixWidget: CustomInkWell(
+                        onTap: () {
+                          if (messageController.text != "") {
+                            triggerSenderMessageEvent();
+                            messageController.clear();
+                          }
+                        },
+                        child: const Icon(
+                          Icons.send,
+                          color: AppTheme.primaryColor1,
+                        ),
+                      ),
+                    )
+                  : CustomInkWell(
+                      onTap: () {
+                        NavigationService.go(const SubscriptionScreen());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350],
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          "You're not allow to send texts and media in this community. To send texts and media, please subscribe one of our plans.",
+                          style: TextStyle(
+                              fontSize: 9, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    suffixWidget: CustomInkWell(
-                      onTap: () {
-                        if (messageController.text != "") {
-                          triggerSenderMessageEvent();
-                          messageController.clear();
-                        }
-                      },
-                      child: const Icon(
-                        Icons.send,
-                        color: AppTheme.primaryColor1,
-                      ),
-                    ),
-                  )
-                : CustomInkWell(
-                    onTap: () {
-                      NavigationService.go(const SubscriptionScreen());
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[350],
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const Text(
-                        "You're not allow to send texts and media in this community. To send texts and media, please subscribe one of our plans.",
-                        style:
-                            TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,6 +20,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../blocs/course/course_bloc.dart';
 import '../../../../blocs/course/course_event.dart';
 import '../../../../blocs/course/course_state.dart';
+import '../../../../blocs/subscription/subscription_state.dart';
+import '../../../../blocs/subscription/subsription_bloc.dart';
 import '../../../../models/course_model.dart';
 import '../../../../utils/constants/app_theme.dart';
 import '../../../../utils/constants/enum.dart';
@@ -43,7 +45,7 @@ class _CourseScreenState extends State<CourseScreen> {
   bool isReachedEnd = false;
   DocumentSnapshot? lastSnapDoc;
   final ScrollController scrollController = ScrollController();
-  late final isAllowContent = storeManager.hasSubscription;
+  late bool isAllowContent = storeManager.hasSubscription;
 
   void addScrollListener() {
     scrollController.addListener(
@@ -82,29 +84,42 @@ class _CourseScreenState extends State<CourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CourseBloc, CourseState>(
-      listener: (context, state) {
-        if (state is CourseStateFetchLastSnapDoc) {
-          isReachedEnd = state.lastSnapDoc == null;
-          lastSnapDoc = state.lastSnapDoc;
-        }
-        if (state is CourseStateFetching ||
-            state is CourseStateFetchFailure ||
-            state is CourseStateFetched) {
-          setState(() {
-            isLoading = state.isLoading;
-          });
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SubscriptionBloc, SubscriptionState>(
+          listener: (_, state) {
+            if (state is SubscriptionStateUpdated) {
+              setState(() {
+                isAllowContent = storeManager.hasSubscription;
+              });
+            }
+          },
+        ),
+        BlocListener<CourseBloc, CourseState>(
+          listener: (context, state) {
+            if (state is CourseStateFetchLastSnapDoc) {
+              isReachedEnd = state.lastSnapDoc == null;
+              lastSnapDoc = state.lastSnapDoc;
+            }
+            if (state is CourseStateFetching ||
+                state is CourseStateFetchFailure ||
+                state is CourseStateFetched) {
+              setState(() {
+                isLoading = state.isLoading;
+              });
 
-          if (state is CourseStateFetched) {
-            for (final course in state.courses) {
-              if (!courses.contains(course)) {
-                courses.add(course);
+              if (state is CourseStateFetched) {
+                for (final course in state.courses) {
+                  if (!courses.contains(course)) {
+                    courses.add(course);
+                  }
+                }
+                setState(() {});
               }
             }
-            setState(() {});
-          }
-        }
-      },
+          },
+        ),
+      ],
       child: CustomScaffold(
         appBar: customAppBar(title: "Courses"),
         body: CustomPadding(
