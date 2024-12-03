@@ -3,9 +3,9 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 
 const String FIREBASE_COLLECTION_USER =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Users";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Users";
 const String FIREBASE_COLLECTION_USER_PROFILES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Avatars";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Avatars";
 const FIREBASE_COLLECTION_PLANS = "${kReleaseMode ? "Rel-" : "Dev-"}Plans";
 const FIREBASE_COLLECTION_WORKOUTS =
     "${kReleaseMode ? "Rel-" : "Dev-"}Workouts";

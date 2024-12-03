@@ -4,10 +4,12 @@ import 'package:balanced_workout/utils/constants/firebase_collections.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:balanced_workout/web_services/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import '../app/app_manager.dart';
 import '../exceptions/app_exceptions.dart';
 import '../exceptions/auth_exceptions.dart';
@@ -16,7 +18,6 @@ import '../exceptions/exception_parsing.dart';
 import '../web_services/firebase_auth_serivces.dart';
 import 'user_repo.dart';
 import 'validations/check_validation.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class AuthRepo {
   int userFetchFailureCount = 0;
@@ -81,12 +82,12 @@ class AuthRepo {
 
   /// Perform Logout
   Future<void> performLogout() async {
-    FirebaseAuthService().logoutUser();
+    await FirebaseAuthService().logoutUser();
   }
 
   Future<void> performDeletion() async {
     debugPrint("Deleting UserData from firebase...");
-    FirestoreService().delete(
+    await FirestoreService().delete(
         collection: FIREBASE_COLLECTION_USER, docId: currentUser()?.uid ?? '');
     debugPrint("Deleting Account from firebase...");
     FirebaseAuthService().deleteAccount();
@@ -118,7 +119,8 @@ class AuthRepo {
           idToken: credential.identityToken);
       await FirebaseAuthService()
           .loginWithCredentials(credential: authCredential);
-      await _fetchOrCreateUser();
+      await _fetchOrCreateUser(
+          name: "${credential.givenName} ${credential.familyName}");
     } catch (e) {
       throw throwAppException(e: e);
     }
@@ -152,7 +154,7 @@ class AuthRepo {
   }
 
   // Mostly used for Social Account Authenticatopn
-  Future<void> _fetchOrCreateUser() async {
+  Future<void> _fetchOrCreateUser({String? name}) async {
     try {
       await UserRepo().fetch();
       userFetchFailureCount = 0;
@@ -164,7 +166,7 @@ class AuthRepo {
           if (userFetchFailureCount <= 1) {
             await UserRepo().create(
               uid: user.uid,
-              name: user.displayName ?? "",
+              name: name ?? user.displayName ?? "",
               avatarUrl: user.photoURL,
               email: user.email ?? "",
             );
