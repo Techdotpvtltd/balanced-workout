@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "318824026215-53cgkruov4cihtbdhhug8jvlic34fuu0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techdot.balancedWorkout",
+            "certificate_hash": "0385474eae1050e000037c82bc9d67102cb54a82"
+          }
+        },
+        {
+          "client_id": "318824026215-8akgised866shun1do5crlhaqmiutu0l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techdot.balancedWorkout",
+            "certificate_hash": "8d93f73cd33cca5185a8e1200f3b77c758d751ad"
+          }
+        },
+        {
           "client_id": "318824026215-7pvais6603ifmbt80nj4m22f3109ceo6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "318824026215-7pvais6603ifmbt80nj4m22f3109ceo6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "318824026215-j7bdcgo8hj2p8p3h9oup0i1oqt1n8brs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.techdot.balancedWorkout"
+              }
             }
           ]
         }

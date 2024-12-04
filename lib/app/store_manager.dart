@@ -15,7 +15,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../secrets/app_secret.dart';
 import '../utils/dialogs/dialogs.dart';
-// import 'package:flutter/foundation.dart' show kReleaseMode;
 
 class StoreManager {
   static final StoreManager _instance = StoreManager._internal();
@@ -30,7 +29,9 @@ class StoreManager {
   Offerings? _offerings;
   List<Package> availablePackages = [];
   EntitlementInfo? active;
-  bool hasSubscription = false;
+
+  //TODO: Remove it when app is shifted to client account
+  bool hasSubscription = Platform.isAndroid;
 
   Future<void> _performTasks() async {
     await _fetchOffers();
