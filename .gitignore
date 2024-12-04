@@ -46,3 +46,9 @@ app.*.map.json
 
 #Ignore AppSecret File
 /lib/secrets/
+
+
+
+#Avoid Ignore
+!android/key.properties
+!android/app/balanced.jks
