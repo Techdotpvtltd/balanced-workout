@@ -5,6 +5,8 @@
 // Date:        09-05-24 11:04:48 -- Thursday
 // Description:
 
+import 'dart:io' show Platform;
+
 import 'package:balanced_workout/blocs/subscription/subscription_state.dart';
 import 'package:balanced_workout/blocs/subscription/subsription_bloc.dart';
 import 'package:balanced_workout/models/subscription_model.dart';
@@ -227,30 +229,33 @@ class _SettingScreenState extends State<SettingScreen> {
 
             /// Subscription Button
             gapH10,
-            CustomChildButton(
-              onPressed: () {
-                NavigationService.go(const SubscriptionScreen());
-              },
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    AppAssets.subscriptionIcon,
-                    height: 24,
-                    colorFilter:
-                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                  ),
-                  gapW30,
-                  Text(
-                    "Subscription",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+
+            //TODO: Remove this condition when app is shifted to client account
+            if (Platform.isIOS)
+              CustomChildButton(
+                onPressed: () {
+                  NavigationService.go(const SubscriptionScreen());
+                },
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppAssets.subscriptionIcon,
+                      height: 24,
+                      colorFilter:
+                          const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
-                  ),
-                ],
+                    gapW30,
+                    Text(
+                      "Subscription",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             gapH10,
             CustomChildButton(
               onPressed: () {

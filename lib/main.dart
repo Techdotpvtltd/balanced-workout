@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'app/app_bloc_observer.dart';
 import 'blocs/auth/auth_bloc.dart';
@@ -37,7 +38,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await storeManager.initialize();
 
-  runApp(const MainApp());
+  runApp(Phoenix(child: const MainApp()));
 }
 
 class MainApp extends StatelessWidget {

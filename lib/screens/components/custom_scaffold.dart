@@ -22,6 +22,7 @@ class CustomScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset,
     this.appBar,
     this.backgroundImagePath,
+    this.backgrounsOpacity = 0,
   });
   final String? title;
   final Widget? body;
@@ -32,6 +33,7 @@ class CustomScaffold extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldkey;
   final bool? resizeToAvoidBottomInset;
   final PreferredSizeWidget? appBar;
+  final double backgrounsOpacity;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -39,9 +41,13 @@ class CustomScaffold extends StatelessWidget {
         SizedBox(
           width: SCREEN_WIDTH,
           height: SCREEN_HEIGHT,
-          child: Image.asset(
-            backgroundImagePath ?? AppAssets.background,
-            fit: BoxFit.cover,
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(backgrounsOpacity), BlendMode.srcOver),
+            child: Image.asset(
+              backgroundImagePath ?? AppAssets.background,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Positioned.fill(

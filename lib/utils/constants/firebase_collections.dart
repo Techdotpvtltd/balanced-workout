@@ -3,29 +3,29 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 
 const String FIREBASE_COLLECTION_USER =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Users";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Users";
 const String FIREBASE_COLLECTION_USER_PROFILES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Avatars";
-const FIREBASE_COLLECTION_PLANS = "${kReleaseMode ? "Rel-" : "Dev-"}Plans";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Avatars";
+const FIREBASE_COLLECTION_PLANS = "${kReleaseMode ? "Rel-" : "Rel-"}Plans";
 const FIREBASE_COLLECTION_WORKOUTS =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Workouts";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Workouts";
 
-const FIREBASE_COLLECTION_COURSE = "${kReleaseMode ? "Rel-" : "Dev-"}Course";
+const FIREBASE_COLLECTION_COURSE = "${kReleaseMode ? "Rel-" : "Rel-"}Course";
 
 const String FIREBASE_COLLECTION_CHAT =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Chats";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Chats";
 
 const FIREBASE_COLLECTION_MESSAGES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Messages";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Messages";
 
 const FIREBASE_COLLECTION_ARTICLES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Articles";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Articles";
 
 const FIREBASE_COLLECTION_LOG_WORKOUTS =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Log-Workouts";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Log-Workouts";
 
 const FIREBASE_COLLECTION_LOG_EXERCISES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Log-Exercises";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Log-Exercises";
 
 const FIREBASE_COLLECTION_LOG_COURSES =
-    "${kReleaseMode ? "Rel-" : "Dev-"}Log-Courses";
+    "${kReleaseMode ? "Rel-" : "Rel-"}Log-Courses";

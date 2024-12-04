@@ -40,10 +40,11 @@ class CustomDialogs {
     VoidCallback? onNegativePressed,
     VoidCallback? onPositivePressed,
     bool showPositive = false,
+    String? title,
   }) {
     _genericAlertDilaog(
       icon: Icons.bug_report,
-      title: "Error",
+      title: title ?? "Error",
       titleColor: Colors.red,
       message: message ?? "Error",
       iconColor: Colors.red,
