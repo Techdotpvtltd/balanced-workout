@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:flutter/material.dart';
+
 import '../../../components/custom_container.dart';
 import '../../../components/custom_ink_well.dart';
 
@@ -39,7 +40,8 @@ class _CustomTabBarState extends State<CustomTabBar> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 7),
                   child: CustomContainer(
-                    color: Colors.white.withOpacity(isSelected ? 1 : 0.31),
+                    color:
+                        Colors.white.withValues(alpha: isSelected ? 1 : 0.31),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 26, vertical: 12),
                     borderRadius: const BorderRadius.all(Radius.circular(52)),

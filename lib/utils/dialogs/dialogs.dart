@@ -214,7 +214,7 @@ class _CustomDialogViewState extends State<_CustomDialogView> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: Scaffold(
-          backgroundColor: Colors.grey.withOpacity(0.6),
+          backgroundColor: Colors.grey.withValues(alpha: 0.6),
           body: Dialog(
             backgroundColor: Colors.transparent,
             insetPadding: const EdgeInsets.all(10),
@@ -263,7 +263,8 @@ class _CustomDialogViewState extends State<_CustomDialogView> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0xff2F3342).withOpacity(0.80),
+                            color:
+                                const Color(0xff2F3342).withValues(alpha: 0.80),
                           ),
                         ),
                         gapH10,

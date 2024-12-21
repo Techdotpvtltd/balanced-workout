@@ -284,7 +284,7 @@ class _PlanListState extends State<_PlanList> {
                       left: 25, right: 21, top: 26, bottom: 18),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppTheme.primaryColor1.withOpacity(0.16)
+                        ? AppTheme.primaryColor1.withValues(alpha: 0.16)
                         : const Color(0xFF222221),
                     border: Border.all(
                       color: isSelected

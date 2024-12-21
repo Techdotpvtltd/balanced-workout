@@ -164,7 +164,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                   }
                                 });
                               },
-                              color: const Color(0xFF232323).withOpacity(0.62),
+                              color: const Color(0xFF232323)
+                                  .withValues(alpha: 0.62),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 9,

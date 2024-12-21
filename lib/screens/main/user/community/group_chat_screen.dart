@@ -91,7 +91,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       ],
       child: CustomScaffold(
         appBar: customAppBar(
-          background: const Color(0xFF2C2C2E).withOpacity(0.62),
+          background: const Color(0xFF2C2C2E).withValues(alpha: 0.62),
 
           /// Title Widget
           titleWidget: CustomInkWell(
@@ -138,7 +138,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
             // CircleButton(
             //   icon: AppAssets.menuIcon,
             //   onPressed: () {},
-            //   backgroundColor: const Color(0xFFDEDEE0).withOpacity(0.11),
+            //   backgroundColor: const Color(0xFFDEDEE0).withValues(alpha:0.11),
             // ),
             gapW20,
           ],
@@ -149,7 +149,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
             Container(
               height: 25,
               decoration: BoxDecoration(
-                color: const Color(0xFF2C2C2E).withOpacity(0.62),
+                color: const Color(0xFF2C2C2E).withValues(alpha: 0.62),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),

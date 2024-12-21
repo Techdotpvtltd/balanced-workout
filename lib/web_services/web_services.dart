@@ -160,9 +160,6 @@ extension _WebServicePrivate on WebServices {
           ///Calling this method will replace any existing cursor "start" query modifiers.
           query = query.startAtDocument(condition.value);
           break;
-        default:
-          query = collectionReference;
-          break;
       }
     }
     // debugPrint(query.parameters.toString());

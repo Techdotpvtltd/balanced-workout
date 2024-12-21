@@ -6,6 +6,7 @@
 // Description:
 
 import 'package:flutter/material.dart';
+
 import '../../models/walkthrough_model.dart';
 import '../../utils/constants/app_assets.dart';
 import '../../utils/constants/constants.dart';
@@ -79,7 +80,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 width: SCREEN_WIDTH,
                 height: SCREEN_HEIGHT,
                 foregroundDecoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                 ),
                 child: Image.asset(
                   data[currentIndex].imagePath,
@@ -226,8 +227,8 @@ class _SwipeButtonState extends State<_SwipeButton>
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             colors: [
-              const Color(0xFF3F3F3F).withOpacity(0.69),
-              const Color(0xFFA5A5A5).withOpacity(0.69)
+              const Color(0xFF3F3F3F).withValues(alpha: 0.69),
+              const Color(0xFFA5A5A5).withValues(alpha: 0.69)
             ],
           ),
           borderRadius: const BorderRadius.all(Radius.circular(50)),

@@ -141,7 +141,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                 bottom: 16,
                                 right: 20,
                               ),
-                              color: const Color(0xFFF2F2F2).withOpacity(0.12),
+                              color: const Color(0xFFF2F2F2)
+                                  .withValues(alpha: 0.12),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
                               child: Row(

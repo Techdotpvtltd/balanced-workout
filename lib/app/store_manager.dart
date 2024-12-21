@@ -30,8 +30,7 @@ class StoreManager {
   List<Package> availablePackages = [];
   EntitlementInfo? active;
 
-  //TODO: Remove it when app is shifted to client account
-  bool hasSubscription = Platform.isAndroid;
+  bool hasSubscription = false;
 
   Future<void> _performTasks() async {
     await _fetchOffers();

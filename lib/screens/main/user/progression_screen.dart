@@ -8,6 +8,7 @@
 import 'package:balanced_workout/app/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../blocs/log/log_bloc.dart';
 import '../../../blocs/log/log_state.dart';
 import '../../../blocs/workout/workout_bloc.dart';
@@ -116,7 +117,7 @@ class _ProgressionScreenState extends State<ProgressionScreen> {
       ],
       child: CustomScaffold(
         appBar: customAppBar(
-          background: const Color(0xFF2C2C2E).withOpacity(0.62),
+          background: const Color(0xFF2C2C2E).withValues(alpha: 0.62),
           title: "Progression",
         ),
         body: Column(
@@ -203,7 +204,7 @@ class _ProgressionScreenState extends State<ProgressionScreen> {
                                           child: ColorFiltered(
                                             colorFilter: ColorFilter.mode(
                                                 const Color(0xff000000)
-                                                    .withOpacity(0.35),
+                                                    .withValues(alpha: 0.35),
                                                 BlendMode.srcOver),
                                             child: CustomNetworkImage(
                                               imageUrl: workout.coverUrl ?? "",

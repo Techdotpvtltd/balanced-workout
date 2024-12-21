@@ -127,7 +127,7 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
                         /// Color Blur Widget
                         child: ColorFiltered(
                           colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.6),
+                            Colors.black.withValues(alpha: 0.6),
                             BlendMode.srcOver,
                           ),
 
@@ -182,7 +182,8 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen>
                               LinearProgressIndicator(
                                 value: controller.value,
                                 color: Colors.white,
-                                backgroundColor: Colors.white.withOpacity(0.2),
+                                backgroundColor:
+                                    Colors.white.withValues(alpha: 0.2),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 minHeight: 6,

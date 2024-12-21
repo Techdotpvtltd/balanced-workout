@@ -43,7 +43,8 @@ class CustomScaffold extends StatelessWidget {
           height: SCREEN_HEIGHT,
           child: ColorFiltered(
             colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(backgrounsOpacity), BlendMode.srcOver),
+                Colors.black.withValues(alpha: backgrounsOpacity),
+                BlendMode.srcOver),
             child: Image.asset(
               backgroundImagePath ?? AppAssets.background,
               fit: BoxFit.cover,

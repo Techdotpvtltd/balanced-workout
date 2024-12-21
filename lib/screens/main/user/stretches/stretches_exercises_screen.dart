@@ -40,7 +40,7 @@ class _StretchesExercisesScreenState extends State<StretchesExercisesScreen> {
                   width: SCREEN_WIDTH,
                   child: ColorFiltered(
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.6), BlendMode.srcOver),
+                        Colors.black.withValues(alpha: 0.6), BlendMode.srcOver),
 
                     /// Background Image
                     child: CustomNetworkImage(

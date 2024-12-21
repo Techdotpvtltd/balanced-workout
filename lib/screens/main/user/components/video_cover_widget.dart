@@ -34,7 +34,7 @@ class VideoCoverWidget extends StatelessWidget {
             Positioned.fill(
               child: ColorFiltered(
                 colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.3), BlendMode.srcOver),
+                    Colors.black.withValues(alpha: 0.3), BlendMode.srcOver),
                 child: CustomNetworkImage(
                   width: width ?? SCREEN_WIDTH,
                   height: height ?? SCREEN_HEIGHT,

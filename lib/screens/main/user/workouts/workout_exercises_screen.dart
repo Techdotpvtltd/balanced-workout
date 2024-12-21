@@ -10,7 +10,6 @@ import 'package:balanced_workout/blocs/log/log_event.dart';
 import 'package:balanced_workout/blocs/log/log_state.dart';
 import 'package:balanced_workout/models/workout_model.dart';
 import 'package:balanced_workout/screens/components/custom_button.dart';
-
 import 'package:balanced_workout/utils/dialogs/dialogs.dart';
 import 'package:balanced_workout/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +108,8 @@ class _WorkoutExercisesScreenState extends State<WorkoutExercisesScreen> {
                     width: SCREEN_WIDTH,
                     child: ColorFiltered(
                       colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.6), BlendMode.srcOver),
+                          Colors.black.withValues(alpha: 0.6),
+                          BlendMode.srcOver),
 
                       /// Background Image
                       child: CustomNetworkImage(

@@ -32,7 +32,7 @@ class CompleteVideoAlertScreen extends StatelessWidget {
               padding: const EdgeInsets.only(
                   left: 23, right: 23, bottom: 40, top: 15),
               borderRadius: const BorderRadius.all(Radius.circular(21)),
-              color: const Color(0xFF252525).withOpacity(0.7),
+              color: const Color(0xFF252525).withValues(alpha: 0.7),
               child: Column(
                 children: [
                   CircleAvatar(

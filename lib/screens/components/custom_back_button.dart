@@ -25,7 +25,7 @@ class CustomBackButton extends StatelessWidget {
         padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         visualDensity: VisualDensity.compact,
         backgroundColor: WidgetStatePropertyAll(
-            backgroundColor ?? const Color(0xFF8B8B8B).withOpacity(0.2)),
+            backgroundColor ?? const Color(0xFF8B8B8B).withValues(alpha: 0.2)),
         fixedSize: const WidgetStatePropertyAll(
           Size(54, 54),
         ),

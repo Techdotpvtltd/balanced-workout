@@ -159,7 +159,7 @@ class _StretchesScreenState extends State<StretchesScreen> {
                                 child: ColorFiltered(
                                     colorFilter: ColorFilter.mode(
                                         const Color(0xff000000)
-                                            .withOpacity(0.35),
+                                            .withValues(alpha: 0.35),
                                         BlendMode.srcOver),
                                     child: CustomNetworkImage(
                                         imageUrl: stretch.coverUrl ?? "")),

@@ -12,7 +12,6 @@ import '../../app/app_manager.dart';
 import '../../models/message_model.dart';
 import '../../utils/constants/app_theme.dart';
 import '../../utils/constants/constants.dart';
-
 import '../../utils/extensions/helping_methods.dart';
 import '../../utils/extensions/navigation_service.dart';
 import '../main/user/community/group_chat_screen.dart';
@@ -26,7 +25,7 @@ class ChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomContainer(
       padding: const EdgeInsets.only(left: 14, right: 11, top: 12, bottom: 20),
-      color: const Color(0xFF2B2B2B).withOpacity(0.68),
+      color: const Color(0xFF2B2B2B).withValues(alpha: 0.68),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       onPressed: () {
         NavigationService.go(
